@@ -21,12 +21,18 @@ public:
 	// ‰~’Œ•`‰æ
 	void DrawCylinder(const DirectX::XMFLOAT3& position, float radius, float height, const DirectX::XMFLOAT4& color);
 
+	// ” •`‰æ
+	void DrawBox(const DirectX::XMFLOAT3& position, float width, float height, float length, const DirectX::XMFLOAT4& color);
+
 private:
 	// ‹…ƒƒbƒVƒ…ì¬
 	void CreateSphereMesh(ID3D11Device* device, float radius, int slices, int stacks);
 
 	// ‰~’ŒƒƒbƒVƒ…ì¬
 	void CreateCylinderMesh(ID3D11Device* device, float radius1, float radius2, float start, float height, int slices, int stacks);
+
+	// ” ƒƒbƒVƒ…ì¬
+	void CreateBoxMesh(ID3D11Device* device, float width, float height, float length);
 
 private:
 	struct CbMesh
@@ -50,8 +56,18 @@ private:
 		float				height;
 	};
 
+	struct Box
+	{
+		DirectX::XMFLOAT4	color;
+		DirectX::XMFLOAT3	position;
+		float				width;
+		float				height;
+		float               length;
+	};
+
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			sphereVertexBuffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			cylinderVertexBuffer;
+	Microsoft::WRL::ComPtr<ID3D11Buffer>			boxVertexBuffer;
 	Microsoft::WRL::ComPtr<ID3D11Buffer>			constantBuffer;
 
 	Microsoft::WRL::ComPtr<ID3D11VertexShader>		vertexShader;
@@ -64,7 +80,9 @@ private:
 
 	std::vector<Sphere>		spheres;
 	std::vector<Cylinder>	cylinders;
+	std::vector<Box>        boxs;
 
 	UINT	sphereVertexCount = 0;
 	UINT	cylinderVertexCount = 0;
+	UINT    boxVertexCount = 0;
 };

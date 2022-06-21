@@ -128,6 +128,9 @@ DebugRenderer::DebugRenderer(ID3D11Device* device)
 
 	// 円柱メッシュ作成
 	CreateCylinderMesh(device, 1.0f, 1.0f, 0.0f, 1.0f, 16, 1);
+
+	// 箱メッシュ作成
+	CreateBoxMesh(device, 1.0f, 1.0f, 1.0f);
 }
 
 // 描画開始
@@ -197,6 +200,26 @@ void DebugRenderer::Render(ID3D11DeviceContext* context, const DirectX::XMFLOAT4
 		context->Draw(cylinderVertexCount, 0);
 	}
 	cylinders.clear();
+
+	// 箱描画
+	context->IASetVertexBuffers(0, 1, boxVertexBuffer.GetAddressOf(), &stride, &offset);
+	for (const Box& box : boxs)
+	{
+		// ワールドビュープロジェクション行列作成
+		DirectX::XMMATRIX S = DirectX::XMMatrixScaling(box.width, box.height, box.length);
+		DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(box.position.x, box.position.y, box.position.z);
+		DirectX::XMMATRIX W = S * T;
+		DirectX::XMMATRIX WVP = W * VP;
+
+		// 定数バッファ更新
+		CbMesh cbMesh;
+		cbMesh.color = box.color;
+		DirectX::XMStoreFloat4x4(&cbMesh.wvp, WVP);
+
+		context->UpdateSubresource(constantBuffer.Get(), 0, 0, &cbMesh, 0, 0);
+		context->Draw(boxVertexCount, 0);
+	}
+	boxs.clear();
 }
 
 // 球描画
@@ -220,6 +243,18 @@ void DebugRenderer::DrawCylinder(const DirectX::XMFLOAT3& position, float radius
 	cylinders.emplace_back(cylinder);
 }
 
+// 箱描画
+void DebugRenderer::DrawBox(const DirectX::XMFLOAT3& position, float width, float height, float length, const DirectX::XMFLOAT4& color)
+{
+	Box box;
+	box.position = position;
+	box.width = width;
+	box.height = height;
+	box.length = length;
+	box.color = color;
+	boxs.emplace_back(box);
+}
+
 // 球メッシュ作成
 void DebugRenderer::CreateSphereMesh(ID3D11Device* device, float radius, int slices, int stacks)
 {
@@ -230,7 +265,7 @@ void DebugRenderer::CreateSphereMesh(ID3D11Device* device, float radius, int sli
 	float thetaStep = DirectX::XM_2PI / slices;
 
 	DirectX::XMFLOAT3* p = vertices.get();
-	
+
 	for (int i = 0; i < stacks; ++i)
 	{
 		float phi = i * phiStep;
@@ -361,6 +396,132 @@ void DebugRenderer::CreateCylinderMesh(ID3D11Device* device, float radius1, floa
 		subresourceData.SysMemSlicePitch = 0;
 
 		HRESULT hr = device->CreateBuffer(&desc, &subresourceData, cylinderVertexBuffer.GetAddressOf());
+		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
+	}
+}
+
+// 箱メッシュ作成
+void DebugRenderer::CreateBoxMesh(ID3D11Device* device, float width, float height, float length)
+{
+	const int Face = 6;
+	const int OneFaceVertex = 20;
+
+	boxVertexCount = Face * OneFaceVertex;
+	std::unique_ptr<DirectX::XMFLOAT3[]> vertices = std::make_unique<DirectX::XMFLOAT3[]>(boxVertexCount);
+
+	DirectX::XMFLOAT3* p = vertices.get();
+
+	int j = 0;
+	int faceCount = 1;
+	int vertexCount = OneFaceVertex * faceCount;
+
+	float xlen = width / 2;
+	float ylen = height;
+	float zlen = length / 2;
+
+	float adjustnum[5] = { -1.0f, -0.5f, 0.0f,  0.5f, 1.0f };
+	float adjustnum_y[5] = { 0.0f, 0.25f, 0.5f, 0.75f, 1.0f };
+
+	// 前面
+	for (int i = vertexCount - 20, j = 0; i < vertexCount - 10; i += 2, ++j)
+	{
+		p[i] = { -xlen, ylen * adjustnum_y[j], -zlen };
+		p[i + 1] = { xlen, ylen * adjustnum_y[j], -zlen };
+	}
+	for (int i = vertexCount - 10, j = 0; i < vertexCount; i += 2, ++j)
+	{
+		p[i] = { xlen * adjustnum[j],  0.0f, -zlen };
+		p[i + 1] = { xlen * adjustnum[j],  ylen, -zlen };
+	}
+	faceCount++;
+	vertexCount = OneFaceVertex * faceCount;
+
+	// 右面
+	for (int i = vertexCount - 20, j = 0; i < vertexCount - 10; i += 2, ++j)
+	{
+		p[i] = { xlen, ylen * adjustnum_y[j], -zlen };
+		p[i + 1] = { xlen, ylen * adjustnum_y[j],  zlen };
+	}
+	for (int i = vertexCount - 10, j = 0; i < vertexCount; i += 2, ++j)
+	{
+		p[i] = { xlen,  0.0f, zlen * adjustnum[j] };
+		p[i + 1] = { xlen,  ylen, zlen * adjustnum[j] };
+	}
+	faceCount++;
+	vertexCount = OneFaceVertex * faceCount;
+
+	// 後面
+	for (int i = vertexCount - 20, j = 0; i < vertexCount - 10; i += 2, ++j)
+	{
+		p[i] = { -xlen, ylen * adjustnum_y[j], zlen };
+		p[i + 1] = { xlen, ylen * adjustnum_y[j], zlen };
+	}
+	for (int i = vertexCount - 10, j = 0; i < vertexCount; i += 2, ++j)
+	{
+		p[i] = { xlen * adjustnum[j],  0.0f, zlen };
+		p[i + 1] = { xlen * adjustnum[j],  ylen, zlen };
+	}
+	faceCount++;
+	vertexCount = OneFaceVertex * faceCount;
+
+	// 左面
+	for (int i = vertexCount - 20, j = 0; i < vertexCount - 10; i += 2, ++j)
+	{
+		p[i] = { -xlen, ylen * adjustnum_y[j], -zlen };
+		p[i + 1] = { -xlen, ylen * adjustnum_y[j],  zlen };
+	}
+	for (int i = vertexCount - 10, j = 0; i < vertexCount; i += 2, ++j)
+	{
+		p[i] = { -xlen,  0.0f, zlen * adjustnum[j] };
+		p[i + 1] = { -xlen,  ylen, zlen * adjustnum[j] };
+	}
+	faceCount++;
+	vertexCount = OneFaceVertex * faceCount;
+
+	// 上面
+	for (int i = vertexCount - 20, j = 0; i < vertexCount - 10; i += 2, ++j)
+	{
+		p[i] = { -xlen, ylen, zlen * adjustnum[j] };
+		p[i + 1] = { xlen, ylen, zlen * adjustnum[j] };
+	}
+	for (int i = vertexCount - 10, j = 0; i < vertexCount; i += 2, ++j)
+	{
+		p[i] = { xlen * adjustnum[j], ylen, -zlen };
+		p[i + 1] = { xlen * adjustnum[j], ylen,  zlen };
+	}
+	faceCount++;
+	vertexCount = OneFaceVertex * faceCount;
+
+	// 下面
+	for (int i = vertexCount - 20, j = 0; i < vertexCount - 10; i += 2, ++j)
+	{
+		p[i] = { -xlen, 0.0f, zlen * adjustnum[j] };
+		p[i + 1] = { xlen, 0.0f, zlen * adjustnum[j] };
+	}
+	for (int i = vertexCount - 10, j = 0; i < vertexCount; i += 2, ++j)
+	{
+		p[i] = { xlen * adjustnum[j], 0.0f, -zlen };
+		p[i + 1] = { xlen * adjustnum[j], 0.0f,  zlen };
+	}
+	faceCount++;
+	vertexCount = OneFaceVertex * faceCount;
+
+	// 頂点バッファ
+	{
+		D3D11_BUFFER_DESC desc = {};
+		D3D11_SUBRESOURCE_DATA subresourceData = {};
+
+		desc.ByteWidth = static_cast<UINT>(sizeof(DirectX::XMFLOAT3) * boxVertexCount);
+		desc.Usage = D3D11_USAGE_IMMUTABLE;	// D3D11_USAGE_DEFAULT;
+		desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+		desc.CPUAccessFlags = 0;
+		desc.MiscFlags = 0;
+		desc.StructureByteStride = 0;
+		subresourceData.pSysMem = vertices.get();
+		subresourceData.SysMemPitch = 0;
+		subresourceData.SysMemSlicePitch = 0;
+
+		HRESULT hr = device->CreateBuffer(&desc, &subresourceData, boxVertexBuffer.GetAddressOf());
 		_ASSERT_EXPR(SUCCEEDED(hr), HRTrace(hr));
 	}
 }
