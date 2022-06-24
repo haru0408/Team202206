@@ -111,8 +111,8 @@ bool Collision::IntersectSphereVsCylinder(
     return true;
 }
 
-// 箱と箱の当たり判定
-bool Collision::IntersectBoxVsBox(
+// 箱と箱の当たり判定(壁用)
+bool Collision::IntersectBoxVsBox_Wall(
     const DirectX::XMFLOAT3& positionA,
     float widthA,
     float heightA,
@@ -192,6 +192,69 @@ bool Collision::IntersectBoxVsBox(
         outPositionA.y = positionA.y;
         return true;
     }
+
+    return true;
+}
+
+// 箱と箱の当たり判定(地面用)
+bool Collision::IntersectBoxVsBox_Ground(
+    const DirectX::XMFLOAT3& positionA,
+    float widthA,
+    float heightA,
+    float lengthA,
+    const DirectX::XMFLOAT3& positionB,
+    float widthB,
+    float heightB,
+    float lengthB,
+    DirectX::XMFLOAT3& outPositionA
+)
+{
+    const float Adjust = 0.001f;
+
+    DirectX::XMFLOAT3 LenA = { widthA / 2, heightA / 2, lengthA / 2 };
+    DirectX::XMFLOAT3 LenB = { widthB / 2, heightB / 2, lengthB / 2 };
+
+    float rightA = positionA.x + LenA.x;
+    float leftA = positionA.x - LenA.x;
+    float topA = positionA.y + heightA;
+    float bottomA = positionA.y;
+    float frontA = positionA.z + LenA.z;
+    float backA = positionA.z - LenA.z;
+
+    float rightB = positionB.x + LenB.x;
+    float leftB = positionB.x - LenB.x;
+    float topB = positionB.y + heightB;
+    float bottomB = positionB.y;
+    float frontB = positionB.z + LenB.z;
+    float backB = positionB.z - LenB.z;
+
+    outPositionA.y = positionA.y;
+    outPositionA.x = positionA.x;
+    outPositionA.z = positionA.z;
+
+    // 範囲チェック
+    // X平面
+    if (rightA < leftB) return false;
+    if (rightB < leftA) return false;
+    // Y平面
+    if (topB < bottomA) return false;
+    if (topA < bottomB) return false;
+    // Z平面
+    if (frontB < backA) return false;
+    if (frontA < backB) return false;
+
+    // AがBを押し出す(Y平面のみ)
+    // A→Bベクトルを計算
+    DirectX::XMVECTOR A = DirectX::XMLoadFloat3(&positionA);
+    DirectX::XMVECTOR B = DirectX::XMLoadFloat3(&positionB);
+    DirectX::XMVECTOR V = DirectX::XMVectorSubtract(A, B);
+    DirectX::XMVECTOR N = DirectX::XMVector3Normalize(V);
+    DirectX::XMFLOAT3 Normal;
+    DirectX::XMStoreFloat3(&Normal, N);
+
+    if (Normal.y > 0.0f) outPositionA.y = positionB.y + (heightB + Adjust);
+    else if (Normal.y < 0.0f) outPositionA.y = positionB.y - (heightB - Adjust);
+    else outPositionA.y = positionA.y;
 
     return true;
 }

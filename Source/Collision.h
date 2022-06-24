@@ -34,8 +34,8 @@ public:
         DirectX::XMFLOAT3& outCylinderPosition
     );
 
-    // ” ‚Æ” ‚Ì“–‚½‚è”»’è
-    static bool IntersectBoxVsBox(
+    // ” ‚Æ” ‚Ì“–‚½‚è”»’è(•Ç—p)
+    static bool IntersectBoxVsBox_Wall(
         const DirectX::XMFLOAT3& positionA,
         float widthA,
         float heightA,
@@ -46,4 +46,17 @@ public:
         float lengthB,
         DirectX::XMFLOAT3& outPositionA
     );
+
+    // ” ‚Æ” ‚Ì“–‚½‚è”»’è(’n–Ê—p)
+    static bool IntersectBoxVsBox_Ground(
+        const DirectX::XMFLOAT3& positionA,
+        float widthA,
+        float heightA,
+        float lengthA,
+        const DirectX::XMFLOAT3& positionB,
+        float widthB,
+        float heightB,
+        float lengthB,
+        DirectX::XMFLOAT3& outPositionA
+    ); // ¦true‚È‚çvelocity.y‚ğ0‚É‚µ‚Ä‚­‚¾‚³‚¢
 };
