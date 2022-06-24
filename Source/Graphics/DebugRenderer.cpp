@@ -419,7 +419,7 @@ void DebugRenderer::CreateBoxMesh(ID3D11Device* device, float width, float heigh
 	float ylen = height;
 	float zlen = length / 2;
 
-	float adjustnum[5] = { -1.0f, -0.5f, 0.0f,  0.5f, 1.0f };
+	float adjustnum[5]   = { -1.0f, -0.5f, 0.0f,  0.5f, 1.0f };
 	float adjustnum_y[5] = { 0.0f, 0.25f, 0.5f, 0.75f, 1.0f };
 
 	// ‘O–Ê

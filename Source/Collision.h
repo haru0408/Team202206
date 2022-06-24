@@ -33,4 +33,17 @@ public:
         float cylinderHeight,
         DirectX::XMFLOAT3& outCylinderPosition
     );
+
+    // ” ‚Æ” ‚Ì“–‚½‚è”»’è
+    static bool IntersectBoxVsBox(
+        const DirectX::XMFLOAT3& positionA,
+        float widthA,
+        float heightA,
+        float lengthA,
+        const DirectX::XMFLOAT3& positionB,
+        float widthB,
+        float heightB,
+        float lengthB,
+        DirectX::XMFLOAT3& outPositionA
+    );
 };

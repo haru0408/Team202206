@@ -110,3 +110,88 @@ bool Collision::IntersectSphereVsCylinder(
 
     return true;
 }
+
+// 箱と箱の当たり判定
+bool Collision::IntersectBoxVsBox(
+    const DirectX::XMFLOAT3& positionA,
+    float widthA,
+    float heightA,
+    float lengthA,
+    const DirectX::XMFLOAT3& positionB,
+    float widthB,
+    float heightB,
+    float lengthB,
+    DirectX::XMFLOAT3& outPositionA)
+{
+    const float Adjust = 0.001f;
+
+    DirectX::XMFLOAT3 LenA = { widthA / 2, heightA / 2, lengthA / 2 };
+    DirectX::XMFLOAT3 LenB = { widthB / 2, heightB / 2, lengthB / 2 };
+
+    float rightA = positionA.x + LenA.x;
+    float leftA = positionA.x - LenA.x;
+    float topA = positionA.y + heightA;
+    float bottomA = positionA.y;
+    float frontA = positionA.z + LenA.z;
+    float backA = positionA.z - LenA.z;
+
+    float rightB = positionB.x + LenB.x;
+    float leftB = positionB.x - LenB.x;
+    float topB = positionB.y + heightB;
+    float bottomB = positionB.y;
+    float frontB = positionB.z + LenB.z;
+    float backB = positionB.z - LenB.z;
+
+    bool XChack = false;
+    bool ZChack = false;
+
+    // A → Bベクトルを計算
+    DirectX::XMVECTOR A = DirectX::XMLoadFloat3(&positionA);
+    DirectX::XMVECTOR B = DirectX::XMLoadFloat3(&positionB);
+    DirectX::XMVECTOR V = DirectX::XMVectorSubtract(A, B);
+    DirectX::XMVECTOR N = DirectX::XMVector3Normalize(V);
+    DirectX::XMFLOAT3 Normal;
+    DirectX::XMStoreFloat3(&Normal, N);
+
+    // 範囲チェック
+    if (fabsf(Normal.x) > fabsf(Normal.z))
+    {
+        // X平面
+        if (rightA < leftB) return false;
+        if (rightB < leftA) return false;
+        else XChack = true;
+    }
+    else if (fabsf(Normal.z) > fabsf(Normal.x))
+    {
+        // Z平面
+        if (frontB < backA) return false;
+        if (frontA < backB) return false;
+        else ZChack = true;
+    }
+
+    // BがAを押し出す(XZ平面のみ)
+    // X平面
+    if (XChack)
+    {
+        if (Normal.x < 0) outPositionA.x = positionB.x - (LenA.x + LenB.x - Adjust);
+        else if (Normal.x > 0) outPositionA.x = positionB.x + (LenA.x + LenB.x + Adjust);
+        else                   outPositionA.x = positionA.x;
+
+        outPositionA.y = positionA.y;
+        outPositionA.z = positionA.z;
+        return true;
+    }
+    // Z平面
+    if (ZChack)
+    {
+        if (Normal.z > 0) outPositionA.z = positionB.z + (LenA.z + LenB.z + Adjust);
+        else if (Normal.z < 0) outPositionA.z = positionB.z - (LenA.z + LenB.z - Adjust);
+        else                   outPositionA.z = positionA.z;
+
+        outPositionA.x = positionA.x;
+        outPositionA.y = positionA.y;
+        return true;
+    }
+
+    return true;
+}
