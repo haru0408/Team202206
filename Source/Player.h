@@ -58,4 +58,6 @@ private:
     float  jumpSpeed = 20.0f;
 
     ProjectileManager projectileManager;
+
+    bool HitFlg = false;
 };
