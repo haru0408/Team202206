@@ -11,7 +11,7 @@ void Enemy::DrawDebugPrimitive()
     debugRenderer->DrawSphere(position, radius, DirectX::XMFLOAT4(0, 0, 0, 1));
 #endif // 0
     // 衝突判定用のデバッグ円柱を描画
-    debugRenderer->DrawCylinder(position, radius, height, DirectX::XMFLOAT4(0, 0, 0, 1));
+    debugRenderer->DrawBox(position, 1.0f, 1.0f, 1.0f, DirectX::XMFLOAT4(0, 0, 0, 1));
 }
 
 void Enemy::Destroy()

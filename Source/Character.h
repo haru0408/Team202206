@@ -92,6 +92,7 @@ protected:
         0, 0, 1, 0,
         0, 0, 0, 1
     };
+
     float radius = 0.5f;
 
     float  gravity = -1.0f;
@@ -100,6 +101,7 @@ protected:
     DirectX::XMFLOAT3 velocity = { 0,0,0 };
     bool isGround = false;
     float height = 2.0f;
+
 
     int health = 5;
     float invincibleTimer = 1.0f;
