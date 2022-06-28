@@ -5,8 +5,6 @@
 #include "Collision.h"
 #include "Input/Input.h"
 #include "Graphics//Graphics.h"
-#include "ProjectileStraight.h"
-#include "ProjectileHoming.h"
 
 // コンストラクタ
 Player::Player()
@@ -28,20 +26,11 @@ void Player::Update(float elapsedTime)
     // 移動入力処理
     InputMove(elapsedTime);
 
-    // ジャンプ入力処理
-    InputJump();
-
-    // 弾丸入力処理
-    InputProjectile();
-
     // 速力更新処理
     UpdateVelocity(elapsedTime);
 
     // 弾丸更新処理
     projectileManager.Update(elapsedTime);
-
-    // プレイヤーと敵との衝突処理
-    CollisionProjectilesVsEnemies();
 
     // オブジェクト行列を更新
     UpdateTransform();
@@ -61,81 +50,6 @@ void Player::InputMove(float elapsedTime)
 
     // 旋回処理
     Turn(elapsedTime, moveVec.x, moveVec.z, turnSpeed);
-}
-
-// 弾丸入力処理
-void Player::InputProjectile()
-{
-    GamePad& gamePad = Input::Instance().GetGamePad();
-
-    // 直進弾丸発射
-    if (gamePad.GetButtonDown() & GamePad::BTN_X)
-    {
-        // 前方向
-        DirectX::XMFLOAT3 dir;
-        dir.x = sinf(angle.y);
-        dir.y = .0f;
-        dir.z = cosf(angle.y);
-
-        // 発射位置(プレイヤーの腰あたり)
-        DirectX::XMFLOAT3 pos;
-        pos.x = position.x;
-        pos.y = position.y + height * 0.5f;
-        pos.z = position.z;
-
-        // 発射
-        ProjectileStraight* projectile = new ProjectileStraight(&projectileManager);
-        projectile->Launch(dir, pos);
-    }
-
-    // 追尾弾丸発射
-    if (gamePad.GetButtonDown() & GamePad::BTN_Y)
-    {
-        // 前方向
-        DirectX::XMFLOAT3 dir;
-        dir.x = sinf(angle.y);
-        dir.y = .0f;
-        dir.z = cosf(angle.y);
-
-        // 発射位置(プレイヤーの腰あたり)
-        DirectX::XMFLOAT3 pos;
-        pos.x = position.x;
-        pos.y = position.y + height * 0.5f;
-        pos.z = position.z;
-
-        // ターゲット(デフォルトではプレイヤーの前方)
-        DirectX::XMFLOAT3 target;
-        target.x = pos.x + dir.x * 1000.0f;
-        target.y = pos.y + dir.y * 1000.0f;
-        target.z = pos.z + dir.z * 1000.0f;
-
-        // 一番近くの敵をターゲットにする
-        float dist = FLT_MAX; // 敵との距離(初期値:Floatの最大値)
-        EnemyManager& enemyManager = EnemyManager::Instance();
-        // 全ての敵と総当たりで衝突処理
-        int enemyCount = enemyManager.GetEnemyCount();
-        for (int i = 0; i < enemyCount; ++i)
-        {
-            using namespace DirectX;
-            Enemy* enemy = enemyManager.GetEnemy(i);
-            XMVECTOR P = XMLoadFloat3(&position);
-            XMVECTOR E = XMLoadFloat3(&enemy->GetPosition());
-            XMVECTOR V = XMVectorSubtract(E,P);
-            XMVECTOR D = XMVector3LengthSq(V);
-            float d;
-            XMStoreFloat(&d, D);
-            if (d < dist)
-            {
-                dist = d;
-                target = enemy->GetPosition();
-                target.y += enemy->GetHeight() * 0.5f;
-            }
-        }
-
-        // 発射
-        ProjectileHoming* projectile = new ProjectileHoming(&projectileManager);
-        projectile->Launch(dir, pos, target);
-    }
 }
 
 // 描画処理
@@ -264,39 +178,6 @@ DirectX::XMFLOAT3 Player::GetMoveVec() const
     return vec;
 }
 
-// プレイヤーとエネミーとの衝突距離
-void Player::CollisionProjectilesVsEnemies()
-{
-    EnemyManager& enemyManager = EnemyManager::Instance();
-
-    // 全ての敵と総当たりで衝突処理
-    int enemyCount = enemyManager.GetEnemyCount();
-    for (int i = 0; i < enemyCount; ++i)
-    {
-        Enemy* enemy = enemyManager.GetEnemy(i);
-
-        // 衝突処理
-        DirectX::XMFLOAT3 outPosition;
-        if (Collision::IntersectBoxVsBox(
-            position,
-            1.0f,
-            1.0f,
-            1.0f,
-            enemy->GetPosition(),
-            1.0f,
-            1.0f,
-            1.0f,
-            outPosition))
-        {
-            // 押し出し後の位置設定
-            SetPosition(outPosition);
-
-            HitFlg = true;
-        }
-        else HitFlg = false;
-    }
-}
-
 //void Player::CollisionProjectilesVsEnemies()
 //{
 //    EnemyManager& enemyManager = EnemyManager::Instance();
@@ -353,20 +234,6 @@ void Player::CollisionProjectilesVsEnemies()
 //        }
 //    }
 //}
-
-void Player::InputJump()
-{
-    // ボタン入力でジャンプ(ジャンプ回数制限つき)
-    GamePad& gamePad = Input::Instance().GetGamePad();
-    if (gamePad.GetButtonDown() & GamePad::BTN_A)
-    {
-        if (jumpCount < jumpLimit)
-        {
-            Jump(jumpSpeed);
-            jumpCount++;
-        }
-    }
-}
 
 void Player::OnLanding()
 {

@@ -40,12 +40,6 @@
     <Filter Include="Source\Manager">
       <UniqueIdentifier>{1c2f6a97-c722-4eef-a11d-8a4ba80d8a2e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Items">
-      <UniqueIdentifier>{6cfa6132-c970-4712-8429-3ff0c925c5aa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Items\Projectile">
-      <UniqueIdentifier>{b7e47129-fb6b-4d9f-9503-4e704e2c88da}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Character\Components">
       <UniqueIdentifier>{ab279b83-f496-4dac-80cb-79d69da7aa67}</UniqueIdentifier>
     </Filter>
@@ -153,23 +147,11 @@
     <ClInclude Include="Source\EnemyManager.h">
       <Filter>Source\Manager</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ProjectileManager.h">
-      <Filter>Source\Manager</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Enemy.h">
       <Filter>Source\Character\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="Source\Player.h">
       <Filter>Source\Character</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Projectile.h">
-      <Filter>Source\Items\Projectile</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ProjectileHoming.h">
-      <Filter>Source\Items\Projectile</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ProjectileStraight.h">
-      <Filter>Source\Items\Projectile</Filter>
     </ClInclude>
     <ClInclude Include="Source\Collision.h">
       <Filter>Source\Character\Components</Filter>
@@ -269,23 +251,11 @@
     <ClCompile Include="Source\EnemyManager.cpp">
       <Filter>Source\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ProjectileManager.cpp">
-      <Filter>Source\Manager</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Enemy.cpp">
       <Filter>Source\Character\Enemies</Filter>
     </ClCompile>
     <ClCompile Include="Source\Player.cpp">
       <Filter>Source\Character</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Projectile.cpp">
-      <Filter>Source\Items\Projectile</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ProjectileHoming.cpp">
-      <Filter>Source\Items\Projectile</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\ProjectileStraight.cpp">
-      <Filter>Source\Items\Projectile</Filter>
     </ClCompile>
     <ClCompile Include="Source\Collision.cpp">
       <Filter>Source\Character\Components</Filter>

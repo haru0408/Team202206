@@ -3,7 +3,6 @@
 #include "Graphics/Shader.h"
 #include "Graphics/Model.h"
 #include "Character.h"
-#include "ProjectileManager.h"
 
 // プレイヤー
 class Player : public Character
@@ -23,15 +22,6 @@ public:
 
     // デバッグ用GUI描画
     void DrawDebugPrimitive();
-
-    // ジャンプ入力処理
-    void InputJump();
-
-    // 弾丸入力処理
-    void InputProjectile();
-
-    // 弾丸と敵の衝突処理
-    void CollisionProjectilesVsEnemies();
 
 private:
 
