@@ -168,6 +168,9 @@
     <ClInclude Include="Source\Haruta\floor.h">
       <Filter>Source\Stages</Filter>
     </ClInclude>
+    <ClInclude Include="Source\SceneTitle.h">
+      <Filter>Source\Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -271,6 +274,9 @@
     </ClCompile>
     <ClCompile Include="Source\Haruta\floor.cpp">
       <Filter>Source\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneTitle.cpp">
+      <Filter>Source\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

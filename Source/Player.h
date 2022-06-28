@@ -47,7 +47,5 @@ private:
     float  turnSpeed = DirectX::XMConvertToRadians(720);
     float  jumpSpeed = 20.0f;
 
-    ProjectileManager projectileManager;
-
     bool HitFlg = false;
 };

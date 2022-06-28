@@ -30,6 +30,9 @@ public:
     // ÉXÉPÅ[Éãê›íË
     void SetScale(const DirectX::XMFLOAT3& scale) { this->scale = scale; }
    
+    const DirectX::XMFLOAT3& GetVelocity() const { return velocity; }
+    void SetVelocity(const DirectX::XMFLOAT3& v) { velocity = v; }
+
     // è’åÇÇó^Ç¶ÇÈ
     void AddImpulse(const DirectX::XMFLOAT3& impulse);
 

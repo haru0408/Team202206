@@ -29,8 +29,8 @@ void Player::Update(float elapsedTime)
     // 速力更新処理
     UpdateVelocity(elapsedTime);
 
-    // 弾丸更新処理
-    projectileManager.Update(elapsedTime);
+    // プレイヤーとエネミーとの衝突距離
+    CollisionPlayerVsEnemies();
 
     // オブジェクト行列を更新
     UpdateTransform();
@@ -56,9 +56,6 @@ void Player::InputMove(float elapsedTime)
 void Player::Render(ID3D11DeviceContext* dc, Shader* shader)
 {
     shader->Draw(dc, model);
-
-    // 弾丸描画処理
-    projectileManager.Render(dc, shader);
 }
 
 // デバッグ用GUI描画
@@ -76,6 +73,8 @@ void Player::DrawDebugGUI()
         {
             // 位置
             ImGui::InputFloat3("Position", &position.x);
+            // 移動速度
+            ImGui::InputFloat3("Velocity", &velocity.x);
             // 回転
             DirectX::XMFLOAT3 a;
             a.x = DirectX::XMConvertToDegrees(angle.x);
@@ -123,8 +122,6 @@ void Player::DrawDebugPrimitive()
     // 衝突判定用のデバッグ円柱を描画
     if (HitFlg) debugRenderer->DrawBox(position, 1.0f, 1.0f, 1.0f, DirectX::XMFLOAT4(1, 0, 0, 1));
     else if (!HitFlg) debugRenderer->DrawBox(position, 1.0f, 1.0f, 1.0f, DirectX::XMFLOAT4(0, 0, 1, 1));
-    // 弾丸デバッグプリミティブ描画
-    projectileManager.DrawDebugPrimitive();
 }
 
 DirectX::XMFLOAT3 Player::GetMoveVec() const
@@ -178,62 +175,38 @@ DirectX::XMFLOAT3 Player::GetMoveVec() const
     return vec;
 }
 
-//void Player::CollisionProjectilesVsEnemies()
-//{
-//    EnemyManager& enemyManager = EnemyManager::Instance();
-//
-//    // 全ての弾丸とすべての敵を総当たりで衝突処理
-//    int projectileCount = projectileManager.GetProjectileCount();
-//    int enemyCount = enemyManager.GetEnemyCount();
-//    for(int i = 0; i < projectileCount; ++i)
-//    {
-//        Projectile* projectile = projectileManager.GetProjectile(i);
-//
-//        for (int j = 0; j < enemyCount; ++j)
-//        {
-//            Enemy* enemy = enemyManager.GetEnemy(j);
-//
-//            // 衝突処理
-//            DirectX::XMFLOAT3 outPosition;
-//            if (Collision::IntersectSphereVsCylinder(
-//                projectile->GetPosition(),
-//                projectile->GetRadius(),
-//                enemy->GetPosition(),
-//                enemy->GetRadius(),
-//                enemy->GetHeight(),
-//                outPosition))
-//            {
-//                // ダメージを与える
-//                if (enemy->ApplyDamage(1, 0.5f))
-//                {
-//                    // 吹き飛ばす
-//                    {
-//                        DirectX::XMFLOAT3 impulse;
-//                        const float power = 10.0f;
-//
-//                        const DirectX::XMFLOAT3& e = enemy->GetPosition();
-//                        const DirectX::XMFLOAT3& p = projectile->GetPosition();
-//                        
-//                        float vx = e.x - p.x;
-//                        float vz = e.z - p.z;
-//                        float len = sqrtf(vx * vx + vz * vz);
-//                        vx /= len;
-//                        vz /= len;
-//
-//                        impulse.x = vx * power;
-//                        impulse.z = vz * power;
-//                        impulse.y = power * 0.5f;
-//
-//                        enemy->AddImpulse(impulse);
-//                    }
-//
-//                    // 弾丸破棄
-//                    projectile->Destroy();
-//                }
-//            }
-//        }
-//    }
-//}
+// プレイヤーとエネミーとの衝突距離
+void Player::CollisionPlayerVsEnemies()
+{
+    EnemyManager& enemyManager = EnemyManager::Instance();
+
+    // 全ての敵と総当たりで衝突処理
+    int enemyCount = enemyManager.GetEnemyCount();
+    for (int i = 0; i < enemyCount; ++i)
+    {
+        Enemy* enemy = enemyManager.GetEnemy(i);
+
+        // 衝突処理
+        DirectX::XMFLOAT3 outPosition;
+        if (Collision::IntersectBoxVsBox_Wall(
+            position,
+            1.0f,
+            1.0f,
+            1.0f,
+            enemy->GetPosition(),
+            1.0f,
+            1.0f,
+            1.0f,
+            outPosition))
+        {
+            // 押し出し後の位置設定
+            SetPosition(outPosition);
+
+            HitFlg = true;
+        }
+        else HitFlg = false;
+    }
+}
 
 void Player::OnLanding()
 {

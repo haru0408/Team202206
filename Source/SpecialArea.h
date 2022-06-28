@@ -14,22 +14,22 @@
 //#include <map>
 #include <vector>
 #include "Graphics/Graphics.h"
-#include "Character.h"
 
-
+class Character;
 class AreaWindow
 {
 public:
     // constructer etc.
-    AreaWindow(const DirectX::XMFLOAT3& position,const DirectX::XMFLOAT3& radius, float pushPower = 3.0f)
+    AreaWindow(const DirectX::XMFLOAT3& position,const DirectX::XMFLOAT3& radius, float pushPower = 0.75f)
         :pushValue_(pushPower),radius_(radius),position_(position)
     { }
+    AreaWindow(AreaWindow&) = delete;
     
     //main method
     void Update(float elapsedTime) {}
     void Render(ID3D11RenderTargetView* dc, Shader* shader) {}
     //debug
-    void DrawDebugPrimitive() {}
+    void DrawDebugPrimitive();
 
     //getter
     const DirectX::XMFLOAT3& GetPosition()const { return position_; }
@@ -64,7 +64,8 @@ public:
     void Render(ID3D11RenderTargetView* dc, Shader* shader);
     void Clear();
     //
-    void CollisionAreaVsCharacter(Character* obj); //
+    void CollisionAreaVsCharacter(Character* obj,float elapsedFrame); //
+    void CollisionAreaVsCharacter(std::vector<Character*>* list,float elapsedFrame); //
 
     /* register, delete */
     void Register(AreaWindow* area);
