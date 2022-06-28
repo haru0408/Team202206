@@ -28,6 +28,33 @@
     <Filter Include="Source\Audio">
       <UniqueIdentifier>{dfdec87c-66e2-424a-8126-477d89e5eb73}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Camera">
+      <UniqueIdentifier>{40df9d2b-e868-4e41-b66b-c1002201e624}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Character">
+      <UniqueIdentifier>{a3f21ffa-83bf-494e-9b2c-a919d25e52a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Character\Enemies">
+      <UniqueIdentifier>{1eaae97e-082f-45bc-80fd-a86240257254}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Manager">
+      <UniqueIdentifier>{1c2f6a97-c722-4eef-a11d-8a4ba80d8a2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Items">
+      <UniqueIdentifier>{6cfa6132-c970-4712-8429-3ff0c925c5aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Items\Projectile">
+      <UniqueIdentifier>{b7e47129-fb6b-4d9f-9503-4e704e2c88da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Character\Components">
+      <UniqueIdentifier>{ab279b83-f496-4dac-80cb-79d69da7aa67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Scenes">
+      <UniqueIdentifier>{7abd4260-7edf-4b2d-ba83-fa324ece0171}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Stages">
+      <UniqueIdentifier>{e024e86a-5ad8-4f1e-a74b-88d82e7626be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\imgui\imconfig.h">
@@ -96,9 +123,6 @@
     <ClInclude Include="Source\Graphics\LineRenderer.h">
       <Filter>Source\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="Source\SceneGame.h">
-      <Filter>Source</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Graphics\Sprite.h">
       <Filter>Source\Graphics</Filter>
     </ClInclude>
@@ -114,44 +138,50 @@
     <ClInclude Include="Source\Input\Mouse.h">
       <Filter>Source\Input</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Stage.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Character.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Player.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Enemy.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\EnemyManager.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\EnemySlime.h">
-      <Filter>Source</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Camera.h">
-      <Filter>Source</Filter>
+      <Filter>Source\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Source\CameraController.h">
-      <Filter>Source</Filter>
+      <Filter>Source\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Collision.h">
-      <Filter>Source</Filter>
+    <ClInclude Include="Source\Character.h">
+      <Filter>Source\Character</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Projectile.h">
-      <Filter>Source</Filter>
+    <ClInclude Include="Source\EnemySlime.h">
+      <Filter>Source\Character\Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ProjectileStraight.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ProjectileHoming.h">
-      <Filter>Source</Filter>
+    <ClInclude Include="Source\EnemyManager.h">
+      <Filter>Source\Manager</Filter>
     </ClInclude>
     <ClInclude Include="Source\ProjectileManager.h">
-      <Filter>Source</Filter>
+      <Filter>Source\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Enemy.h">
+      <Filter>Source\Character\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Player.h">
+      <Filter>Source\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Projectile.h">
+      <Filter>Source\Items\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ProjectileHoming.h">
+      <Filter>Source\Items\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ProjectileStraight.h">
+      <Filter>Source\Items\Projectile</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision.h">
+      <Filter>Source\Character\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneGame.h">
+      <Filter>Source\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Stage.h">
+      <Filter>Source\Stages</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SpecialArea.h">
+      <Filter>Source\Stages</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -206,9 +236,6 @@
     <ClCompile Include="Source\Graphics\LineRenderer.cpp">
       <Filter>Source\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="Source\SceneGame.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Graphics\Sprite.cpp">
       <Filter>Source\Graphics</Filter>
     </ClCompile>
@@ -224,44 +251,50 @@
     <ClCompile Include="Source\Input\Mouse.cpp">
       <Filter>Source\Input</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Stage.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Character.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Player.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Camera.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Source\CameraController.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Source\EnemyManager.cpp">
-      <Filter>Source</Filter>
+    <ClCompile Include="Source\Character.cpp">
+      <Filter>Source\Character</Filter>
     </ClCompile>
     <ClCompile Include="Source\EnemySlime.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source\Character\Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Enemy.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Collision.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Projectile.cpp">
-      <Filter>Source</Filter>
+    <ClCompile Include="Source\EnemyManager.cpp">
+      <Filter>Source\Manager</Filter>
     </ClCompile>
     <ClCompile Include="Source\ProjectileManager.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source\Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ProjectileStraight.cpp">
-      <Filter>Source</Filter>
+    <ClCompile Include="Source\Enemy.cpp">
+      <Filter>Source\Character\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Player.cpp">
+      <Filter>Source\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Projectile.cpp">
+      <Filter>Source\Items\Projectile</Filter>
     </ClCompile>
     <ClCompile Include="Source\ProjectileHoming.cpp">
-      <Filter>Source</Filter>
+      <Filter>Source\Items\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ProjectileStraight.cpp">
+      <Filter>Source\Items\Projectile</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision.cpp">
+      <Filter>Source\Character\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneGame.cpp">
+      <Filter>Source\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Stage.cpp">
+      <Filter>Source\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SpecialArea.cpp">
+      <Filter>Source\Stages</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

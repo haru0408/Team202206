@@ -148,6 +148,7 @@
     <ClInclude Include="Source\ProjectileStraight.h" />
     <ClInclude Include="Source\SceneGame.h" />
     <ClInclude Include="Source\Stage.h" />
+    <ClInclude Include="Source\SpecialArea.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\DirectXTex\WICTextureLoader.cpp" />
@@ -186,6 +187,7 @@
     <ClCompile Include="Source\ProjectileStraight.cpp" />
     <ClCompile Include="Source\SceneGame.cpp" />
     <ClCompile Include="Source\Stage.cpp" />
+    <ClCompile Include="Source\SpecialArea.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="HLSL\Debug.hlsli" />
