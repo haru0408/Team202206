@@ -2,6 +2,24 @@
 
 #include "Collision.h"
 
+//debug
+
+inline void AreaWindow::DrawDebugPrimitive()
+{
+    const auto& rad = GetRadius();
+    Graphics::Instance().GetDebugRenderer()->DrawBox(
+        GetPosition()
+        , rad.x
+        , rad.y
+        , rad.z
+        , DirectX::XMFLOAT4(0.25f, 0.5f, 0.0f, 1.0f)
+    );
+}
+
+//-----------------------------------------------------//
+//-----------------------------------------------------//
+//-----------------------------------------------------//
+
 /* main method */
 
 inline void AreaManager::Update(float elapsedTime)
@@ -104,3 +122,4 @@ inline void AreaManager::DrawDebugPrimitive()
         it->DrawDebugPrimitive();
     }
 }
+

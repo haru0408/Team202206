@@ -29,7 +29,7 @@ public:
     void Update(float elapsedTime) {}
     void Render(ID3D11RenderTargetView* dc, Shader* shader) {}
     //debug
-    void DrawDebugPrimitive() {}
+    void DrawDebugPrimitive();
 
     //getter
     const DirectX::XMFLOAT3& GetPosition()const { return position_; }
