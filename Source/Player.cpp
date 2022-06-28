@@ -162,6 +162,8 @@ void Player::DrawDebugGUI()
         {
             // à íu
             ImGui::InputFloat3("Position", &position.x);
+            // à⁄ìÆë¨ìx
+            ImGui::InputFloat3("Velocity", &velocity.x);
             // âÒì]
             DirectX::XMFLOAT3 a;
             a.x = DirectX::XMConvertToDegrees(angle.x);
@@ -277,7 +279,7 @@ void Player::CollisionProjectilesVsEnemies()
 
         // è’ìÀèàóù
         DirectX::XMFLOAT3 outPosition;
-        if (Collision::IntersectBoxVsBox(
+        if (Collision::IntersectBoxVsBox_Wall(
             position,
             1.0f,
             1.0f,

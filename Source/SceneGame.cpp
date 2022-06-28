@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "EnemyManager.h"
 #include "EnemySlime.h"
+#include "SpecialArea.h"
 
 // 初期化
 void SceneGame::Initialize()
@@ -41,6 +42,8 @@ void SceneGame::Initialize()
 		slime->SetPosition(DirectX::XMFLOAT3(i * 2.0f, 0, 5));
 		enemyManager.Register(slime);
 	}
+
+	AreaManager::Instance().Register(new AreaWindow(DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(5, 2, 5)));
 }
 
 // 終了化
@@ -63,6 +66,8 @@ void SceneGame::Finalize()
 	// エネミー終了化
 	EnemyManager::Instance().Clear();
 
+	AreaManager::Instance().Clear();
+
 	// カメラコントローラー終了化
 	if (cameraController != nullptr)
 	{
@@ -80,6 +85,7 @@ void SceneGame::Update(float elapsedTime)
 	player->Update(elapsedTime);
 	// エネミー更新処理
 	EnemyManager::Instance().Update(elapsedTime);
+
 
 	// カメラコントローラー更新処理
 	DirectX::XMFLOAT3 target = player->GetPosition();
@@ -157,6 +163,8 @@ void SceneGame::Render()
 
 		// エネミーデバッグプリミティブ描画
 		EnemyManager::Instance().DrawDebugPrimitive();
+
+		AreaManager::Instance().DrawDebugPrimitive();
 
 		// ラインレンダラ描画実行
 		graphics.GetLineRenderer()->Render(dc, rc.view, rc.projection);

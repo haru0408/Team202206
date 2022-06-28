@@ -1,10 +1,11 @@
 #include "SpecialArea.h"
 
 #include "Collision.h"
+#include "Character.h"
 
 //debug
 
-inline void AreaWindow::DrawDebugPrimitive()
+void AreaWindow::DrawDebugPrimitive()
 {
     const auto& rad = GetRadius();
     Graphics::Instance().GetDebugRenderer()->DrawBox(
@@ -22,7 +23,7 @@ inline void AreaWindow::DrawDebugPrimitive()
 
 /* main method */
 
-inline void AreaManager::Update(float elapsedTime)
+void AreaManager::Update(float elapsedTime)
 {
     /* window */
     {
@@ -46,7 +47,7 @@ inline void AreaManager::Update(float elapsedTime)
     }
 }
 
-inline void AreaManager::Render(ID3D11RenderTargetView* dc, Shader* shader)
+void AreaManager::Render(ID3D11RenderTargetView* dc, Shader* shader)
 {
     for (auto it : windows_)
     {
@@ -54,7 +55,7 @@ inline void AreaManager::Render(ID3D11RenderTargetView* dc, Shader* shader)
     }
 }
 
-inline void AreaManager::Clear()
+void AreaManager::Clear()
 {
     for (auto it : windows_)
     {
@@ -68,7 +69,7 @@ inline void AreaManager::Clear()
 
 //
 
-inline void AreaManager::CollisionAreaVsCharacter(Character* obj)
+void AreaManager::CollisionAreaVsCharacter(Character* obj,float elapsedFrame)
 {
     /* window */
     {
@@ -87,17 +88,25 @@ inline void AreaManager::CollisionAreaVsCharacter(Character* obj)
                 , DirectX::XMFLOAT3() //‚È‚¢‚ÆƒGƒ‰[“f‚­‚Ì‚Å
             ))
             {
-                //auto v = obj->GetVelocity();
-                //v.z -= it->GetPower();
-                //obj->SetVelocity(v);
+                auto v = obj->GetVelocity();
+                v.z -= it->GetPower() * elapsedFrame;
+                obj->SetVelocity(v);
             }
         }
     }
 }
 
+void AreaManager::CollisionAreaVsCharacter(std::vector<Character*>* list, float elapsedFrame)
+{
+    for (auto& obj : *list)
+    {
+        CollisionAreaVsCharacter(obj, elapsedFrame);
+    }
+}
+
 /* register, delete */
 
-inline void AreaManager::Register(AreaWindow* area)
+void AreaManager::Register(AreaWindow* area)
 {
     if (area != nullptr)
     {
@@ -105,7 +114,7 @@ inline void AreaManager::Register(AreaWindow* area)
     }
 }
 
-inline void AreaManager::Remove(AreaWindow* area)
+void AreaManager::Remove(AreaWindow* area)
 {
     if (area != nullptr)
     {
@@ -115,7 +124,7 @@ inline void AreaManager::Remove(AreaWindow* area)
 
 /* debug */
 
-inline void AreaManager::DrawDebugPrimitive()
+void AreaManager::DrawDebugPrimitive()
 {
     for (auto it : windows_)
     {

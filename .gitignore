@@ -348,3 +348,19 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+Source/Player.cpp
+Source/Player.h
+Source/SceneTitle.h
+Source/SceneTitle.cpp
+Source/SceneGame.cpp
+Source/Player.h
+Source/Player.cpp
+Source/Character.h
+Source/Character.cpp
+Source/SceneGame.cpp
+Source/Player.h
+Source/Player.cpp
+Source/Character.h
+Source/Character.cpp
+Game.vcxproj
+Game.vcxproj.filters

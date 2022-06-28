@@ -42,7 +42,7 @@ private:
     void InputMove(float elapsedTime);
 
     // プレイヤーとエネミーとの衝突処理
-    void CollisionPlayerVsEnemies();
+    //void CollisionPlayerVsEnemies();
 
 protected:
     // 着地したときに呼ばれる

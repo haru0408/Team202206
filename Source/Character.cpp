@@ -1,4 +1,5 @@
 #include "Character.h"
+#include "SpecialArea.h"
 
 // 行列更新処理
 void Character::UpdateTransform()
@@ -124,6 +125,8 @@ void Character::UpdateVelocity(float elapsedTime)
 {
     // 経過フレーム
     float elapsedFrame = 60.0f * elapsedTime;
+
+    AreaManager::Instance().CollisionAreaVsCharacter(this, elapsedFrame);
 
     // 垂直速力更新処理
     UpdateVerticalVelocity(elapsedFrame);
