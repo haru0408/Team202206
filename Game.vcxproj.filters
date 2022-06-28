@@ -183,6 +183,9 @@
     <ClInclude Include="Source\SpecialArea.h">
       <Filter>Source\Stages</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Haruta\floor.h">
+      <Filter>Source\Stages</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -294,6 +297,9 @@
       <Filter>Source\Stages</Filter>
     </ClCompile>
     <ClCompile Include="Source\SpecialArea.cpp">
+      <Filter>Source\Stages</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Haruta\floor.cpp">
       <Filter>Source\Stages</Filter>
     </ClCompile>
   </ItemGroup>
