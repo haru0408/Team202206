@@ -2,14 +2,22 @@
 #include "SpecialArea.h"
 
 // 行列更新処理
-void Character::UpdateTransform()
+void Character::UpdateTransform(const DirectX::XMFLOAT3& AdjustScale,
+                                const DirectX::XMFLOAT3& AdjustAngle,
+                                const DirectX::XMFLOAT3& AdjustPosition)
 {
     // スケール行列を作成
-    DirectX::XMMATRIX S = DirectX::XMMatrixScaling(scale.x, scale.y, scale.z);
+    DirectX::XMMATRIX S = DirectX::XMMatrixScaling(scale.x + AdjustScale.x,
+                                                   scale.y + AdjustScale.y,
+                                                   scale.z + AdjustScale.z);
     // 回転行列を作成
-    DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(angle.x, angle.y, angle.z);
+    DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(angle.x + AdjustAngle.x,
+                                                                angle.y + AdjustAngle.y,
+                                                                angle.z + AdjustAngle.z);
     // 位置行列を作成
-    DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(position.x, position.y, position.z);
+    DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(position.x + AdjustPosition.x,
+                                                       position.y + AdjustPosition.y,
+                                                       position.z + AdjustPosition.z);
     // ３つの行列を組み合わせ、ワールド行列を作成
     DirectX::XMMATRIX W = S * R * T;
     //計算したワールド行列を取り出す
@@ -173,7 +181,8 @@ void Character::UpdateVelocity(float elapsedTime)
 void Character::UpdateVerticalVelocity(float elapsedFrame)
 {
     // 重力処理
-    velocity.y += gravity * elapsedFrame;
+    if (FallStartFlg) velocity.y -= fallSpeed;
+    else              velocity.y += gravity * elapsedFrame;
 }
 
 // 垂直移動更新処理
@@ -182,22 +191,22 @@ void Character::UpdateVerticalMove(float elapsedTime)
     // 移動処理
     position.y += velocity.y * elapsedTime;
 
+    // 移動処理
+    position.y += velocity.y * elapsedTime;
+
     // 地面判定
-    if (position.y < 0.0f)
+    if (position.y < 0.0f && !FallFlg)
     {
         position.y = 0.0f;
         velocity.y = 0.0f;
 
         // 着地した
-        if (!isGround)
-        {
-            OnLanding();
-        }
+        if (!isGround) OnLanding();
         isGround = true;
     }
     else
     {
-        // 地面に接地していない
+        // 地面に接していない
         isGround = false;
     }
 }

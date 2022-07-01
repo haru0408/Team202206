@@ -26,7 +26,9 @@ void EnemySlime::Update(float elapsedTime)
     UpdateInvincibleTimer(elapsedTime);
 
     // オブジェクト行列を更新
-    UpdateTransform();
+    UpdateTransform(DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
+                    DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f), 
+                    DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f));
 
     // モデル行列更新
     model->UpdateTransform(transform);

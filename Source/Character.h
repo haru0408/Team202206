@@ -10,7 +10,9 @@ public:
     virtual ~Character() {}
 
     // 行列更新処理
-    void UpdateTransform();
+    void UpdateTransform(const DirectX::XMFLOAT3& AdjustScale,
+                         const DirectX::XMFLOAT3& AdjustAngle,
+                         const DirectX::XMFLOAT3& AdjustPosition);
 
     // 位置取得
     const DirectX::XMFLOAT3& GetPosition() const { return position; }
@@ -101,7 +103,7 @@ protected:
     float  gravity = -1.0f;
     float  friction = 0.5f;
 
-    DirectX::XMFLOAT3 velocity = { 0,0,0 };
+    DirectX::XMFLOAT3 velocity = { 0, 0, 0 };
     bool isGround = false;
     float height = 2.0f;
 
@@ -115,4 +117,9 @@ protected:
     float moveVecZ = 0.0f;
 
     float airControl = 0.3f;
+
+    // 穴用変数
+    float fallSpeed    = 0.025f;
+    bool  FallStartFlg = false;
+    bool  FallFlg      = false;
 };

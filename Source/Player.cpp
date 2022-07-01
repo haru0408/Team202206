@@ -3,6 +3,8 @@
 #include "Camera.h"
 #include "EnemyManager.h"
 #include "Collision.h"
+#include "HoleManager.h"
+
 #include "Input/Input.h"
 #include "Graphics//Graphics.h"
 
@@ -13,6 +15,12 @@ Player::Player()
 
     // モデルが大きいのでスケーリング
     scale.x = scale.y = scale.z = 0.01f;
+
+    radius = 0.5f;
+    height = 1.0f;
+
+    // ステージの端
+    position.x = position.z = -22.0f;
 }
 
 Player::~Player()
@@ -26,14 +34,22 @@ void Player::Update(float elapsedTime)
     // 移動入力処理
     InputMove(elapsedTime);
 
+    // 大きさ変更入力処理
+    InputScaleChange();
+
     // 速力更新処理
     UpdateVelocity(elapsedTime);
 
     // プレイヤーとエネミーとの衝突距離
     CollisionPlayerVsEnemies();
 
+    // プレイヤーと穴との衝突距離
+    CollisionPlayerVsHoles();
+
     // オブジェクト行列を更新
-    UpdateTransform();
+    UpdateTransform(DirectX::XMFLOAT3(ScaleNum, ScaleNum, ScaleNum),
+                    DirectX::XMFLOAT3(0, 0, 0),
+                    DirectX::XMFLOAT3(0, PositionNum, 0));
 
     //モデル行列更新
     model->UpdateTransform(transform);
@@ -122,6 +138,8 @@ void Player::DrawDebugPrimitive()
     // 衝突判定用のデバッグ円柱を描画
     if (HitFlg) debugRenderer->DrawBox(position, 1.0f, 1.0f, 1.0f, DirectX::XMFLOAT4(1, 0, 0, 1));
     else if (!HitFlg) debugRenderer->DrawBox(position, 1.0f, 1.0f, 1.0f, DirectX::XMFLOAT4(0, 0, 1, 1));
+    // 穴判定用の円柱
+    debugRenderer->DrawCylinder(position, radius, height, DirectX::XMFLOAT4(0, 1, 0, 1));
 }
 
 DirectX::XMFLOAT3 Player::GetMoveVec() const
@@ -205,6 +223,124 @@ void Player::CollisionPlayerVsEnemies()
             HitFlg = true;
         }
         else HitFlg = false;
+    }
+}
+
+// 大きさ変更入力処理
+void Player::InputScaleChange()
+{
+    GamePad& gamePad = Input::Instance().GetGamePad();
+
+    if (gamePad.GetButtonDown() & GamePad::BTN_A) ScaleFlg = !ScaleFlg;
+
+    // 小さいサイズ
+    if (!ScaleFlg)
+    {
+        radius = 0.5f;
+        height = 1.0f;
+
+        ScaleNum = 0.0f;
+        PositionNum = height * 0.5f;
+    }
+    // 大きいサイズ
+    else if (ScaleFlg)
+    {
+        radius = 1.0f;
+        height = 1.5f;
+
+        ScaleNum = 0.005f * 1.0f;
+        PositionNum = height * 0.5f;
+    }
+}
+
+// プレイヤーと穴との衝突距離
+void Player::CollisionPlayerVsHoles()
+{
+    HoleManager& holeManager = HoleManager::Instance();
+
+    // 全ての穴と総当たりで衝突処理
+    int holeCount = holeManager.GetHoleCount();
+    for (int i = 0; i < holeCount; ++i)
+    {
+        Hole* hole = holeManager.GetHole(i);
+
+        // 衝突処理
+        DirectX::XMFLOAT3 outPosition;
+        if (Collision::IntersectCylinderVsCylinder
+        (position,
+            radius,
+            height,
+            hole->GetPosition(),
+            hole->GetRadius(),
+            hole->GetHeight(),
+            outPosition))
+        {
+            // プレイヤーの半径と穴の半径を比べる
+            if (radius <= hole->GetRadius())
+            {
+                float xSpeed = 0.0f;
+                float zSpeed = 0.0f;
+
+                // 中心に向かって落ちていく
+                // X座標
+                if (position.x < hole->GetPosition().x)
+                {
+                    xSpeed = fallSpeed;
+                }
+                else if (position.x > hole->GetPosition().x)
+                {
+                    xSpeed = -fallSpeed;
+                }
+                else if (position.x == hole->GetPosition().x)
+                {
+                    xSpeed = 0.0f;
+                }
+                // Z座標
+                if (position.z < hole->GetPosition().z)
+                {
+                    zSpeed = fallSpeed;
+                }
+                else if (position.z > hole->GetPosition().z)
+                {
+                    zSpeed = -fallSpeed;
+                }
+                else if (position.z == hole->GetPosition().z)
+                {
+                    zSpeed = 0.0f;
+                }
+
+                position.x += xSpeed;
+                position.z += zSpeed;
+
+                FallStartFlg = true;
+
+                if (Collision::IntersectCylinderVsCylinder(
+                    position,
+                    radius,
+                    height,
+                    hole->GetPosition(),
+                    hole->GetRadius() * 0.75f,
+                    hole->GetHeight(),
+                    outPosition))
+                {
+                    FallStartFlg = false;
+                    FallFlg = true;
+                }
+                if (!ScaleFlg && hole->GetRadius() >= 4.0f)
+                {
+                    FallStartFlg = false;
+                    FallFlg = true;
+                }
+            }
+            else
+            {
+                FallStartFlg = false;
+            }
+        }
+        else
+        {
+            FallStartFlg = false;
+        }
     }
 }
 

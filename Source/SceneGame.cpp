@@ -4,6 +4,7 @@
 #include "EnemyManager.h"
 #include "EnemySlime.h"
 #include "SpecialArea.h"
+#include "HoleManager.h"
 
 // 初期化
 void SceneGame::Initialize()
@@ -67,6 +68,9 @@ void SceneGame::Finalize()
 	EnemyManager::Instance().Clear();
 
 	AreaManager::Instance().Clear();
+
+	// 穴終了化
+	HoleManager::Instance().Clear();
 
 	// カメラコントローラー終了化
 	if (cameraController != nullptr)
@@ -165,6 +169,9 @@ void SceneGame::Render()
 		EnemyManager::Instance().DrawDebugPrimitive();
 
 		AreaManager::Instance().DrawDebugPrimitive();
+
+		// 穴デバッグプリミティブ描画
+		HoleManager::Instance().DrawDebugPrimitive();
 
 		// ラインレンダラ描画実行
 		graphics.GetLineRenderer()->Render(dc, rc.view, rc.projection);

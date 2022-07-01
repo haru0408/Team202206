@@ -49,6 +49,9 @@
     <Filter Include="Source\Stages">
       <UniqueIdentifier>{e024e86a-5ad8-4f1e-a74b-88d82e7626be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Stages\Hole">
+      <UniqueIdentifier>{f2d523a8-e622-4404-bfd5-a27e987c1eb5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="External\imgui\imconfig.h">
@@ -171,6 +174,12 @@
     <ClInclude Include="Source\SceneTitle.h">
       <Filter>Source\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Hole.h">
+      <Filter>Source\Stages\Hole</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\HoleManager.h">
+      <Filter>Source\Stages\Hole</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -277,6 +286,12 @@
     </ClCompile>
     <ClCompile Include="Source\SceneTitle.cpp">
       <Filter>Source\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Hole.cpp">
+      <Filter>Source\Stages\Hole</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\HoleManager.cpp">
+      <Filter>Source\Stages\Hole</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

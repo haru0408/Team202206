@@ -34,6 +34,12 @@ private:
     // プレイヤーとエネミーとの衝突処理
     void CollisionPlayerVsEnemies();
 
+    // 大きさ変更入力処理
+    void InputScaleChange();
+
+    // プレイヤーと穴との衝突距離
+    void CollisionPlayerVsHoles();
+
 protected:
     // 着地したときに呼ばれる
     void OnLanding() override;
@@ -48,4 +54,8 @@ private:
     float  jumpSpeed = 20.0f;
 
     bool HitFlg = false;
+
+    bool  ScaleFlg    = false; // true:大 false:小
+    float ScaleNum    = 0.0f;  // スケール補正値
+    float PositionNum = 0.0f;  // 座標補正値
 };
