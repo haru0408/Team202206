@@ -3,7 +3,6 @@
 #include "Graphics/Shader.h"
 #include "Graphics/Model.h"
 #include "Character.h"
-#include "ProjectileManager.h"
 
 // プレイヤー
 class Player : public Character
@@ -24,15 +23,6 @@ public:
     // デバッグ用GUI描画
     void DrawDebugPrimitive();
 
-    // ジャンプ入力処理
-    void InputJump();
-
-    // 弾丸入力処理
-    void InputProjectile();
-
-    // 弾丸と敵の衝突処理
-    void CollisionProjectilesVsEnemies();
-
 private:
 
     // スティック入力値から移動ベクトルを取得
@@ -42,7 +32,13 @@ private:
     void InputMove(float elapsedTime);
 
     // プレイヤーとエネミーとの衝突処理
-    //void CollisionPlayerVsEnemies();
+    void CollisionPlayerVsEnemies();
+
+    // 大きさ変更入力処理
+    void InputScaleChange();
+
+    // プレイヤーと穴との衝突距離
+    void CollisionPlayerVsHoles();
 
 protected:
     // 着地したときに呼ばれる
@@ -57,7 +53,9 @@ private:
     float  turnSpeed = DirectX::XMConvertToRadians(720);
     float  jumpSpeed = 20.0f;
 
-    ProjectileManager projectileManager;
-
     bool HitFlg = false;
+
+    bool  ScaleFlg    = false; // true:大 false:小
+    float ScaleNum    = 0.0f;  // スケール補正値
+    float PositionNum = 0.0f;  // 座標補正値
 };

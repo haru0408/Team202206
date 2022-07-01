@@ -3,18 +3,24 @@
 #include "Camera.h"
 #include "EnemyManager.h"
 #include "Collision.h"
+#include "HoleManager.h"
+
 #include "Input/Input.h"
 #include "Graphics//Graphics.h"
-#include "ProjectileStraight.h"
-#include "ProjectileHoming.h"
 
 // コンストラクタ
 Player::Player()
 {
-    model = new Model("Data/Model/Mr.Incredible/Mr.Incredible.mdl");
+    model = new Model("Data/Model/Player/Player.mdl");
 
     // モデルが大きいのでスケーリング
     scale.x = scale.y = scale.z = 0.01f;
+
+    radius = 0.5f;
+    height = 1.0f;
+
+    // ステージの端
+    position.x = position.z = -22.0f;
 }
 
 Player::~Player()
@@ -28,23 +34,22 @@ void Player::Update(float elapsedTime)
     // 移動入力処理
     InputMove(elapsedTime);
 
-    // ジャンプ入力処理
-    InputJump();
-
-    // 弾丸入力処理
-    InputProjectile();
+    // 大きさ変更入力処理
+    InputScaleChange();
 
     // 速力更新処理
     UpdateVelocity(elapsedTime);
 
-    // 弾丸更新処理
-    projectileManager.Update(elapsedTime);
+    // プレイヤーとエネミーとの衝突距離
+    CollisionPlayerVsEnemies();
 
-    // プレイヤーと敵との衝突処理
-    CollisionProjectilesVsEnemies();
+    // プレイヤーと穴との衝突距離
+    CollisionPlayerVsHoles();
 
     // オブジェクト行列を更新
-    UpdateTransform();
+    UpdateTransform(DirectX::XMFLOAT3(ScaleNum, ScaleNum, ScaleNum),
+                    DirectX::XMFLOAT3(0, 0, 0),
+                    DirectX::XMFLOAT3(0, PositionNum, 0));
 
     //モデル行列更新
     model->UpdateTransform(transform);
@@ -63,88 +68,10 @@ void Player::InputMove(float elapsedTime)
     Turn(elapsedTime, moveVec.x, moveVec.z, turnSpeed);
 }
 
-// 弾丸入力処理
-void Player::InputProjectile()
-{
-    GamePad& gamePad = Input::Instance().GetGamePad();
-
-    // 直進弾丸発射
-    if (gamePad.GetButtonDown() & GamePad::BTN_X)
-    {
-        // 前方向
-        DirectX::XMFLOAT3 dir;
-        dir.x = sinf(angle.y);
-        dir.y = .0f;
-        dir.z = cosf(angle.y);
-
-        // 発射位置(プレイヤーの腰あたり)
-        DirectX::XMFLOAT3 pos;
-        pos.x = position.x;
-        pos.y = position.y + height * 0.5f;
-        pos.z = position.z;
-
-        // 発射
-        ProjectileStraight* projectile = new ProjectileStraight(&projectileManager);
-        projectile->Launch(dir, pos);
-    }
-
-    // 追尾弾丸発射
-    if (gamePad.GetButtonDown() & GamePad::BTN_Y)
-    {
-        // 前方向
-        DirectX::XMFLOAT3 dir;
-        dir.x = sinf(angle.y);
-        dir.y = .0f;
-        dir.z = cosf(angle.y);
-
-        // 発射位置(プレイヤーの腰あたり)
-        DirectX::XMFLOAT3 pos;
-        pos.x = position.x;
-        pos.y = position.y + height * 0.5f;
-        pos.z = position.z;
-
-        // ターゲット(デフォルトではプレイヤーの前方)
-        DirectX::XMFLOAT3 target;
-        target.x = pos.x + dir.x * 1000.0f;
-        target.y = pos.y + dir.y * 1000.0f;
-        target.z = pos.z + dir.z * 1000.0f;
-
-        // 一番近くの敵をターゲットにする
-        float dist = FLT_MAX; // 敵との距離(初期値:Floatの最大値)
-        EnemyManager& enemyManager = EnemyManager::Instance();
-        // 全ての敵と総当たりで衝突処理
-        int enemyCount = enemyManager.GetEnemyCount();
-        for (int i = 0; i < enemyCount; ++i)
-        {
-            using namespace DirectX;
-            Enemy* enemy = enemyManager.GetEnemy(i);
-            XMVECTOR P = XMLoadFloat3(&position);
-            XMVECTOR E = XMLoadFloat3(&enemy->GetPosition());
-            XMVECTOR V = XMVectorSubtract(E,P);
-            XMVECTOR D = XMVector3LengthSq(V);
-            float d;
-            XMStoreFloat(&d, D);
-            if (d < dist)
-            {
-                dist = d;
-                target = enemy->GetPosition();
-                target.y += enemy->GetHeight() * 0.5f;
-            }
-        }
-
-        // 発射
-        ProjectileHoming* projectile = new ProjectileHoming(&projectileManager);
-        projectile->Launch(dir, pos, target);
-    }
-}
-
 // 描画処理
 void Player::Render(ID3D11DeviceContext* dc, Shader* shader)
 {
     shader->Draw(dc, model);
-
-    // 弾丸描画処理
-    projectileManager.Render(dc, shader);
 }
 
 // デバッグ用GUI描画
@@ -211,8 +138,8 @@ void Player::DrawDebugPrimitive()
     // 衝突判定用のデバッグ円柱を描画
     if (HitFlg) debugRenderer->DrawBox(position, 1.0f, 1.0f, 1.0f, DirectX::XMFLOAT4(1, 0, 0, 1));
     else if (!HitFlg) debugRenderer->DrawBox(position, 1.0f, 1.0f, 1.0f, DirectX::XMFLOAT4(0, 0, 1, 1));
-    // 弾丸デバッグプリミティブ描画
-    projectileManager.DrawDebugPrimitive();
+    // 穴判定用の円柱
+    debugRenderer->DrawCylinder(position, radius, height, DirectX::XMFLOAT4(0, 1, 0, 1));
 }
 
 DirectX::XMFLOAT3 Player::GetMoveVec() const
@@ -267,7 +194,7 @@ DirectX::XMFLOAT3 Player::GetMoveVec() const
 }
 
 // プレイヤーとエネミーとの衝突距離
-void Player::CollisionProjectilesVsEnemies()
+void Player::CollisionPlayerVsEnemies()
 {
     EnemyManager& enemyManager = EnemyManager::Instance();
 
@@ -299,73 +226,120 @@ void Player::CollisionProjectilesVsEnemies()
     }
 }
 
-//void Player::CollisionProjectilesVsEnemies()
-//{
-//    EnemyManager& enemyManager = EnemyManager::Instance();
-//
-//    // 全ての弾丸とすべての敵を総当たりで衝突処理
-//    int projectileCount = projectileManager.GetProjectileCount();
-//    int enemyCount = enemyManager.GetEnemyCount();
-//    for(int i = 0; i < projectileCount; ++i)
-//    {
-//        Projectile* projectile = projectileManager.GetProjectile(i);
-//
-//        for (int j = 0; j < enemyCount; ++j)
-//        {
-//            Enemy* enemy = enemyManager.GetEnemy(j);
-//
-//            // 衝突処理
-//            DirectX::XMFLOAT3 outPosition;
-//            if (Collision::IntersectSphereVsCylinder(
-//                projectile->GetPosition(),
-//                projectile->GetRadius(),
-//                enemy->GetPosition(),
-//                enemy->GetRadius(),
-//                enemy->GetHeight(),
-//                outPosition))
-//            {
-//                // ダメージを与える
-//                if (enemy->ApplyDamage(1, 0.5f))
-//                {
-//                    // 吹き飛ばす
-//                    {
-//                        DirectX::XMFLOAT3 impulse;
-//                        const float power = 10.0f;
-//
-//                        const DirectX::XMFLOAT3& e = enemy->GetPosition();
-//                        const DirectX::XMFLOAT3& p = projectile->GetPosition();
-//                        
-//                        float vx = e.x - p.x;
-//                        float vz = e.z - p.z;
-//                        float len = sqrtf(vx * vx + vz * vz);
-//                        vx /= len;
-//                        vz /= len;
-//
-//                        impulse.x = vx * power;
-//                        impulse.z = vz * power;
-//                        impulse.y = power * 0.5f;
-//
-//                        enemy->AddImpulse(impulse);
-//                    }
-//
-//                    // 弾丸破棄
-//                    projectile->Destroy();
-//                }
-//            }
-//        }
-//    }
-//}
-
-void Player::InputJump()
+// 大きさ変更入力処理
+void Player::InputScaleChange()
 {
-    // ボタン入力でジャンプ(ジャンプ回数制限つき)
     GamePad& gamePad = Input::Instance().GetGamePad();
-    if (gamePad.GetButtonDown() & GamePad::BTN_A)
+
+    if (gamePad.GetButtonDown() & GamePad::BTN_A) ScaleFlg = !ScaleFlg;
+
+    // 小さいサイズ
+    if (!ScaleFlg)
     {
-        if (jumpCount < jumpLimit)
+        radius = 0.5f;
+        height = 1.0f;
+
+        ScaleNum = 0.0f;
+        PositionNum = height * 0.5f;
+    }
+    // 大きいサイズ
+    else if (ScaleFlg)
+    {
+        radius = 1.0f;
+        height = 1.5f;
+
+        ScaleNum = 0.005f * 1.0f;
+        PositionNum = height * 0.5f;
+    }
+}
+
+// プレイヤーと穴との衝突距離
+void Player::CollisionPlayerVsHoles()
+{
+    HoleManager& holeManager = HoleManager::Instance();
+
+    // 全ての穴と総当たりで衝突処理
+    int holeCount = holeManager.GetHoleCount();
+    for (int i = 0; i < holeCount; ++i)
+    {
+        Hole* hole = holeManager.GetHole(i);
+
+        // 衝突処理
+        DirectX::XMFLOAT3 outPosition;
+        if (Collision::IntersectCylinderVsCylinder
+        (position,
+            radius,
+            height,
+            hole->GetPosition(),
+            hole->GetRadius(),
+            hole->GetHeight(),
+            outPosition))
         {
-            Jump(jumpSpeed);
-            jumpCount++;
+            // プレイヤーの半径と穴の半径を比べる
+            if (radius <= hole->GetRadius())
+            {
+                float xSpeed = 0.0f;
+                float zSpeed = 0.0f;
+
+                // 中心に向かって落ちていく
+                // X座標
+                if (position.x < hole->GetPosition().x)
+                {
+                    xSpeed = fallSpeed;
+                }
+                else if (position.x > hole->GetPosition().x)
+                {
+                    xSpeed = -fallSpeed;
+                }
+                else if (position.x == hole->GetPosition().x)
+                {
+                    xSpeed = 0.0f;
+                }
+                // Z座標
+                if (position.z < hole->GetPosition().z)
+                {
+                    zSpeed = fallSpeed;
+                }
+                else if (position.z > hole->GetPosition().z)
+                {
+                    zSpeed = -fallSpeed;
+                }
+                else if (position.z == hole->GetPosition().z)
+                {
+                    zSpeed = 0.0f;
+                }
+
+                position.x += xSpeed;
+                position.z += zSpeed;
+
+                FallStartFlg = true;
+
+                if (Collision::IntersectCylinderVsCylinder(
+                    position,
+                    radius,
+                    height,
+                    hole->GetPosition(),
+                    hole->GetRadius() * 0.75f,
+                    hole->GetHeight(),
+                    outPosition))
+                {
+                    FallStartFlg = false;
+                    FallFlg = true;
+                }
+                if (!ScaleFlg && hole->GetRadius() >= 4.0f)
+                {
+                    FallStartFlg = false;
+                    FallFlg = true;
+                }
+            }
+            else
+            {
+                FallStartFlg = false;
+            }
+        }
+        else
+        {
+            FallStartFlg = false;
         }
     }
 }
