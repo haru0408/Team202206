@@ -1,8 +1,14 @@
-#include "Graphics/Graphics.h"
 #include "SceneGame.h"
+#include "SceneManager.h"
+
+#include "Graphics/Graphics.h"
+#include "Input/Input.h"
+
 #include "Camera.h"
-#include "EnemyManager.h"
+
 #include "EnemySlime.h"
+#include "EnemyManager.h"
+
 #include "SpecialArea.h"
 
 // ‰Šú‰»
@@ -92,6 +98,11 @@ void SceneGame::Update(float elapsedTime)
 	target.y += 0.5f;
 	cameraController->SetTarget(target);
 	cameraController->Update(elapsedTime);
+
+	// change scene
+	if (Input::Instance().GetGamePad().GetButtonDown()
+		& GamePad::BTN_BACK)
+		SceneManager::Instance().changeScene(SCENE_TYPE::TITLE);
 }
 
 // •`‰æˆ—
@@ -186,3 +197,6 @@ void SceneGame::Render()
 		cameraController->DrawDebugGUI();
 	}
 }
+
+/* get type */
+const SCENE_TYPE SceneGame::getType() { return SCENE_TYPE::GAME; }

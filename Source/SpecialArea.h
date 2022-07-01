@@ -25,10 +25,10 @@ public:
     { }
     AreaWindow(AreaWindow&) = delete;
     
-    //main method
+    /* main method */
     void Update(float elapsedTime) {}
     void Render(ID3D11RenderTargetView* dc, Shader* shader) {}
-    //debug
+    /* debug */
     void DrawDebugPrimitive();
 
     //getter
@@ -52,7 +52,7 @@ private:
     AreaManager() {}
     ~AreaManager() { Clear(); }
 public:
-    // instance getter
+    /* instance getter */
     static AreaManager& Instance()
     {
         static AreaManager instance;

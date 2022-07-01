@@ -189,6 +189,15 @@
     <ClInclude Include="Source\SceneTitle.h">
       <Filter>Source\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="Source\SceneManager.h">
+      <Filter>Source\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\BaseScene.h">
+      <Filter>Source\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneDebug.h">
+      <Filter>Source\Scenes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui\imgui.cpp">
@@ -306,6 +315,12 @@
       <Filter>Source\Stages</Filter>
     </ClCompile>
     <ClCompile Include="Source\SceneTitle.cpp">
+      <Filter>Source\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneManager.cpp">
+      <Filter>Source\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneDebug.cpp">
       <Filter>Source\Scenes</Filter>
     </ClCompile>
   </ItemGroup>

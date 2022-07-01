@@ -152,6 +152,11 @@ void GamePad::Update()
 		if (GetAsyncKeyState(VK_DOWN) & 0x8000)	newButtonState |= BTN_DOWN;
 		if (GetAsyncKeyState(VK_LEFT) & 0x8000)	newButtonState |= BTN_LEFT;
 
+		//’Ç‰Á
+		if (GetAsyncKeyState(VK_RETURN) & 0x8000)	newButtonState |= BTN_START;
+		if (GetAsyncKeyState(VK_BACK) & 0x8000)	newButtonState |= BTN_BACK;
+		//https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
+
 #if 1
 		if (newButtonState & BTN_UP)    ly = 1.0f;
 		if (newButtonState & BTN_RIGHT) lx = 1.0f;
