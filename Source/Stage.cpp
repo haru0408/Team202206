@@ -4,7 +4,10 @@
 Stage::Stage()
 {
     // ステージモデルを読み込み
-    model = new Model("Data/Model/ExampleStage/ExampleStage.mdl");
+    model = new Model("Data/Model/Stage/Stage_1.mdl");
+    scale.x = scale.z = 0.005f;
+    scale.y = 0.0035;
+    position.y = -1;
 }
 
 Stage::~Stage()
@@ -35,9 +38,9 @@ void Stage::UpdateTransform()
 // 更新処理
 void Stage::Update(float elapsedTime)
 {
-    //UpdateTransform();
+    UpdateTransform();
 
-    //model->UpdateTransform(transform);
+    model->UpdateTransform(transform);
 }
 
 // 描画処理
