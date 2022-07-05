@@ -59,7 +59,7 @@ private:
     float  turnSpeed = DirectX::XMConvertToRadians(720);
     float  jumpSpeed = 20.0f;
 
-    bool HitFlg = false;
+    DirectX::XMFLOAT3 length = { 0.0f, 0.0f, 0.0f };
 
     bool  ScaleFlg    = false; // true:大 false:小
     float ScaleNum    = 0.0f;  // スケール補正値

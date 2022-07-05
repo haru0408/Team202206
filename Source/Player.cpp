@@ -19,10 +19,12 @@ Player::Player()
     // モデルが大きいのでスケーリング
     scale.x = scale.y = scale.z = 0.005f;
 
+    // プレイヤーの当たり判定の大きさ設定
+    length = { 1.0f, 1.0f, 1.0f };
     radius = 0.5f;
     height = 1.0f;
 
-    // ステージの端
+    // 位置はステージの端
     position.x = position.z = -17.0f;
 }
 
@@ -144,10 +146,10 @@ void Player::DrawDebugPrimitive()
     debugRenderer->DrawSphere(position, radius, DirectX::XMFLOAT4(0, 0, 0, 1));
 #endif // 0
 
-    // 衝突判定用のデバッグ円柱を描画
-    if (HitFlg) debugRenderer->DrawBox(position, 1.0f, 1.0f, 1.0f, DirectX::XMFLOAT4(1, 0, 0, 1));
-    else if (!HitFlg) debugRenderer->DrawBox(position, 1.0f, 1.0f, 1.0f, DirectX::XMFLOAT4(0, 0, 1, 1));
-    // 穴判定用の円柱
+    // 衝突判定用のデバッグプリミティブを描画
+    // 四角
+    debugRenderer->DrawBox(position, length.x, length.y, length.z, DirectX::XMFLOAT4(1, 0, 0, 1));
+    // 円柱
     debugRenderer->DrawCylinder(position, radius, height, DirectX::XMFLOAT4(0, 1, 0, 1));
 }
 
@@ -187,9 +189,6 @@ DirectX::XMFLOAT3 Player::GetMoveVec() const
         cameraFrontZ /= cameraFrontLength;
     }
 
-    //
-    // vec =  (ax * cameraRight + ay * cameraFront);
-
     // スティックの水平入力値をカメラ右方向に反映し、
     // スティックの垂直入力値をカメラ前方向に反映し、
     // 進行ベクトルを計算する
@@ -207,7 +206,7 @@ void Player::CollisionPlayerVsEnemies()
 {
     EnemyManager& enemyManager = EnemyManager::Instance();
 
-    // 全ての敵と総当たりで衝突処理
+    // 全ての敵と総当たりで衝突処理(四角)
     int enemyCount = enemyManager.GetEnemyCount();
     for (int i = 0; i < enemyCount; ++i)
     {
@@ -217,9 +216,9 @@ void Player::CollisionPlayerVsEnemies()
         DirectX::XMFLOAT3 outPosition;
         if (Collision::IntersectBoxVsBox_Wall(
             position,
-            1.0f,
-            1.0f,
-            1.0f,
+            length.x,
+            length.y,
+            length.z,
             enemy->GetPosition(),
             1.0f,
             1.0f,
@@ -228,10 +227,7 @@ void Player::CollisionPlayerVsEnemies()
         {
             // 押し出し後の位置設定
             SetPosition(outPosition);
-
-            HitFlg = true;
         }
-        else HitFlg = false;
     }
 }
 
@@ -245,6 +241,8 @@ void Player::InputScaleChange()
     // 小さいサイズ
     if (!ScaleFlg)
     {
+        length = { 1.0f, 1.0f, 1.0f };
+
         radius = 0.5f;
         height = 1.0f;
 
@@ -254,11 +252,13 @@ void Player::InputScaleChange()
     // 大きいサイズ
     else if (ScaleFlg)
     {
+        length = { 2.0f, 2.0f, 2.0f };
+
         radius = 1.0f;
         height = 1.5f;
 
         ScaleNum = 0.005f * 1.0f;
-        PositionNum = height * 0.5f;
+        PositionNum = height * 0.65f;
     }
 }
 
@@ -273,10 +273,10 @@ void Player::CollisionPlayerVsHoles()
     {
         Hole* hole = holeManager.GetHole(i);
 
-        // 衝突処理
+        // 衝突処理(円柱)
         DirectX::XMFLOAT3 outPosition;
-        if (Collision::IntersectCylinderVsCylinder
-        (position,
+        if (Collision::IntersectCylinderVsCylinder(
+            position,
             radius,
             height,
             hole->GetPosition(),
@@ -364,13 +364,13 @@ void Player::CollisionPlayerVsCanons()
     {
         Canon* canon = canonManager.GetCanon(i);
 
-        // 衝突処理
+        // 衝突処理(四角)
         DirectX::XMFLOAT3 outPosition;
-        if (Collision::IntersectBoxVsBox_Wall
-        (position,
-            1.0f,
-            1.0f,
-            1.0f,
+        if (Collision::IntersectBoxVsBox_Wall(
+            position,
+            length.x,
+            length.y,
+            length.z,
             canon->GetPosition(),
             canon->GetLength().x,
             canon->GetLength().y,
@@ -388,7 +388,7 @@ void Player::CollisionPlayerVsCanonBalls()
 {
     CanonBallManager& canonBallManager = CanonBallManager::Instance();
 
-    // 全ての弾と総当たりで衝突処理
+    // 全ての弾と総当たりで衝突処理(円柱)
     int canonBallCount = canonBallManager.GetCanonBallCount();
     for (int i = 0; i < canonBallCount; ++i)
     {
@@ -396,8 +396,8 @@ void Player::CollisionPlayerVsCanonBalls()
 
         // 衝突処理
         DirectX::XMFLOAT3 outPosition;
-        if (Collision::IntersectCylinderVsCylinder
-        (position,
+        if (Collision::IntersectCylinderVsCylinder(
+            position,
             radius,
             height,
             canonBall->GetPosition(),
