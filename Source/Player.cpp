@@ -14,7 +14,7 @@ Player::Player()
     model = new Model("Data/Model/Player/Player.mdl");
 
     // モデルが大きいのでスケーリング
-    scale.x = scale.y = scale.z = 0.01f;
+    scale.x = scale.y = scale.z = 0.005f;
 
     radius = 0.5f;
     height = 1.0f;
