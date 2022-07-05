@@ -388,7 +388,7 @@ void Player::CollisionPlayerVsCanonBalls()
 {
     CanonBallManager& canonBallManager = CanonBallManager::Instance();
 
-    // ‘S‚Ä‚Ì–C‘ä‚Æ‘“–‚½‚è‚ÅÕ“Ëˆ—
+    // ‘S‚Ä‚Ì’e‚Æ‘“–‚½‚è‚ÅÕ“Ëˆ—
     int canonBallCount = canonBallManager.GetCanonBallCount();
     for (int i = 0; i < canonBallCount; ++i)
     {
