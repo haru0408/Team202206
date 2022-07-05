@@ -154,6 +154,12 @@
     <ClCompile Include="Source\CanonManager.cpp">
       <Filter>Source\Object\Canon</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Effect.cpp">
+      <Filter>Source\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EffectManager.cpp">
+      <Filter>Source\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Framework.h" />
@@ -293,6 +299,12 @@
     <ClInclude Include="Source\CanonManager.h">
       <Filter>Source\Object\Canon</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Effect.h">
+      <Filter>Source\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EffectManager.h">
+      <Filter>Source\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="HLSL\Debug.hlsli">
@@ -359,6 +371,9 @@
     </Filter>
     <Filter Include="Source\Object\Canon">
       <UniqueIdentifier>{f56005f0-8183-4f29-9e5d-15d14864810a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Effect">
+      <UniqueIdentifier>{5c0fd8c2-c5cb-4510-9edd-ba7898df43ec}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
