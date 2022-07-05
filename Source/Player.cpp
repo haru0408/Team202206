@@ -23,7 +23,7 @@ Player::Player()
     height = 1.0f;
 
     // ステージの端
-    position.x = position.z = -22.0f;
+    position.x = position.z = -17.0f;
 }
 
 Player::~Player()
