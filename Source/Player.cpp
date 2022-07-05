@@ -1,9 +1,12 @@
 #include <imgui.h>
+
 #include "Player.h"
 #include "Camera.h"
 #include "EnemyManager.h"
 #include "Collision.h"
 #include "HoleManager.h"
+#include "CanonManager.h"
+#include "CanonBallManager.h"
 
 #include "Input/Input.h"
 #include "Graphics//Graphics.h"
@@ -45,6 +48,12 @@ void Player::Update(float elapsedTime)
 
     // プレイヤーと穴との衝突距離
     CollisionPlayerVsHoles();
+
+    // プレイヤーと砲台との衝突距離
+    CollisionPlayerVsCanons();
+
+    // プレイヤーと弾との衝突距離
+    CollisionPlayerVsCanonBalls();
 
     // オブジェクト行列を更新
     UpdateTransform(DirectX::XMFLOAT3(ScaleNum, ScaleNum, ScaleNum),
@@ -340,6 +349,81 @@ void Player::CollisionPlayerVsHoles()
         else
         {
             FallStartFlg = false;
+        }
+    }
+}
+
+// プレイヤーと砲台との衝突距離
+void Player::CollisionPlayerVsCanons()
+{
+    CanonManager& canonManager = CanonManager::Instance();
+
+    // 全ての砲台と総当たりで衝突処理
+    int canonCount = canonManager.GetCanonCount();
+    for (int i = 0; i < canonCount; ++i)
+    {
+        Canon* canon = canonManager.GetCanon(i);
+
+        // 衝突処理
+        DirectX::XMFLOAT3 outPosition;
+        if (Collision::IntersectBoxVsBox_Wall
+        (position,
+            1.0f,
+            1.0f,
+            1.0f,
+            canon->GetPosition(),
+            canon->GetLength().x,
+            canon->GetLength().y,
+            canon->GetLength().z,
+            outPosition))
+        {
+            // プレイヤーを押し出す
+            SetPosition(outPosition);
+        }
+    }
+}
+
+// プレイヤーと弾との衝突距離
+void Player::CollisionPlayerVsCanonBalls()
+{
+    CanonBallManager& canonBallManager = CanonBallManager::Instance();
+
+    // 全ての砲台と総当たりで衝突処理
+    int canonBallCount = canonBallManager.GetCanonBallCount();
+    for (int i = 0; i < canonBallCount; ++i)
+    {
+        CanonBall* canonBall = canonBallManager.GetCanonBall(i);
+
+        // 衝突処理
+        DirectX::XMFLOAT3 outPosition;
+        if (Collision::IntersectCylinderVsCylinder
+        (position,
+            radius,
+            height,
+            canonBall->GetPosition(),
+            canonBall->GetRadius(),
+            canonBall->GetHeight(),
+            outPosition))
+        {
+            // プレイヤーを押し出す
+            {
+                DirectX::XMFLOAT3 impulse;
+                const float power = 4.0f;
+                DirectX::XMFLOAT3 p = position;
+                DirectX::XMFLOAT3 b = canonBall->GetPosition();
+
+                float vx = p.x - b.x;
+                float vz = p.z - b.z;
+                float len = sqrtf(vx * vx + vz * vz);
+
+                vx /= len;
+                vz /= len;
+
+                impulse.x = vx * power;
+                impulse.z = vz * power;
+
+                AddImpulse(impulse);
+            }
         }
     }
 }

@@ -142,6 +142,18 @@
     <ClCompile Include="Source\Collision.cpp">
       <Filter>Source\Object</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Canon.cpp">
+      <Filter>Source\Object\Canon</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CanonBall.cpp">
+      <Filter>Source\Object\Canon</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CanonBallManager.cpp">
+      <Filter>Source\Object\Canon</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CanonManager.cpp">
+      <Filter>Source\Object\Canon</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Framework.h" />
@@ -269,6 +281,18 @@
     <ClInclude Include="Source\Collision.h">
       <Filter>Source\Object</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Canon.h">
+      <Filter>Source\Object\Canon</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CanonBall.h">
+      <Filter>Source\Object\Canon</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CanonBallManager.h">
+      <Filter>Source\Object\Canon</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CanonManager.h">
+      <Filter>Source\Object\Canon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="HLSL\Debug.hlsli">
@@ -332,6 +356,9 @@
     </Filter>
     <Filter Include="Source\Object\Floor">
       <UniqueIdentifier>{662e640e-947e-42a1-a2bb-bfc5f9fd8865}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Object\Canon">
+      <UniqueIdentifier>{f56005f0-8183-4f29-9e5d-15d14864810a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

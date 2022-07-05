@@ -40,6 +40,12 @@ private:
     // プレイヤーと穴との衝突距離
     void CollisionPlayerVsHoles();
 
+    // プレイヤーと砲台との衝突距離
+    void CollisionPlayerVsCanons();
+
+    // プレイヤーと弾との衝突距離
+    void CollisionPlayerVsCanonBalls();
+
 protected:
     // 着地したときに呼ばれる
     void OnLanding() override;

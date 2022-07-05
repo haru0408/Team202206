@@ -119,6 +119,10 @@
     <ClInclude Include="Source\Audio\AudioSource.h" />
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\CameraController.h" />
+    <ClInclude Include="Source\Canon.h" />
+    <ClInclude Include="Source\CanonBall.h" />
+    <ClInclude Include="Source\CanonBallManager.h" />
+    <ClInclude Include="Source\CanonManager.h" />
     <ClInclude Include="Source\Character.h" />
     <ClInclude Include="Source\Collision.h" />
     <ClInclude Include="Source\Enemy.h" />
@@ -164,6 +168,10 @@
     <ClCompile Include="Source\Audio\AudioSource.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\CameraController.cpp" />
+    <ClCompile Include="Source\Canon.cpp" />
+    <ClCompile Include="Source\CanonBall.cpp" />
+    <ClCompile Include="Source\CanonBallManager.cpp" />
+    <ClCompile Include="Source\CanonManager.cpp" />
     <ClCompile Include="Source\Character.cpp" />
     <ClCompile Include="Source\Collision.cpp" />
     <ClCompile Include="Source\Enemy.cpp" />
