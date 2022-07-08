@@ -19,8 +19,10 @@ void SceneGame::Initialize()
 {
 	// ステージ初期化
 	stage = new Stage();
+
 	// プレイヤー初期化
 	player = new Player();
+
 	// カメラ初期設定
 	Graphics& graphics = Graphics::Instance();
 	Camera& camera = Camera::Instance();
@@ -54,25 +56,24 @@ void SceneGame::Initialize()
 
 	AreaManager::Instance().Register(new AreaWindow(DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(5, 2, 5)));
 
-	/*
+	
 	// 穴の初期化
 	HoleManager& holeManager = HoleManager::Instance();
-
 	// Stage00
 	Hole* hole = new Hole();
-	hole->SetPosition(DirectX::XMFLOAT3(0, 0, 0));
-	hole->SetRadius(1.0f);
+	hole->SetPosition(DirectX::XMFLOAT3(0.0f, 0.0f, -5.0f));
+	hole->SetRadius(2.0f);
 	holeManager.Register(hole);
 
+	
 	// 砲台の初期化
 	CanonManager& canonManager = CanonManager::Instance();
-
 	// Stage00
 	Canon* canon = new Canon();
-	canon->SetPosition(DirectX::XMFLOAT3(0, 0, 0));
-	canon->SetLeftDirection();
+	canon->SetPosition(DirectX::XMFLOAT3(5.0f, 0.0f, -5.0f));
+	canon->SetRightDirection();
 	canonManager.Register(canon);
-	*/
+	
 }
 
 // 終了化
@@ -244,6 +245,11 @@ void SceneGame::Render()
 		player->DrawDebugGUI();
 		//　カメラコントローラーデバッグ描画
 		cameraController->DrawDebugGUI();
+
+		//　ImGui描画
+		HoleManager::Instance().DrawDebugGUI();
+
+		CanonManager::Instance().DrawDebugGUI();
 	}
 }
 

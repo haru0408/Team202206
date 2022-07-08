@@ -119,6 +119,8 @@ void Player::DrawDebugGUI()
     }
     ImGui::End();
 
+
+    ImGui::SetNextWindowSize(ImVec2(100, 100), ImGuiCond_FirstUseEver);
     // チュートリアル
     if (ImGui::Begin("HOWTO",nullptr, ImGuiWindowFlags_None))
     {
@@ -128,10 +130,7 @@ void Player::DrawDebugGUI()
         ImGui::Text("DOWN  S");
         ImGui::Text("RIGHT D");
         ImGui::Text("");
-        ImGui::Text("ROTATE");
-        ImGui::Text("X    Z");
-        ImGui::Text("Y    X");
-        ImGui::Text("Y    C");
+        ImGui::Text("SizeChange : Space");
     }
 
     ImGui::End();
@@ -335,6 +334,7 @@ void Player::CollisionPlayerVsHoles()
                     FallStartFlg = false;
                     FallFlg = true;
                 }
+                // プレイヤーの半径と穴の半径大きな差があれば外側の円柱に衝突した時点で落下
                 if (!ScaleFlg && hole->GetRadius() >= 4.0f)
                 {
                     FallStartFlg = false;

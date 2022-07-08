@@ -43,6 +43,9 @@ public:
     // 砲台取得
     Canon* GetCanon(int index) { return canons.at(index); }
 
+    // デバッグ用GUI描画
+    void DrawDebugGUI();
+
 private:
     std::vector<Canon*> canons;
 

@@ -64,3 +64,48 @@ void CanonManager::DrawDebugPrimitive()
         canon->DrawDebugPrimitive();
     }
 }
+
+// デバッグ用GUI描画
+void CanonManager::DrawDebugGUI()
+{
+    if (ImGui::Begin("DebugMenu", nullptr, ImGuiWindowFlags_None))
+    {
+        if (ImGui::CollapsingHeader("Canon", ImGuiTreeNodeFlags_DefaultOpen))
+        {
+            CanonManager& canonManager = Instance();
+            int canonCount = canonManager.GetCanonCount();
+
+            // 穴単体のパラメータ
+            for (int i = 0; i < canonCount; ++i)
+            {
+                Canon* canon = canonManager.GetCanon(i);
+
+                // int型をchar型に変換
+                char canoncount[5] = "0000";
+                snprintf(canoncount, 5, "%d", i);
+
+                ImGui::SetNextItemOpen(true);
+                if (ImGui::TreeNode(canoncount))
+                {
+                    // 位置
+                    DirectX::XMFLOAT3 Position = canon->GetPosition();
+                    ImGui::InputFloat3("Position ", &Position.x);
+                    canon->SetPosition(Position);
+
+                    // 向き
+                    if (ImGui::Button("UP"))    canon->SetUpDirection();
+                    ImGui::SameLine();
+                    if (ImGui::Button("DOWN"))  canon->SetDownDirection();
+                    ImGui::SameLine();
+                    if (ImGui::Button("LEFT"))  canon->SetLeftDirection();
+                    ImGui::SameLine();
+                    if (ImGui::Button("RIGHT")) canon->SetRightDirection();
+                    ImGui::SameLine();
+                    ImGui::Text("  Direction");
+                }
+                ImGui::TreePop();
+            }
+        }
+    }
+    ImGui::End();
+}
