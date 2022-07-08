@@ -3,9 +3,11 @@
 
 #include "Graphics/Graphics.h"
 #include "Input/Input.h"
+
 //#include "SceneGame.h"
 #include "SceneManager.h"
 #include "Framework.h"
+#include "EffectManager.h"
 
 //static SceneGame sceneGame;
 
@@ -18,6 +20,9 @@ Framework::Framework(HWND hWnd)
 	, input(hWnd)
 	, graphics(hWnd)
 {
+	// エフェクトマネージャー初期化
+	EffectManager::Instance().Initialize();
+
 	//sceneGame.Initialize();
 
 	SceneManager::Instance().changeScene(SCENE_TYPE::GAME);
@@ -28,6 +33,9 @@ Framework::~Framework()
 {
 	//sceneGame.Finalize();
 	SceneManager::Instance().Finalize();
+
+	// エフェクトマネージャー終了化
+	EffectManager::Instance().Finelize();
 }
 
 // 更新処理
@@ -44,6 +52,10 @@ void Framework::Update(float elapsedTime/*Elapsed seconds from last frame*/)
 // 描画処理
 void Framework::Render(float elapsedTime/*Elapsed seconds from last frame*/)
 {
+	// 別スレッド中にデバイスコンテキストが使われていた場合に
+    // 同時アクセスしないように排他制御する
+	std::lock_guard<std::mutex> lock(graphics.GetMutex());
+
 	ID3D11DeviceContext* dc = graphics.GetDeviceContext();
 
 	// IMGUIフレーム開始処理

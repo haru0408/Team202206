@@ -11,14 +11,18 @@
 
 #include "SpecialArea.h"
 #include "HoleManager.h"
+#include "CanonManager.h"
+#include "CanonBallManager.h"
 
 // 初期化
 void SceneGame::Initialize()
 {
 	// ステージ初期化
 	stage = new Stage();
+
 	// プレイヤー初期化
 	player = new Player();
+
 	// カメラ初期設定
 	Graphics& graphics = Graphics::Instance();
 	Camera& camera = Camera::Instance();
@@ -51,6 +55,25 @@ void SceneGame::Initialize()
 	}
 
 	AreaManager::Instance().Register(new AreaWindow(DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(5, 2, 5)));
+
+	
+	// 穴の初期化
+	HoleManager& holeManager = HoleManager::Instance();
+	// Stage00
+	Hole* hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(0.0f, 0.0f, -5.0f));
+	hole->SetRadius(2.0f);
+	holeManager.Register(hole);
+
+	
+	// 砲台の初期化
+	CanonManager& canonManager = CanonManager::Instance();
+	// Stage00
+	Canon* canon = new Canon();
+	canon->SetPosition(DirectX::XMFLOAT3(5.0f, 0.0f, -5.0f));
+	canon->SetRightDirection();
+	canonManager.Register(canon);
+	
 }
 
 // 終了化
@@ -78,6 +101,11 @@ void SceneGame::Finalize()
 	// 穴終了化
 	HoleManager::Instance().Clear();
 
+	// 砲台終了化
+	CanonManager::Instance().Clear();
+	// 弾終了化
+	CanonBallManager::Instance().Clear();
+
 	// カメラコントローラー終了化
 	if (cameraController != nullptr)
 	{
@@ -96,6 +124,10 @@ void SceneGame::Update(float elapsedTime)
 	// エネミー更新処理
 	EnemyManager::Instance().Update(elapsedTime);
 
+	// 砲台更新処理
+	CanonManager::Instance().Update(elapsedTime);
+	// 弾更新処理
+	CanonBallManager::Instance().Update(elapsedTime);
 
 	// カメラコントローラー更新処理
 	DirectX::XMFLOAT3 target = player->GetPosition();
@@ -160,13 +192,19 @@ void SceneGame::Render()
 		Shader* shader = graphics.GetShader();
 		shader->Begin(dc, rc);
 
-
 		// ステージ描画
 		stage->Render(dc, shader);
+
 		// プレイヤー描画
 		player->Render(dc, shader);
+
 		// プレイヤー描画
 		EnemyManager::Instance().Render(dc, shader);
+
+		// 砲台描画
+        //CanonManager::Instance().Render(dc, shader);
+        // 弾描画
+        //CanonBallManager::Instance().Render(dc, shader);
 
 		shader->End(dc);
 	}
@@ -183,6 +221,11 @@ void SceneGame::Render()
 
 		// 穴デバッグプリミティブ描画
 		HoleManager::Instance().DrawDebugPrimitive();
+
+		// 砲台デバッグプリミティブ描画
+		CanonManager::Instance().DrawDebugPrimitive();
+		// 弾デバッグプリミティブ描画
+		CanonBallManager::Instance().DrawDebugPrimitive();
 
 		// ラインレンダラ描画実行
 		graphics.GetLineRenderer()->Render(dc, rc.view, rc.projection);
@@ -202,6 +245,11 @@ void SceneGame::Render()
 		player->DrawDebugGUI();
 		//　カメラコントローラーデバッグ描画
 		cameraController->DrawDebugGUI();
+
+		//　ImGui描画
+		HoleManager::Instance().DrawDebugGUI();
+
+		CanonManager::Instance().DrawDebugGUI();
 	}
 }
 

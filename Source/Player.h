@@ -40,6 +40,12 @@ private:
     // プレイヤーと穴との衝突距離
     void CollisionPlayerVsHoles();
 
+    // プレイヤーと砲台との衝突距離
+    void CollisionPlayerVsCanons();
+
+    // プレイヤーと弾との衝突距離
+    void CollisionPlayerVsCanonBalls();
+
 protected:
     // 着地したときに呼ばれる
     void OnLanding() override;
@@ -53,7 +59,7 @@ private:
     float  turnSpeed = DirectX::XMConvertToRadians(720);
     float  jumpSpeed = 20.0f;
 
-    bool HitFlg = false;
+    DirectX::XMFLOAT3 length = { 0.0f, 0.0f, 0.0f };
 
     bool  ScaleFlg    = false; // true:大 false:小
     float ScaleNum    = 0.0f;  // スケール補正値

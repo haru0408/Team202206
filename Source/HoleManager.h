@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <set>
+#include <imgui.h>
 
 #include "Hole.h"
 
@@ -39,6 +40,9 @@ public:
 
     // 穴取得
     Hole* GetHole(int index) { return holes.at(index); }
+
+    // デバッグ用GUI描画
+    void DrawDebugGUI();
 
 private:
     std::vector<Hole*> holes;

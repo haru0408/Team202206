@@ -1,9 +1,12 @@
 #include <imgui.h>
+
 #include "Player.h"
 #include "Camera.h"
 #include "EnemyManager.h"
 #include "Collision.h"
 #include "HoleManager.h"
+#include "CanonManager.h"
+#include "CanonBallManager.h"
 
 #include "Input/Input.h"
 #include "Graphics//Graphics.h"
@@ -14,13 +17,15 @@ Player::Player()
     model = new Model("Data/Model/Player/Player.mdl");
 
     // モデルが大きいのでスケーリング
-    scale.x = scale.y = scale.z = 0.01f;
+    scale.x = scale.y = scale.z = 0.005f;
 
+    // プレイヤーの当たり判定の大きさ設定
+    length = { 1.0f, 1.0f, 1.0f };
     radius = 0.5f;
     height = 1.0f;
 
-    // ステージの端
-    position.x = position.z = -22.0f;
+    // 位置はステージの端
+    position.x = position.z = -17.0f;
 }
 
 Player::~Player()
@@ -45,6 +50,12 @@ void Player::Update(float elapsedTime)
 
     // プレイヤーと穴との衝突距離
     CollisionPlayerVsHoles();
+
+    // プレイヤーと砲台との衝突距離
+    CollisionPlayerVsCanons();
+
+    // プレイヤーと弾との衝突距離
+    CollisionPlayerVsCanonBalls();
 
     // オブジェクト行列を更新
     UpdateTransform(DirectX::XMFLOAT3(ScaleNum, ScaleNum, ScaleNum),
@@ -108,6 +119,8 @@ void Player::DrawDebugGUI()
     }
     ImGui::End();
 
+
+    ImGui::SetNextWindowSize(ImVec2(100, 100), ImGuiCond_FirstUseEver);
     // チュートリアル
     if (ImGui::Begin("HOWTO",nullptr, ImGuiWindowFlags_None))
     {
@@ -117,10 +130,7 @@ void Player::DrawDebugGUI()
         ImGui::Text("DOWN  S");
         ImGui::Text("RIGHT D");
         ImGui::Text("");
-        ImGui::Text("ROTATE");
-        ImGui::Text("X    Z");
-        ImGui::Text("Y    X");
-        ImGui::Text("Y    C");
+        ImGui::Text("SizeChange : Space");
     }
 
     ImGui::End();
@@ -135,10 +145,10 @@ void Player::DrawDebugPrimitive()
     debugRenderer->DrawSphere(position, radius, DirectX::XMFLOAT4(0, 0, 0, 1));
 #endif // 0
 
-    // 衝突判定用のデバッグ円柱を描画
-    if (HitFlg) debugRenderer->DrawBox(position, 1.0f, 1.0f, 1.0f, DirectX::XMFLOAT4(1, 0, 0, 1));
-    else if (!HitFlg) debugRenderer->DrawBox(position, 1.0f, 1.0f, 1.0f, DirectX::XMFLOAT4(0, 0, 1, 1));
-    // 穴判定用の円柱
+    // 衝突判定用のデバッグプリミティブを描画
+    // 四角
+    debugRenderer->DrawBox(position, length.x, length.y, length.z, DirectX::XMFLOAT4(1, 0, 0, 1));
+    // 円柱
     debugRenderer->DrawCylinder(position, radius, height, DirectX::XMFLOAT4(0, 1, 0, 1));
 }
 
@@ -178,9 +188,6 @@ DirectX::XMFLOAT3 Player::GetMoveVec() const
         cameraFrontZ /= cameraFrontLength;
     }
 
-    //
-    // vec =  (ax * cameraRight + ay * cameraFront);
-
     // スティックの水平入力値をカメラ右方向に反映し、
     // スティックの垂直入力値をカメラ前方向に反映し、
     // 進行ベクトルを計算する
@@ -198,7 +205,7 @@ void Player::CollisionPlayerVsEnemies()
 {
     EnemyManager& enemyManager = EnemyManager::Instance();
 
-    // 全ての敵と総当たりで衝突処理
+    // 全ての敵と総当たりで衝突処理(四角)
     int enemyCount = enemyManager.GetEnemyCount();
     for (int i = 0; i < enemyCount; ++i)
     {
@@ -208,9 +215,9 @@ void Player::CollisionPlayerVsEnemies()
         DirectX::XMFLOAT3 outPosition;
         if (Collision::IntersectBoxVsBox_Wall(
             position,
-            1.0f,
-            1.0f,
-            1.0f,
+            length.x,
+            length.y,
+            length.z,
             enemy->GetPosition(),
             1.0f,
             1.0f,
@@ -219,10 +226,7 @@ void Player::CollisionPlayerVsEnemies()
         {
             // 押し出し後の位置設定
             SetPosition(outPosition);
-
-            HitFlg = true;
         }
-        else HitFlg = false;
     }
 }
 
@@ -236,6 +240,8 @@ void Player::InputScaleChange()
     // 小さいサイズ
     if (!ScaleFlg)
     {
+        length = { 1.0f, 1.0f, 1.0f };
+
         radius = 0.5f;
         height = 1.0f;
 
@@ -245,11 +251,13 @@ void Player::InputScaleChange()
     // 大きいサイズ
     else if (ScaleFlg)
     {
+        length = { 2.0f, 2.0f, 2.0f };
+
         radius = 1.0f;
         height = 1.5f;
 
         ScaleNum = 0.005f * 1.0f;
-        PositionNum = height * 0.5f;
+        PositionNum = height * 0.65f;
     }
 }
 
@@ -264,10 +272,10 @@ void Player::CollisionPlayerVsHoles()
     {
         Hole* hole = holeManager.GetHole(i);
 
-        // 衝突処理
+        // 衝突処理(円柱)
         DirectX::XMFLOAT3 outPosition;
-        if (Collision::IntersectCylinderVsCylinder
-        (position,
+        if (Collision::IntersectCylinderVsCylinder(
+            position,
             radius,
             height,
             hole->GetPosition(),
@@ -326,6 +334,7 @@ void Player::CollisionPlayerVsHoles()
                     FallStartFlg = false;
                     FallFlg = true;
                 }
+                // プレイヤーの半径と穴の半径大きな差があれば外側の円柱に衝突した時点で落下
                 if (!ScaleFlg && hole->GetRadius() >= 4.0f)
                 {
                     FallStartFlg = false;
@@ -340,6 +349,81 @@ void Player::CollisionPlayerVsHoles()
         else
         {
             FallStartFlg = false;
+        }
+    }
+}
+
+// プレイヤーと砲台との衝突距離
+void Player::CollisionPlayerVsCanons()
+{
+    CanonManager& canonManager = CanonManager::Instance();
+
+    // 全ての砲台と総当たりで衝突処理
+    int canonCount = canonManager.GetCanonCount();
+    for (int i = 0; i < canonCount; ++i)
+    {
+        Canon* canon = canonManager.GetCanon(i);
+
+        // 衝突処理(四角)
+        DirectX::XMFLOAT3 outPosition;
+        if (Collision::IntersectBoxVsBox_Wall(
+            position,
+            length.x,
+            length.y,
+            length.z,
+            canon->GetPosition(),
+            canon->GetLength().x,
+            canon->GetLength().y,
+            canon->GetLength().z,
+            outPosition))
+        {
+            // プレイヤーを押し出す
+            SetPosition(outPosition);
+        }
+    }
+}
+
+// プレイヤーと弾との衝突距離
+void Player::CollisionPlayerVsCanonBalls()
+{
+    CanonBallManager& canonBallManager = CanonBallManager::Instance();
+
+    // 全ての弾と総当たりで衝突処理(円柱)
+    int canonBallCount = canonBallManager.GetCanonBallCount();
+    for (int i = 0; i < canonBallCount; ++i)
+    {
+        CanonBall* canonBall = canonBallManager.GetCanonBall(i);
+
+        // 衝突処理
+        DirectX::XMFLOAT3 outPosition;
+        if (Collision::IntersectCylinderVsCylinder(
+            position,
+            radius,
+            height,
+            canonBall->GetPosition(),
+            canonBall->GetRadius(),
+            canonBall->GetHeight(),
+            outPosition))
+        {
+            // プレイヤーを押し出す
+            {
+                DirectX::XMFLOAT3 impulse;
+                const float power = 4.0f;
+                DirectX::XMFLOAT3 p = position;
+                DirectX::XMFLOAT3 b = canonBall->GetPosition();
+
+                float vx = p.x - b.x;
+                float vz = p.z - b.z;
+                float len = sqrtf(vx * vx + vz * vz);
+
+                vx /= len;
+                vz /= len;
+
+                impulse.x = vx * power;
+                impulse.z = vz * power;
+
+                AddImpulse(impulse);
+            }
         }
     }
 }

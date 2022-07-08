@@ -3,6 +3,7 @@
 #include <memory>
 #include <d3d11.h>
 #include <wrl.h>
+#include <mutex>
 #include "Graphics/Shader.h"
 #include "Graphics/DebugRenderer.h"
 #include "Graphics/LineRenderer.h"
@@ -51,6 +52,9 @@ public:
 	// ImGuiレンダラ取得
 	ImGuiRenderer* GetImGuiRenderer() const { return imguiRenderer.get(); }
 
+	// ミューテックス取得
+	std::mutex& GetMutex() { return mutex; }
+
 private:
 	static Graphics*								instance;
 
@@ -68,5 +72,7 @@ private:
 
 	float	screenWidth;
 	float	screenHeight;
+
+	std::mutex mutex;
 };
 
