@@ -65,6 +65,13 @@ private:
     DirectX::XMFLOAT2 texSize_{};
     float angle_{};
     DirectX::XMFLOAT4 color_{};
+private:
+    inline float normalizeAngle(float& angle)
+    {
+        if (angle < -DirectX::XM_PI) angle += DirectX::XM_2PI;
+        if (DirectX::XM_PI < angle) angle -= DirectX::XM_2PI;
+        return angle;
+    }
 };
 
 class MenuBar

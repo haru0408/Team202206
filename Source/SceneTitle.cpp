@@ -3,13 +3,6 @@
 
 #include "Input/Input.h"
 
-inline float normalizeAngle(float& angle)
-{
-    if (angle < -DirectX::XM_PI) angle += DirectX::XM_2PI;
-    if (DirectX::XM_PI < angle) angle -= DirectX::XM_2PI;
-    return angle;
-}
-
 
 TitleSprite::TitleSprite(const char* filename, const DirectX::XMFLOAT2& pos, SPRITE_PIVOT pivot, const DirectX::XMFLOAT2& scale, const DirectX::XMFLOAT2& texPos, const DirectX::XMFLOAT2& texSize, float angle, const DirectX::XMFLOAT4& color)
     :Sprite(filename)
