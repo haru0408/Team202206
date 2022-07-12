@@ -157,6 +157,7 @@
     <ClInclude Include="Source\NormalFloor.h" />
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\BaseScene.h" />
+    <ClInclude Include="Source\SceneClear.h" />
     <ClInclude Include="Source\SceneDebug.h" />
     <ClInclude Include="Source\SceneGame.h" />
     <ClInclude Include="Source\SceneManager.h" />
@@ -211,6 +212,7 @@
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\NormalFloor.cpp" />
     <ClCompile Include="Source\Player.cpp" />
+    <ClCompile Include="Source\SceneClear.cpp" />
     <ClCompile Include="Source\SceneDebug.cpp" />
     <ClCompile Include="Source\SceneGame.cpp" />
     <ClCompile Include="Source\SceneManager.cpp" />
