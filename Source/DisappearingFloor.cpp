@@ -44,5 +44,6 @@ void DisappearingFloor::Destroy_timer(Floor* floor, int i)
     if (timer / 60 > 3)
     {
         floor->Destroy();
+        timer = 0;
     }
 }

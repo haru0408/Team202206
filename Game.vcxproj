@@ -161,6 +161,8 @@
     <ClInclude Include="Source\SceneGame.h" />
     <ClInclude Include="Source\SceneManager.h" />
     <ClInclude Include="Source\SceneTitle.h" />
+    <ClInclude Include="Source\Spring.h" />
+    <ClInclude Include="Source\SpringManager.h" />
     <ClInclude Include="Source\Stage.h" />
     <ClInclude Include="Source\SpecialArea.h" />
   </ItemGroup>
@@ -213,6 +215,8 @@
     <ClCompile Include="Source\SceneGame.cpp" />
     <ClCompile Include="Source\SceneManager.cpp" />
     <ClCompile Include="Source\SceneTitle.cpp" />
+    <ClCompile Include="Source\Spring.cpp" />
+    <ClCompile Include="Source\SpringManager.cpp" />
     <ClCompile Include="Source\Stage.cpp" />
     <ClCompile Include="Source\SpecialArea.cpp" />
   </ItemGroup>

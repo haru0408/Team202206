@@ -175,6 +175,12 @@
     <ClCompile Include="Source\NormalFloor.cpp">
       <Filter>Source\Object\Floor</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Spring.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SpringManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Framework.h" />
@@ -334,6 +340,12 @@
     </ClInclude>
     <ClInclude Include="Source\NormalFloor.h">
       <Filter>Source\Object\Floor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Spring.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SpringManager.h">
+      <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

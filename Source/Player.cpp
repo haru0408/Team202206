@@ -8,6 +8,7 @@
 #include "CanonManager.h"
 #include "CanonBallManager.h"
 #include "FloorManager.h"
+#include "SpringManager.h"
 
 #include "Input/Input.h"
 #include "Graphics//Graphics.h"
@@ -27,6 +28,7 @@ Player::Player()
 
     // 位置はステージの端
     position.x = position.z = -17.0f;
+    position.y = 3;
 }
 
 Player::~Player()
@@ -57,6 +59,12 @@ void Player::Update(float elapsedTime)
 
     // プレイヤーと弾との衝突距離
     CollisionPlayerVsCanonBalls();
+
+    //プレイヤーと床の衝突判定
+    CollisionPlayerVsFloor();
+
+    //プレイヤーとバネの衝突判定
+    CollisionPlayerVsSpring();
 
     // オブジェクト行列を更新
     UpdateTransform(DirectX::XMFLOAT3(ScaleNum, ScaleNum, ScaleNum),
@@ -439,10 +447,7 @@ void Player::CollisionPlayerVsFloor()
     {
         Floor* floor = floorManager.GetFloor(i);
 
-        
-            if (!isGround)
-            {
-                // 衝突処理
+
                 DirectX::XMFLOAT3 outPosition;
                 if (Collision::IntersectBoxVsBox_Ground(
                     position,
@@ -459,22 +464,30 @@ void Player::CollisionPlayerVsFloor()
                     SetPosition(outPosition);
                     velocity.y = 0.0f;
 
-                    if (floor->GetFloorNum() == 0)
-                    {
-                        floor->Destroy_timer(floor, i);
-                    }
                     if (floor->GetFloorNum() == 1)
                     {
-
-                        impulse = { 5,5,5 };
+                        impulse = { 5.0f, 5.0f, 5.0f };
                         AddImpulse(impulse);
                     }
                 }
-            }
+                if (Collision::IntersectBoxVsBox_Ground(
+                    DirectX::XMFLOAT3(position.x, position.y - 0.01f, position.z),
+                    1.0f,
+                    1.0f,
+                    1.0f,
+                    floor->GetPosition(),
+                    3.0f,
+                    1.0f,
+                    3.0f,
+                    outPosition) &&
+                    floor->GetFloorNum() == 0)
+                {
+                    floor->Destroy_timer(floor, i);
+                }
+
+            
         
     }
-
-
 }
 
 void Player::OnLanding()
@@ -482,3 +495,40 @@ void Player::OnLanding()
     jumpCount = 0;
 }
     
+void Player::Revelo()
+{
+    velocity.x *= -5;
+    velocity.z *= -5;
+}
+
+void Player::CollisionPlayerVsSpring()
+{
+    SpringManager& springManager = SpringManager::Instance();
+
+    int SpringCount = springManager.GetSpringCount();
+
+
+
+    // 衝突処理
+    DirectX::XMFLOAT3 outPosition;
+    for (int i = 0; i < SpringCount; i++)
+    {
+        Spring* spring = springManager.GetSpring(i);
+        if (Collision::IntersectBoxVsBox_Wall(
+            position,
+            1.0f,
+            1.0f,
+            1.0f,
+            spring->GetPosition(),
+            1.0f,
+            1.0f,
+            1.0f,
+            outPosition))
+        {
+            // 押し出し後の位置設定
+            Revelo();
+
+        }
+    }
+
+}

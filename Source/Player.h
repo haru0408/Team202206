@@ -25,6 +25,9 @@ public:
 
 private:
 
+    //移動反転
+    void Revelo();
+
     // スティック入力値から移動ベクトルを取得
     DirectX::XMFLOAT3 GetMoveVec() const;
 
@@ -48,6 +51,9 @@ private:
 
     //プレイヤーと床との衝突判定
     void CollisionPlayerVsFloor();
+
+    //プレイヤーとバネとの衝突判定
+    void CollisionPlayerVsSpring();
 
 protected:
     // 着地したときに呼ばれる
