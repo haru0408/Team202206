@@ -71,6 +71,9 @@ void Player::Update(float elapsedTime)
                     DirectX::XMFLOAT3(0, 0, 0),
                     DirectX::XMFLOAT3(0, PositionNum, 0));
 
+    // ボール(モデル)回転処理
+    BallRoll(elapsedTime);
+
     //モデル行列更新
     model->UpdateTransform(transform);
 }
@@ -207,6 +210,38 @@ DirectX::XMFLOAT3 Player::GetMoveVec() const
     vec.y = 0.0f;
 
     return vec;
+}
+
+// ボール(モデル)回転処理
+void Player::BallRoll(float elapsedTime)
+{
+    // スティック・ボタン入力値によってボール(モデル)を転がす
+    GamePad& gamePad = Input::Instance().GetGamePad();
+
+    float ax = gamePad.GetAxisLX();
+    float ay = gamePad.GetAxisLY();
+    const float RollSpeed = 0.001f;
+
+    // 斜め移動
+    if (ax != 0.0f && ay != 0.0f)
+    {
+        ax *= ay;
+
+        if (ax > 0.0f) angle.x += ax / elapsedTime * (RollSpeed * 2.0f);
+        else if (ax < 0.0f) angle.x -= ax / elapsedTime * (RollSpeed * 2.0f);
+    }
+    // 横移動
+    else if (ax != 0.0f)
+    {
+        if (ax > 0.0f) angle.x += ax / elapsedTime * RollSpeed;
+        else if (ax < 0.0f) angle.x -= ax / elapsedTime * RollSpeed;
+    }
+    // 縦移動
+    else if (ay != 0.0f)
+    {
+        if (ay > 0.0f) angle.x += ay / elapsedTime * RollSpeed;
+        else if (ay < 0.0f) angle.x -= ay / elapsedTime * RollSpeed;
+    }
 }
 
 // プレイヤーとエネミーとの衝突距離

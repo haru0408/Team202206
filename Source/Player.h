@@ -34,6 +34,9 @@ private:
     // 移動入力処理
     void InputMove(float elapsedTime);
 
+    // ボール(モデル)回転処理
+    void BallRoll(float elapsedTime);
+
     // プレイヤーとエネミーとの衝突処理
     void CollisionPlayerVsEnemies();
 
