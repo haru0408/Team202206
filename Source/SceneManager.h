@@ -13,6 +13,7 @@ enum class SCENE_TYPE
     DEBUG
     , TITLE
     , GAME
+    , CLEAR
 };
 
 class Scene;

@@ -5,7 +5,7 @@
 #include "SceneDebug.h"
 #include "SceneTitle.h"
 #include "SceneGame.h"
-
+#include "SceneClear.h"
 
 Scene* SceneManager::scene = &SceneDebug::Instance();
 
@@ -56,6 +56,9 @@ void SceneManager::changeScene(SCENE_TYPE next)
         break;
     case SCENE_TYPE::GAME:
         scene = &SceneGame::Instance();
+        break;
+    case SCENE_TYPE::CLEAR:
+        scene = &SceneClear::Instance();
         break;
     }
     scene->Initialize();
