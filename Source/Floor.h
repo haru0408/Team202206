@@ -12,7 +12,7 @@ public:
 
     void Update();
 
-    void UpdateTransform();
+    virtual void UpdateTransform();
 
     // XVˆ—
     virtual void Update(float elapsedTime) = 0;

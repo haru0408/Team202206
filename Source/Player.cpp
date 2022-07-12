@@ -28,7 +28,7 @@ Player::Player()
 
     // 位置はステージの端
     position.x = position.z = -17.0f;
-    position.y = 3;
+    position.y = 100;
 }
 
 Player::~Player()

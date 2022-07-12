@@ -100,7 +100,7 @@ protected:
 
     float radius = 0.5f;
 
-    float  gravity = -1.0f;
+    float  gravity = -0.5f;
     float  friction = 0.5f;
 
     DirectX::XMFLOAT3 velocity = { 0, 0, 0 };
