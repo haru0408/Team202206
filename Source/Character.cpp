@@ -194,21 +194,6 @@ void Character::UpdateVerticalMove(float elapsedTime)
     // 移動処理
     position.y += velocity.y * elapsedTime;
 
-    // 地面判定
-    if (position.y < 0.0f && !FallFlg)
-    {
-        position.y = 0.0f;
-        velocity.y = 0.0f;
-
-        // 着地した
-        if (!isGround) OnLanding();
-        isGround = true;
-    }
-    else
-    {
-        // 地面に接していない
-        isGround = false;
-    }
 }
 
 // 水平速力更新処理

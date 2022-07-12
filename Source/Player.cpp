@@ -460,10 +460,12 @@ void Player::CollisionPlayerVsFloor()
                     3.0f,
                     outPosition))
                 {
-                    // 押し出し後の位置設定
-                    SetPosition(outPosition);
-                    velocity.y = 0.0f;
-
+                    if (!FallFlg)
+                    {
+                        // 押し出し後の位置設定
+                        SetPosition(outPosition);
+                        velocity.y = 0.0f;
+                    }
                     if (floor->GetFloorNum() == 1)
                     {
                         impulse = { 5.0f, 5.0f, 5.0f };

@@ -4,16 +4,29 @@
 Stage::Stage()
 {
     // ステージモデルを読み込み
-    model = new Model("Data/Model/Stage/Stage_1.mdl");
+    model[0] = new Model("Data/Model/Stage/Floor_0.mdl");
+    model[1] = new Model("Data/Model/Stage/Floor_1.mdl");
+    model[2] = new Model("Data/Model/Stage/Floor_2.mdl");
+    model[3] = new Model("Data/Model/Stage/Floor_3.mdl");
+    model[4] = new Model("Data/Model/Stage/Floor_4.mdl");
+    model[5] = new Model("Data/Model/Stage/Floor_5.mdl");
+
+    for (int i = 0; i < 6; i++)
+    {
+        position[i].y = { 20.0f * i };
+    }
+
     scale.x = scale.z = 0.005f;
     scale.y = 0.0035;
-    position.y = -1;
 }
 
 Stage::~Stage()
 {
     // ステージモデルを破棄
-    delete model;
+    for (int i = 0; i < 6; i++)
+    {
+        delete model[i];
+    }
 }
 
 // 行列更新処理
@@ -26,13 +39,16 @@ void Stage::UpdateTransform()
     DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(angle.x, angle.y, angle.z);
 
     // 位置行列を作成
-    DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(position.x, position.y, position.z);
+    for (int i = 0; i < 6; i++)
+    {
+        DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(position[i].x, position[i].y, position[i].z);
 
-    // 3つの行列を組み合わせ、ワールド行列を作成
-    DirectX::XMMATRIX W = S * R * T;
+        // 3つの行列を組み合わせ、ワールド行列を作成
+        DirectX::XMMATRIX W = S * R * T;
 
-    // 計算したワールド行列を取り出す
-    DirectX::XMStoreFloat4x4(&transform, W);
+        // 計算したワールド行列を取り出す
+        DirectX::XMStoreFloat4x4(&transform[i], W);
+    }
 }
 
 // 更新処理
@@ -40,12 +56,19 @@ void Stage::Update(float elapsedTime)
 {
     UpdateTransform();
 
-    model->UpdateTransform(transform);
+    for (int i = 0; i < 6; i++)
+    {
+        model[i]->UpdateTransform(transform[i]);
+    }
+  
 }
 
 // 描画処理
 void Stage::Render(ID3D11DeviceContext* dc, Shader* shader)
 {
     // シェーダーにモデルを描画してもらう
-    shader->Draw(dc, model);
+    for (int i = 0; i < 6; i++)
+    {
+        shader->Draw(dc, model[i]);
+    }
 }
