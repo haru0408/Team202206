@@ -88,13 +88,37 @@ void SceneGame::Initialize()
 	
 	// åäÇÃèâä˙âª
 	HoleManager& holeManager = HoleManager::Instance();
-	// Stage00
+	// Stage01
 	Hole* hole = new Hole();
-	hole->SetPosition(DirectX::XMFLOAT3(0.0f, 0.0f, -5.0f));
+	hole->SetPosition(DirectX::XMFLOAT3(0.0f, 20.0f, -5.0f));
+	hole->SetRadius(2.0f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(0.0f, 20.0f, -5.0f));
+	hole->SetRadius(2.0f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(0.0f, 20.0f, -5.0f));
+	hole->SetRadius(2.0f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(0.0f, 20.0f, -5.0f));
+	hole->SetRadius(2.0f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(0.0f, 20.0f, -5.0f));
+	hole->SetRadius(2.0f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(0.0f, 20.0f, -5.0f));
+	hole->SetRadius(2.0f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(0.0f, 20.0f, -5.0f));
 	hole->SetRadius(2.0f);
 	holeManager.Register(hole);
 
-	
+	/*
 	// ñCë‰ÇÃèâä˙âª
 	CanonManager& canonManager = CanonManager::Instance();
 	// Stage00
@@ -102,7 +126,7 @@ void SceneGame::Initialize()
 	canon->SetPosition(DirectX::XMFLOAT3(5.0f, 0.0f, -5.0f));
 	canon->SetRightDirection();
 	canonManager.Register(canon);
-	
+	*/
 }
 
 // èIóπâª
@@ -168,9 +192,9 @@ void SceneGame::Update(float elapsedTime)
 	cameraController->Update(elapsedTime);
 
 	// change scene
-	if (Input::Instance().GetGamePad().GetButtonDown()
-		& GamePad::BTN_BACK)
-		SceneManager::Instance().changeScene(SCENE_TYPE::TITLE);
+	//if (Input::Instance().GetGamePad().GetButtonDown()
+	//	& GamePad::BTN_BACK)
+	//	SceneManager::Instance().changeScene(SCENE_TYPE::TITLE);
 }
 
 // ï`âÊèàóù
