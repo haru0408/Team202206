@@ -56,7 +56,7 @@ void SceneGame::Initialize()
 	{
 		for (int z = 0; z < 15; z++)
 		{
-			for (int y = 0; y < 5; y++)
+			for (int y = 0; y < 6; y++)
 			{
 				switch (y)
 				{
@@ -74,6 +74,10 @@ void SceneGame::Initialize()
 					break;
 				case 4:
 					SetMap(Floor_4, x, z, y);
+					break;
+				case 5:
+					SetMap(Floor_5, x, z, y);
+					break;
 				}
 			}
 		}
@@ -291,7 +295,7 @@ void SceneGame::SetMap(int Floor[15][15], int x, int z, int y)
 	if (Floor[x][z] == 0)
 	{
 		NormalFloor* Normalfloor = new NormalFloor();
-		Normalfloor->SetPosition(DirectX::XMFLOAT3(-20.0f + (x * 3.0f), -1 + (y * 20), -20.0f + (z * 3.0f)));
+		Normalfloor->SetPosition(DirectX::XMFLOAT3(-20.0f + (x * 3.0f), -0.6f + (y * 19.95), -20.0f + (z * 3.0f)));
 		Normalfloor->SetFloorStage(y);
 		floorManager.Register(Normalfloor);
 	}
@@ -299,7 +303,7 @@ void SceneGame::SetMap(int Floor[15][15], int x, int z, int y)
 	if (Floor[x][z] == 1)
 	{
 		AccelerationFloor* Accelerationfloor = new AccelerationFloor();
-		Accelerationfloor->SetPosition(DirectX::XMFLOAT3(-20.0f + (x * 3.0f), -1 + (y * 20), -20.0f + (z * 3.0f)));
+		Accelerationfloor->SetPosition(DirectX::XMFLOAT3(-20.0f + (x * 3.0f), -0.6f + (y * 19.95), -20.0f + (z * 3.0f)));
 		Accelerationfloor->SetFloorStage(y);
 		floorManager.Register(Accelerationfloor);
 	}
@@ -307,7 +311,7 @@ void SceneGame::SetMap(int Floor[15][15], int x, int z, int y)
 	if (Floor[x][z] == 2)
 	{
 		DisappearingFloor* Disapperaringfloor = new DisappearingFloor();
-		Disapperaringfloor->SetPosition(DirectX::XMFLOAT3(-20.0f + (x * 3.0f), -1 + (y * 20), -20.0f + (z * 3.0f)));
+		Disapperaringfloor->SetPosition(DirectX::XMFLOAT3(-20.0f + (x * 3.0f), -0.6f + (y * 19.95), -20.0f + (z * 3.0f)));
 		Disapperaringfloor->SetFloorStage(y);
 		floorManager.Register(Disapperaringfloor);
 	}
