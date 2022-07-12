@@ -160,6 +160,21 @@
     <ClCompile Include="Source\EffectManager.cpp">
       <Filter>Source\Effect</Filter>
     </ClCompile>
+    <ClCompile Include="Source\AccelerationFloor.cpp">
+      <Filter>Source\Object\Floor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DisappearingFloor.cpp">
+      <Filter>Source\Object\Floor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Floor.cpp">
+      <Filter>Source\Object\Floor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FloorManager.cpp">
+      <Filter>Source\Object\Floor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\NormalFloor.cpp">
+      <Filter>Source\Object\Floor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Framework.h" />
@@ -304,6 +319,21 @@
     </ClInclude>
     <ClInclude Include="Source\EffectManager.h">
       <Filter>Source\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AccelerationFloor.h">
+      <Filter>Source\Object\Floor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DisappearingFloor.h">
+      <Filter>Source\Object\Floor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Floor.h">
+      <Filter>Source\Object\Floor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FloorManager.h">
+      <Filter>Source\Object\Floor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\NormalFloor.h">
+      <Filter>Source\Object\Floor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

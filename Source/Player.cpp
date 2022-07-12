@@ -7,6 +7,7 @@
 #include "HoleManager.h"
 #include "CanonManager.h"
 #include "CanonBallManager.h"
+#include "FloorManager.h"
 
 #include "Input/Input.h"
 #include "Graphics//Graphics.h"
@@ -426,6 +427,54 @@ void Player::CollisionPlayerVsCanonBalls()
             }
         }
     }
+}
+
+void Player::CollisionPlayerVsFloor()
+{
+    FloorManager& floorManager = FloorManager::Instance();
+
+    // ‘S‚Ä‚Ì“G‚Æ‘“–‚½‚è‚ÅÕ“Ëˆ—
+    int floorCount = floorManager.GetFloorCount();
+    for (int i = 0; i < floorCount; ++i)
+    {
+        Floor* floor = floorManager.GetFloor(i);
+
+        
+            if (!isGround)
+            {
+                // Õ“Ëˆ—
+                DirectX::XMFLOAT3 outPosition;
+                if (Collision::IntersectBoxVsBox_Ground(
+                    position,
+                    1.0f,
+                    1.0f,
+                    1.0f,
+                    floor->GetPosition(),
+                    3.0f,
+                    1.0f,
+                    3.0f,
+                    outPosition))
+                {
+                    // ‰Ÿ‚µo‚µŒã‚ÌˆÊ’uİ’è
+                    SetPosition(outPosition);
+                    velocity.y = 0.0f;
+
+                    if (floor->GetFloorNum() == 0)
+                    {
+                        floor->Destroy_timer(floor, i);
+                    }
+                    if (floor->GetFloorNum() == 1)
+                    {
+
+                        impulse = { 5,5,5 };
+                        AddImpulse(impulse);
+                    }
+                }
+            }
+        
+    }
+
+
 }
 
 void Player::OnLanding()

@@ -46,6 +46,9 @@ private:
     // プレイヤーと弾との衝突距離
     void CollisionPlayerVsCanonBalls();
 
+    //プレイヤーと床との衝突判定
+    void CollisionPlayerVsFloor();
+
 protected:
     // 着地したときに呼ばれる
     void OnLanding() override;
@@ -60,6 +63,8 @@ private:
     float  jumpSpeed = 20.0f;
 
     DirectX::XMFLOAT3 length = { 0.0f, 0.0f, 0.0f };
+
+    DirectX::XMFLOAT3 impulse = {};
 
     bool  ScaleFlg    = false; // true:大 false:小
     float ScaleNum    = 0.0f;  // スケール補正値

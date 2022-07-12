@@ -14,6 +14,11 @@
 #include "CanonManager.h"
 #include "CanonBallManager.h"
 
+#include "NormalFloor.h"
+#include "DisappearingFloor.h"
+#include "AccelerationFloor.h"
+#include "FloorManager.h"
+
 // 初期化
 void SceneGame::Initialize()
 {
@@ -40,18 +45,38 @@ void SceneGame::Initialize()
 	// カメラコントローラー初期化
 	cameraController = new CameraController;
 
-	// エネミー初期化
-	EnemyManager& enemyManager = EnemyManager::Instance();
 #if 0
 	EnemySlime* slime = new EnemySlime();
 	slime->SetPosition(DirectX::XMFLOAT3(0, 0, 5));
 	enemyManager.Register(slime);
 #endif
-	for (int i = 0; i < 2; ++i)
+
+	//床の初期化
+	for (int x = 0; x < 15; x++)
 	{
-		EnemySlime* slime = new EnemySlime();
-		slime->SetPosition(DirectX::XMFLOAT3(i * 2.0f, 0, 5));
-		enemyManager.Register(slime);
+		for (int z = 0; z < 15; z++)
+		{
+			for (int y = 0; y < 5; y++)
+			{
+				switch (y)
+				{
+				case 0:
+					SetMap(Floor_0, x, z, y);
+					break;
+				case 1:
+					SetMap(Floor_1, x, z, y);
+					break;
+				case 2:
+					SetMap(Floor_2, x, z, y);
+					break;
+				case 3:
+					SetMap(Floor_3, x, z, y);
+					break;
+				case 4:
+					SetMap(Floor_4, x, z, y);
+				}
+			}
+		}
 	}
 
 	AreaManager::Instance().Register(new AreaWindow(DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(5, 2, 5)));
@@ -96,6 +121,8 @@ void SceneGame::Finalize()
 	// エネミー終了化
 	EnemyManager::Instance().Clear();
 
+	FloorManager::Instance().Clear();
+
 	AreaManager::Instance().Clear();
 
 	// 穴終了化
@@ -124,6 +151,7 @@ void SceneGame::Update(float elapsedTime)
 	// エネミー更新処理
 	EnemyManager::Instance().Update(elapsedTime);
 
+	FloorManager::Instance().Update(elapsedTime);
 	// 砲台更新処理
 	CanonManager::Instance().Update(elapsedTime);
 	// 弾更新処理
@@ -219,6 +247,8 @@ void SceneGame::Render()
 
 		AreaManager::Instance().DrawDebugPrimitive();
 
+		FloorManager::Instance().DrawDebugPrimitive();
+
 		// 穴デバッグプリミティブ描画
 		HoleManager::Instance().DrawDebugPrimitive();
 
@@ -253,5 +283,36 @@ void SceneGame::Render()
 	}
 }
 
+void SceneGame::SetMap(int Floor[15][15], int x, int z, int y)
+{
+	//床の配置
+	FloorManager& floorManager = FloorManager::Instance();
+
+	if (Floor[x][z] == 0)
+	{
+		NormalFloor* Normalfloor = new NormalFloor();
+		Normalfloor->SetPosition(DirectX::XMFLOAT3(-20.0f + (x * 3.0f), 0 + (y * 20), -20.0f + (z * 3.0f)));
+		Normalfloor->SetFloorStage(y);
+		floorManager.Register(Normalfloor);
+	}
+
+	if (Floor[x][z] == 1)
+	{
+		AccelerationFloor* Accelerationfloor = new AccelerationFloor();
+		Accelerationfloor->SetPosition(DirectX::XMFLOAT3(-20.0f + (x * 3.0f), 0 + (y * 20), -20.0f + (z * 3.0f)));
+		Accelerationfloor->SetFloorStage(y);
+		floorManager.Register(Accelerationfloor);
+	}
+
+	if (Floor[x][z] == 2)
+	{
+		DisappearingFloor* Disapperaringfloor = new DisappearingFloor();
+		Disapperaringfloor->SetPosition(DirectX::XMFLOAT3(-20.0f + (x * 3.0f), 0 + (y * 20), -20.0f + (z * 3.0f)));
+		Disapperaringfloor->SetFloorStage(y);
+		floorManager.Register(Disapperaringfloor);
+	}
+
+}
 /* get type */
 const SCENE_TYPE SceneGame::getType() { return SCENE_TYPE::GAME; }
+
