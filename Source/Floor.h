@@ -10,8 +10,6 @@ public:
 
     virtual ~Floor() {}
 
-    void Update();
-
     virtual void UpdateTransform();
 
     // XVˆ—

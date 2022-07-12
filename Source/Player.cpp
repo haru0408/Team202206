@@ -490,9 +490,9 @@ void Player::CollisionPlayerVsFloor()
                     1.0f,
                     1.0f,
                     floor->GetPosition(),
-                    3.0f,
+                    2.0f,
                     1.0f,
-                    3.0f,
+                    2.0f,
                     outPosition))
                 {
                     if (!FallFlg)

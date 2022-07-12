@@ -16,6 +16,7 @@ Stage::Stage()
         position[i].y = { 20.0f * i };
     }
 
+
     scale.x = scale.z = 0.005f;
     scale.y = 0.0035;
 }

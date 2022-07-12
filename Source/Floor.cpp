@@ -26,9 +26,9 @@ void Floor::DrawDebugPrimitive()
     DebugRenderer* debugRenderer = Graphics::Instance().GetDebugRenderer();
 
     // 衝突判定用のデバッグ円柱を描画
-    if(floor_num==0)debugRenderer->DrawBox(position, 3.0f, 1.0f, 3.0f, DirectX::XMFLOAT4(0, 1, 0, 1));
-    if (floor_num == 1)debugRenderer->DrawBox(position,3.0f, 1.0f, 3.0f, DirectX::XMFLOAT4(1, 0, 0, 1));
-    if (floor_num == 2)debugRenderer->DrawBox(position, 3.0f, 1.0f, 3.0f, DirectX::XMFLOAT4(0, 0, 1, 1));
+    if(floor_num==0)debugRenderer->DrawBox(position, 2.0f, 1.0f, 2.0f, DirectX::XMFLOAT4(0, 1, 0, 1));
+    if (floor_num == 1)debugRenderer->DrawBox(position,2.0f, 1.0f, 2.0f, DirectX::XMFLOAT4(1, 0, 0, 1));
+    if (floor_num == 2)debugRenderer->DrawBox(position, 2.0f, 1.0f, 2.0f, DirectX::XMFLOAT4(0, 0, 1, 1));
 }
 
 void Floor::Destroy()
