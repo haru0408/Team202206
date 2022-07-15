@@ -25,6 +25,13 @@ public:
 
     // ˆÊ’uÝ’è
     void SetPosition(const DirectX::XMFLOAT3& position) { this->position = position; }
+
+    // ’·‚³Žæ“¾
+    const DirectX::XMFLOAT3& GetLength() const { return length; }
+
+    // ’·‚³Ý’è
+    void SetLength(const DirectX::XMFLOAT3& length) { this->length = length; }
+
 private:
 protected:
     DirectX::XMFLOAT3     position = { 0, 0, 0 };
@@ -37,7 +44,5 @@ protected:
         0, 0, 0, 1
     };
 
-    float width = 1.0f;
-    float height = 1.0f;
-    float length = 1.0f;
+    DirectX::XMFLOAT3     length = { 0.0f, 0.0f, 0.0f };
 };

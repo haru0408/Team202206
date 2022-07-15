@@ -20,6 +20,8 @@
 #include "AccelerationFloor.h"
 #include "FloorManager.h"
 
+#include "EffectManager.h"
+
 // 初期化
 void SceneGame::Initialize()
 {
@@ -45,12 +47,6 @@ void SceneGame::Initialize()
 	);
 	// カメラコントローラー初期化
 	cameraController = new CameraController;
-
-#if 0
-	EnemySlime* slime = new EnemySlime();
-	slime->SetPosition(DirectX::XMFLOAT3(0, 0, 5));
-	enemyManager.Register(slime);
-#endif
 
 	//床の初期化
 	for (int x = 0; x < 20; x++)
@@ -84,18 +80,30 @@ void SceneGame::Initialize()
 		}
 	}
 
-	AreaManager::Instance().Register(new AreaWindow(DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(5, 2, 5)));
+	// 風エリアの初期化
+	AreaManager::Instance().Register(new AreaWindow(DirectX::XMFLOAT3(13.75f, 100.0f, 2.3f), 
+		DirectX::XMFLOAT3(11.0f, 2.0f, 3.0f), 
+		DirectX::XMFLOAT3(-0.4f, 0.0f, 0.0f)));
+	wind1Effect = new Effect("Data/Effect/WindLeftEffect.efk");
+	AreaManager::Instance().Register(new AreaWindow(DirectX::XMFLOAT3(-0.5f, 100.0f, 10.0f),
+		DirectX::XMFLOAT3(3.0f, 2.0f, 5.0f),
+		DirectX::XMFLOAT3(0.0f, 0.0f, -0.4f)));
+	wind2Effect = new Effect("Data/Effect/WindDownEffect.efk");
+	AreaManager::Instance().Register(new AreaWindow(DirectX::XMFLOAT3(-9.0f, 100.0f, 16.5f),
+		DirectX::XMFLOAT3(3.0f, 2.0f, 4.5f),
+		DirectX::XMFLOAT3(0.0f, 0.0f, -0.4)));
+	wind3Effect = new Effect("Data/Effect/WindDownEffect_.efk");
+
+	warpEffect = new Effect("Data/Effect/warp.efk");
 
 	// 穴の初期化
 	HoleInitialize();
 
 	// 砲台の初期化
-	CanonInitialize();
+	//CanonInitialize();
 
-	SpringManager& springManager = SpringManager::Instance();
-	Spring* spring = new Spring;
-	spring->SetPosition(DirectX::XMFLOAT3(10.0f, 20.0f, -5.0f));
-	springManager.Register(spring);
+	// バネの初期化
+	SpringInitialize();
 }
 
 // 終了化
@@ -129,14 +137,21 @@ void SceneGame::Finalize()
 	CanonManager::Instance().Clear();
 	// 弾終了化
 	CanonBallManager::Instance().Clear();
+
 	//バネ終了化
 	SpringManager::Instance().Clear();
+
 	// カメラコントローラー終了化
 	if (cameraController != nullptr)
 	{
 		delete cameraController;
 		cameraController = nullptr;
 	}
+
+	// エフェクト終了化
+	delete wind1Effect;
+	delete wind2Effect;
+	delete wind3Effect;
 }
 
 // 更新処理
@@ -150,17 +165,31 @@ void SceneGame::Update(float elapsedTime)
 	EnemyManager::Instance().Update(elapsedTime);
 
 	FloorManager::Instance().Update(elapsedTime);
+
 	// 砲台更新処理
 	CanonManager::Instance().Update(elapsedTime);
 	// 弾更新処理
 	CanonBallManager::Instance().Update(elapsedTime);
+
 	//バネの更新処理
 	SpringManager::Instance().Update(elapsedTime);
+
+	// エフェクト更新処理
+	EffectManager::Instance().Update(elapsedTime);
+
 	// カメラコントローラー更新処理
 	DirectX::XMFLOAT3 target = player->GetPosition();
 	target.y += 0.5f;
 	cameraController->SetTarget(target);
 	cameraController->Update(elapsedTime);
+
+	// エフェクト再生
+	wind1Effect->Play(DirectX::XMFLOAT3(16.75f, 101.0f, 2.3f));
+	wind2Effect->Play(DirectX::XMFLOAT3(-0.5f, 101.0f, 12.5f));
+	wind2Effect->Play(DirectX::XMFLOAT3(-9.0f, 100.0f, 16.5f));
+	if ((Timer % 120) == 0) warpEffect->Play(DirectX::XMFLOAT3(0.0f, 20.0f, 0.0f));
+
+	++Timer;
 
 	// change scene
 	//if (Input::Instance().GetGamePad().GetButtonDown()
@@ -236,6 +265,10 @@ void SceneGame::Render()
 		SpringManager::Instance().Render(dc, shader);
 		shader->End(dc);
 	}
+	// 3Dエフェクト描画
+	{
+		EffectManager::Instance().Render(rc.view, rc.projection);
+	}
 
 	// 3Dデバッグ描画
 	{
@@ -245,7 +278,7 @@ void SceneGame::Render()
 		// エネミーデバッグプリミティブ描画
 		EnemyManager::Instance().DrawDebugPrimitive();
 
-		AreaManager::Instance().DrawDebugPrimitive();
+		//AreaManager::Instance().DrawDebugPrimitive();
 
 		//FloorManager::Instance().DrawDebugPrimitive();
 
@@ -258,6 +291,7 @@ void SceneGame::Render()
 		//CanonBallManager::Instance().DrawDebugPrimitive();
 
 		SpringManager::Instance().DrawDebugPrimitive();
+
 		// ラインレンダラ描画実行
 		graphics.GetLineRenderer()->Render(dc, rc.view, rc.projection);
 
@@ -602,4 +636,16 @@ void SceneGame::CanonInitialize()
 	//canon->SetPosition(DirectX::XMFLOAT3(10.5f, 80.2f, 18.0f));
 	//canon->SetDownDirection();
 	//canonManager.Register(canon);
+}
+
+void SceneGame::SpringInitialize()
+{
+	// インスタンス取得
+	SpringManager& springManager = SpringManager::Instance();
+
+	// Stage01
+	Spring* spring = new Spring;
+	spring->SetPosition(DirectX::XMFLOAT3(18.5f, 20.35f, 9.5f));
+	spring->SetLength(DirectX::XMFLOAT3(3.0f, 1.0f, 3.0f));
+	springManager.Register(spring);
 }

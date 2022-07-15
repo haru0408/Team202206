@@ -28,7 +28,7 @@ Player::Player()
 
     // 位置はステージの端
     position.x = position.z = 17.0f;
-    position.y = 82.0f;
+    position.y = 22.0f;
 }
 
 Player::~Player()
@@ -126,6 +126,9 @@ void Player::DrawDebugGUI()
             angle.z = DirectX::XMConvertToRadians(a.z);
             // スケール
             ImGui::InputFloat3("Scale", &scale.x);
+
+            // 
+            ImGui::InputFloat3("Length", &length.x);
         }
 
     }
@@ -284,7 +287,7 @@ void Player::InputScaleChange()
     // 小さいサイズ
     if (!ScaleFlg)
     {
-        length = { 1.0f, 1.0f, 1.0f };
+        //length = { 1.0f, 1.0f, 1.0f };
 
         radius = 0.5f;
         height = 1.0f;
@@ -476,9 +479,9 @@ void Player::CollisionPlayerVsFloor()
                 DirectX::XMFLOAT3 outPosition;
                 if (Collision::IntersectBoxVsBox_Ground(
                     position,
-                    1.0f,
-                    1.0f,
-                    1.0f,
+                    length.x,
+                    length.y,
+                    length.z,
                     floor->GetPosition(),
                     2.0f,
                     1.0f,
@@ -509,9 +512,9 @@ void Player::CollisionPlayerVsFloor()
                 }
                 if (Collision::IntersectBoxVsBox_Ground(
                     DirectX::XMFLOAT3(position.x, position.y - 0.01f, position.z),
-                    1.0f,
-                    1.0f,
-                    1.0f,
+                    length.x,
+                    length.y,
+                    length.z,
                     floor->GetPosition(),
                     3.0f,
                     1.0f,
@@ -551,14 +554,13 @@ void Player::CollisionPlayerVsSpring()
         Spring* spring = springManager.GetSpring(i);
         if (Collision::IntersectBoxVsBox_Wall(
             position,
-            1.0f,
-            1.0f,
-            1.0f,
+            length.x,
+            length.y,
+            length.z,
             spring->GetPosition(),
-            1.0f,
-            1.0f,
-            1.0f,
-            outPosition))Revelo();
-
+            spring->GetLength().x,
+            spring->GetLength().y,
+            spring->GetLength().z,
+            outPosition)) Revelo();
     }
 }

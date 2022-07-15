@@ -175,17 +175,17 @@
     <ClCompile Include="Source\NormalFloor.cpp">
       <Filter>Source\Object\Floor</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Spring.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\SpringManager.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="Source\SceneClear.cpp">
       <Filter>Source\Scene</Filter>
     </ClCompile>
     <ClCompile Include="Source\BaseScene.cpp">
       <Filter>Source\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Spring.cpp">
+      <Filter>Source\Object\Spring</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SpringManager.cpp">
+      <Filter>Source\Object\Spring</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -347,14 +347,14 @@
     <ClInclude Include="Source\NormalFloor.h">
       <Filter>Source\Object\Floor</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Spring.h">
-      <Filter>Source</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SpringManager.h">
-      <Filter>Source</Filter>
-    </ClInclude>
     <ClInclude Include="Source\SceneClear.h">
       <Filter>Source\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Spring.h">
+      <Filter>Source\Object\Spring</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SpringManager.h">
+      <Filter>Source\Object\Spring</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -425,6 +425,9 @@
     </Filter>
     <Filter Include="Source\Effect">
       <UniqueIdentifier>{5c0fd8c2-c5cb-4510-9edd-ba7898df43ec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Object\Spring">
+      <UniqueIdentifier>{52baff1d-bb64-4d1e-93b9-8767c2b83f06}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

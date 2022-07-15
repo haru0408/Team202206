@@ -20,7 +20,7 @@ class AreaWindow
 {
 public:
     // constructer etc.
-    AreaWindow(const DirectX::XMFLOAT3& position,const DirectX::XMFLOAT3& radius, float pushPower = 0.75f)
+    AreaWindow(const DirectX::XMFLOAT3& position,const DirectX::XMFLOAT3& radius, const DirectX::XMFLOAT3& pushPower)
         :pushValue_(pushPower),radius_(radius),position_(position)
     { }
     AreaWindow(AreaWindow&) = delete;
@@ -34,7 +34,7 @@ public:
     //getter
     const DirectX::XMFLOAT3& GetPosition()const { return position_; }
     const DirectX::XMFLOAT3& GetRadius()const { return radius_; }
-    float GetPower()const { return pushValue_; }
+    DirectX::XMFLOAT3 GetPower()const { return pushValue_; }
     //setter
     const DirectX::XMFLOAT3& SetRadius()const { return radius_; }
 
@@ -42,7 +42,7 @@ public:
 private:
     DirectX::XMFLOAT3 position_ = {};
     DirectX::XMFLOAT3 radius_ = {};
-    float pushValue_ = 0.0f;
+    DirectX::XMFLOAT3 pushValue_ = {};
 };
 
 class AreaManager

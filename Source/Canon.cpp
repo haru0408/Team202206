@@ -20,10 +20,12 @@ void Canon::Update(float elapsedTime)
 {
     CanonBallManager& canonBallManager = CanonBallManager::Instance();
 
+    CanonBall* canonBall;
+
     // ’e”­ŽË
     if (LanchTimer < 0)
     {
-        CanonBall* canonBall = new CanonBall();
+        canonBall = new CanonBall();
         canonBall->SetPosition(DirectX::XMFLOAT3(position.x, position.y + (length.y * 0.35f), position.z));
         canonBallManager.Register(canonBall);
 

@@ -89,7 +89,9 @@ void AreaManager::CollisionAreaVsCharacter(Character* obj,float elapsedFrame)
             ))
             {
                 auto v = obj->GetVelocity();
-                v.z -= it->GetPower() * elapsedFrame;
+                //v.z -= it->GetPower() * elapsedFrame;
+                v.x += it->GetPower().x * elapsedFrame;
+                v.z += it->GetPower().z * elapsedFrame;
                 obj->SetVelocity(v);
             }
         }

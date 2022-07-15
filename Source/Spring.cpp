@@ -1,9 +1,11 @@
 #include "Spring.h"
 #include "Graphics/Graphics.h"
+
 Spring::Spring()
 {
 
 }
+
 Spring::~Spring()
 {
 
@@ -15,7 +17,6 @@ void Spring::UpdateTransform()
     DirectX::XMMATRIX S = DirectX::XMMatrixScaling(scale.x, scale.y, scale.z);
 
     // 回転行列を作成
-
     DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(angle.x, angle.y, angle.z);
 
     // 位置行列を作成
@@ -35,7 +36,7 @@ void Spring::DrawDebugPrimitive()
 
     // 衝突判定用のデバッグ円柱を描画
     //debugRenderer->DrawCylinder(position, radius, height, DirectX::XMFLOAT4(0, 0, 0, 1));
-    debugRenderer->DrawBox(position, 1.0f, 1.0f, 1.0f, DirectX::XMFLOAT4(1, 0, 0, 1));
+    debugRenderer->DrawBox(position, length.x, length.y, length.z, DirectX::XMFLOAT4(1, 0, 0, 1));
 }
 
 // 更新処理

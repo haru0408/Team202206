@@ -17,6 +17,7 @@
 #include "Stage.h"
 #include "Player.h"
 #include "CameraController.h"
+#include "Effect.h"
 
 // ゲームシーン
 class SceneGame:public Scene
@@ -50,10 +51,21 @@ private:
 	// 砲台の初期化
 	void CanonInitialize();
 
+	// バネの初期化
+	void SpringInitialize();
+
 private:
 	Stage* stage = nullptr;
 	Player* player = nullptr;
 	CameraController* cameraController = nullptr;
+
+	Effect* wind1Effect = nullptr;
+	Effect* wind2Effect = nullptr;
+	Effect* wind3Effect = nullptr;
+
+	Effect* warpEffect = nullptr;
+
+	int Timer = 0;
 
 	int Floor_0[20][20] =
 	{
