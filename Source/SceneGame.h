@@ -44,6 +44,9 @@ private:
 	/* get type */
 	const SCENE_TYPE getType();
 
+	// ŒŠ‚Ì‰Šú‰»
+	void HoleInitialize();
+
 private:
 	Stage* stage = nullptr;
 	Player* player = nullptr;

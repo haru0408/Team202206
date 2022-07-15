@@ -78,4 +78,8 @@ private:
     bool  ScaleFlg    = false; // true:大 false:小
     float ScaleNum    = 0.0f;  // スケール補正値
     float PositionNum = 0.0f;  // 座標補正値
+
+    float fallSpeed = 0.025f;
+    float holePosY  = 0.0f;
+    bool fallFlg    = false;
 };

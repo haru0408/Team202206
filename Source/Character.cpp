@@ -181,8 +181,7 @@ void Character::UpdateVelocity(float elapsedTime)
 void Character::UpdateVerticalVelocity(float elapsedFrame)
 {
     // 重力処理
-    if (FallStartFlg) velocity.y -= fallSpeed;
-    else              velocity.y += gravity * elapsedFrame;
+    velocity.y += gravity * elapsedFrame;
 }
 
 // 垂直移動更新処理
@@ -194,6 +193,11 @@ void Character::UpdateVerticalMove(float elapsedTime)
     // 移動処理
     position.y += velocity.y * elapsedTime;
 
+    if (position.y < 0.0f)
+    {
+        position.y = 0.0f;
+        velocity.y = 0.0f;
+    }
 }
 
 // 水平速力更新処理

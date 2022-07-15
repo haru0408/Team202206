@@ -364,8 +364,6 @@ void Player::CollisionPlayerVsHoles()
                 position.x += xSpeed;
                 position.z += zSpeed;
 
-                FallStartFlg = true;
-
                 if (Collision::IntersectCylinderVsCylinder(
                     position,
                     radius,
@@ -375,24 +373,16 @@ void Player::CollisionPlayerVsHoles()
                     hole->GetHeight(),
                     outPosition))
                 {
-                    FallStartFlg = false;
-                    FallFlg = true;
+                    fallFlg = true;
+                    holePosY = hole->GetPosition().y - 5.0f;
                 }
                 // プレイヤーの半径と穴の半径大きな差があれば外側の円柱に衝突した時点で落下
                 if (!ScaleFlg && hole->GetRadius() >= 4.0f)
                 {
-                    FallStartFlg = false;
-                    FallFlg = true;
+                    fallFlg = true;
+                    holePosY = hole->GetPosition().y - 5.0f;
                 }
             }
-            else
-            {
-                FallStartFlg = false;
-            }
-        }
-        else
-        {
-            FallStartFlg = false;
         }
     }
 }
@@ -495,12 +485,22 @@ void Player::CollisionPlayerVsFloor()
                     2.0f,
                     outPosition))
                 {
-                    if (!FallFlg)
+                    if (!fallFlg)
                     {
                         // 押し出し後の位置設定
                         SetPosition(outPosition);
                         velocity.y = 0.0f;
                     }
+                    else if (fallFlg)
+                    {
+                        if (holePosY > floor->GetPosition().y)
+                        {
+                            SetPosition(outPosition);
+                            velocity.y = 0.0f;
+                            fallFlg = false;
+                        }
+                    }
+
                     if (floor->GetFloorNum() == 1)
                     {
                         impulse = { 5.0f, 5.0f, 5.0f };
@@ -543,8 +543,6 @@ void Player::CollisionPlayerVsSpring()
     SpringManager& springManager = SpringManager::Instance();
 
     int SpringCount = springManager.GetSpringCount();
-
-
 
     // 衝突処理
     DirectX::XMFLOAT3 outPosition;

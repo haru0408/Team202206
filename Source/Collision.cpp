@@ -168,6 +168,9 @@ bool Collision::IntersectBoxVsBox_Wall(
         if (frontA < backB) return false;
         else ZChack = true;
     }
+    // Y•½–Ê
+    if (topB < bottomA) return false;
+    if (topA < bottomB) return false;
 
     // B‚ªA‚ð‰Ÿ‚µo‚·(XZ•½–Ê‚Ì‚Ý)
     // X•½–Ê

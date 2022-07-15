@@ -10,7 +10,7 @@ public:
 
     virtual ~Floor() {}
 
-    virtual void UpdateTransform();
+    void UpdateTransform();
 
     // XVˆ—
     virtual void Update(float elapsedTime) = 0;

@@ -86,38 +86,8 @@ void SceneGame::Initialize()
 
 	AreaManager::Instance().Register(new AreaWindow(DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(5, 2, 5)));
 
-
 	// 穴の初期化
-	HoleManager& holeManager = HoleManager::Instance();
-	// Stage01
-	Hole* hole = new Hole();
-	hole->SetPosition(DirectX::XMFLOAT3(0.0f, 20.0f, -5.0f));
-	hole->SetRadius(2.0f);
-	holeManager.Register(hole);
-	hole = new Hole();
-	hole->SetPosition(DirectX::XMFLOAT3(0.0f, 20.0f, -5.0f));
-	hole->SetRadius(2.0f);
-	holeManager.Register(hole);
-	hole = new Hole();
-	hole->SetPosition(DirectX::XMFLOAT3(0.0f, 20.0f, -5.0f));
-	hole->SetRadius(2.0f);
-	holeManager.Register(hole);
-	hole = new Hole();
-	hole->SetPosition(DirectX::XMFLOAT3(0.0f, 20.0f, -5.0f));
-	hole->SetRadius(2.0f);
-	holeManager.Register(hole);
-	hole = new Hole();
-	hole->SetPosition(DirectX::XMFLOAT3(0.0f, 20.0f, -5.0f));
-	hole->SetRadius(2.0f);
-	holeManager.Register(hole);
-	hole = new Hole();
-	hole->SetPosition(DirectX::XMFLOAT3(0.0f, 20.0f, -5.0f));
-	hole->SetRadius(2.0f);
-	holeManager.Register(hole);
-	hole = new Hole();
-	hole->SetPosition(DirectX::XMFLOAT3(0.0f, 20.0f, -5.0f));
-	hole->SetRadius(2.0f);
-	holeManager.Register(hole);
+	HoleInitialize();
 
 	SpringManager& springManager = SpringManager::Instance();
 	Spring* spring = new Spring;
@@ -283,7 +253,7 @@ void SceneGame::Render()
 
 		AreaManager::Instance().DrawDebugPrimitive();
 
-		FloorManager::Instance().DrawDebugPrimitive();
+		//FloorManager::Instance().DrawDebugPrimitive();
 
 		// 穴デバッグプリミティブ描画
 		HoleManager::Instance().DrawDebugPrimitive();
@@ -353,3 +323,255 @@ void SceneGame::SetMap(int Floor[20][20], int x, int z, int y)
 /* get type */
 const SCENE_TYPE SceneGame::getType() { return SCENE_TYPE::GAME; }
 
+// 穴の初期化
+void SceneGame::HoleInitialize()
+{
+	// インスタンス取得
+	HoleManager& holeManager = HoleManager::Instance();
+
+	// Stage01
+	Hole* hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(-6.5f, 20.0f, 11.3f));
+	hole->SetRadius(0.5f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(-12.9f, 20.0f, -0.25f));
+	hole->SetRadius(0.5f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(-6.1f, 20.0f, -11.5f));
+	hole->SetRadius(1.0f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(3.0f, 20.0f, -12.5f));
+	hole->SetRadius(3.0f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(12.5f, 20.0f, -1.5f));
+	hole->SetRadius(0.5f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(10.0f, 20.0f, 13.0f));
+	hole->SetRadius(2.0f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(0.0f, 20.0f, 0.0f));
+	hole->SetRadius(6.25f);
+	holeManager.Register(hole);
+
+	// Stage02
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(-11.8f, 40.0f, -8.6f));
+	hole->SetRadius(0.5f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(6.1f, 40.0f, -14.5f));
+	hole->SetRadius(0.5f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(6.1f, 40.0f, 11.3f));
+	hole->SetRadius(0.5f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(-10.25f, 40.0f, 3.0f));
+	hole->SetRadius(1.25f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(-13.5, 40.0f, 11.3f));
+	hole->SetRadius(3.0f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(1.0f, 40.0f, 16.0f));
+	hole->SetRadius(3.0f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(16.2f, 40.0f, 3.0f));
+	hole->SetRadius(3.0f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(13.5f, 40.0f, -11.25f));
+	hole->SetRadius(1.5f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(-3.0f, 40.0f, -16.5f));
+	hole->SetRadius(3.0f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(0.0f, 40.0f, 0.0f));
+	hole->SetRadius(6.5f);
+	holeManager.Register(hole);
+
+	// Stage03
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(-15.0f, 60.0f, -12.5f));
+	hole->SetRadius(3.0f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(-0.95f, 60.0f, -16.5f));
+	hole->SetRadius(3.0f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(15.25f, 60.0f, -13.0f));
+	hole->SetRadius(3.0f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(8.15f, 60.0f, -7.25f));
+	hole->SetRadius(0.5f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(13.5f, 60.0f, -3.75f));
+	hole->SetRadius(1.5f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(8.15f, 60.0f, 5.25f));
+	hole->SetRadius(0.5f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(11.75f, 60.0f, 11.5f));
+	hole->SetRadius(3.0f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(6.3f, 60.0f, 16.5f));
+	hole->SetRadius(1.5f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(0.85f, 60.0f, 11.0f));
+	hole->SetRadius(3.0f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(-6.9f, 60.0f, 12.35f));
+	hole->SetRadius(0.5f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(-9.0f, 60.0f, 11.35f));
+	hole->SetRadius(0.5f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(-13.65f, 60.0f, 4.85f));
+	hole->SetRadius(0.5f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(-10.3f, 60.0f, 3.25f));
+	hole->SetRadius(1.0f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(0.5f, 60.0f, 0.0f));
+	hole->SetRadius(6.5f);
+	holeManager.Register(hole);
+
+	// Stage04
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(-17.4f, 80.0f, -5.25f));
+	hole->SetRadius(0.5f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(-12.35f, 80.0f, 3.25f));
+	hole->SetRadius(3.0f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(-7.0f, 80.0f, 13.25f));
+	hole->SetRadius(1.5f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(12.6f, 80.0f, 11.85f));
+	hole->SetRadius(0.5f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(7.0f, 80.0f, 9.15f));
+	hole->SetRadius(3.0f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(15.8f, 80.0f, 5.8f));
+	hole->SetRadius(1.25f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(12.0f, 80.0f, -7.15f));
+	hole->SetRadius(0.5f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(-2.75f, 80.0f, -13.9f));
+	hole->SetRadius(0.5f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(-7.0f, 80.0f, -9.5f));
+	hole->SetRadius(1.25f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(0.125f, 80.0f, 0.31f));
+	hole->SetRadius(6.5f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(17.2f, 80.0f, -14.35f));
+	hole->SetRadius(0.5f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(4.25f, 80.0f, -17.35f));
+	hole->SetRadius(1.25f);
+	holeManager.Register(hole);
+
+	// Stage05
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(-13.9f, 100.0f, -11.5f));
+	hole->SetRadius(1.25f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(-3.65f, 100.0f, -9.1f));
+	hole->SetRadius(1.25f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(6.2f, 100.0f, -7.9f));
+	hole->SetRadius(1.75f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(16.0f, 100.0f, -7.5f));
+	hole->SetRadius(1.75f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(11.75f, 100.0f, -3.15f));
+	hole->SetRadius(0.5f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(14.15f, 100.0f, 1.95f));
+	hole->SetRadius(0.5f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(7.35f, 100.0f, 4.3f));
+	hole->SetRadius(0.5f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(17.25f, 100.0f, 7.65f));
+	hole->SetRadius(1.25f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(-6.9f, 100.0f, 12.4f));
+	hole->SetRadius(0.5f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(-12.75f, 100.0f, 15.25f));
+	hole->SetRadius(1.25f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(0.125f, 100.0f, 0.31f));
+	hole->SetRadius(6.5f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(-6.75f, 100.0f, -18.0f));
+	hole->SetRadius(1.25f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(-9.4f, 100.0f, -3.65f));
+	hole->SetRadius(0.5f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(-13.9f, 100.0f, -2.1f));
+	hole->SetRadius(0.5f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(-12.4f, 100.0f, 3.1f));
+	hole->SetRadius(2.75f);
+	holeManager.Register(hole);
+	hole = new Hole();
+	hole->SetPosition(DirectX::XMFLOAT3(6.8f, 100.0f, 9.1f));
+	hole->SetRadius(2.75f);
+	holeManager.Register(hole);
+}
