@@ -85,7 +85,7 @@ void SceneGame::Initialize()
 
 	AreaManager::Instance().Register(new AreaWindow(DirectX::XMFLOAT3(0, 0, 0), DirectX::XMFLOAT3(5, 2, 5)));
 
-	
+
 	// ŒŠ‚Ì‰Šú‰»
 	HoleManager& holeManager = HoleManager::Instance();
 	// Stage01
