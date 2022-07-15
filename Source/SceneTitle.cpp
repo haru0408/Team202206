@@ -41,10 +41,15 @@ void SceneTitle::Initialize()
     menu_->AddTexture(new Texture(
         "C:\\Users\\2210337\\Desktop\\iPhone‚æ‚è\\IMG_5828.JPG",1
     ));
+
+    // ‰¹‚Ì‰Šú‰»EÄ¶
+    BGM = Audio::Instance().LoadAudioSource("Data/Audio/TitleBGM.wav");
+    BGM->Play(true);
 }
 
 void SceneTitle::Finalize()
 {
+    BGM.reset();
 }
 
 void SceneTitle::Update(float elapsedTime)

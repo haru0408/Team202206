@@ -118,8 +118,5 @@ protected:
 
     float airControl = 0.3f;
 
-    // ŒŠ—p•Ï”
     float fallSpeed    = 0.025f;
-    bool  FallStartFlg = false;
-    bool  FallFlg      = false;
 };

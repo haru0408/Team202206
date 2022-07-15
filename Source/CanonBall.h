@@ -8,14 +8,16 @@
 class CanonBall
 {
 public:
-     CanonBall() {}
-    ~CanonBall() {}
+     CanonBall();
+    ~CanonBall();
 
     // 更新処理
     void Update(float elapsedTime);
 
-    // 速度更新処理
-    void UpdateVelocity(float elapsedTime);
+    // 行列更新処理
+    void UpdateTransform(const DirectX::XMFLOAT3& AdjustScale,
+                         const DirectX::XMFLOAT3& AdjustAngle,
+                         const DirectX::XMFLOAT3& AdjustPosition);
 
     // 描画処理
     void Render(ID3D11DeviceContext* dc, Shader* shader);
@@ -53,7 +55,14 @@ public:
 private:
     Model* model = nullptr;
 
-    DirectX::XMFLOAT3 position = {};
+    DirectX::XMFLOAT3   position  = { 0.0f, 0.0f, 0.0f };
+    DirectX::XMFLOAT3   angle     = { 0.0f, 0.0f, 0.0f };
+    DirectX::XMFLOAT3   scale     = { 0.0f, 0.0f, 0.0f };
+    DirectX::XMFLOAT4X4 transform = {
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 1 };
     DirectX::XMFLOAT3 velocity = {};
 
     float radius = 0.25f;

@@ -1,6 +1,6 @@
 #pragma once
 #include "Floor.h"
-class DisappearingFloor:public Floor
+class DisappearingFloor : public Floor
 {
 public:
 	DisappearingFloor();
@@ -8,16 +8,17 @@ public:
 
 	// XVˆ—
 	void Update(float elapsedTime) override;
+
 	// •`‰æˆ—
 	void Render(ID3D11DeviceContext* dc, Shader* shader) override;
-	void Destroy_timer(Floor* floor,int i) override;
 
-	DirectX::XMFLOAT3 SetImpulse()override { return null; };
+	void Destroy_timer() override;
+
+	DirectX::XMFLOAT3 SetImpulse(int judge)override { return null; };
+
 private:
 	Model* model = nullptr;
-	DirectX::XMFLOAT3 null;
+	DirectX::XMFLOAT3 null = { 0.0f, 0.0f, 0.0f };
 
 	float timer = 0;
-
-
 };

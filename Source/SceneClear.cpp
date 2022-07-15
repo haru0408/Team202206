@@ -43,7 +43,7 @@ void SceneClear::Initialize()
 	{
 		//left
 		menu_->AddTexture(new Texture(
-			"C:\\Users\\2210337\\Desktop\\iPhone‚æ‚è\\IMG_5828.JPG"
+			"C:\\Users\\2210337\\Desktop\\iPhoneï¿½ï¿½ï¿½\\IMG_5828.JPG"
 			, 8
 			, { screen.x / 3,screen.y / 2 - 30.0f }
 			, SPRITE_PIVOT::CB
@@ -54,14 +54,14 @@ void SceneClear::Initialize()
 		);
 
 		menu_->AddTexture(new Texture(
-			"C:\\Users\\2210337\\Desktop\\iPhone‚æ‚è\\IMG_5828.JPG"
+			"C:\\Users\\2210337\\Desktop\\iPhoneï¿½ï¿½ï¿½\\IMG_5828.JPG"
 			, 8
 			, { screen.x / 3,screen.y / 2 }
 			, SPRITE_PIVOT::CM
 			, { 0.1f,0.1f }
 		));
 		menu_->AddTexture(new Texture(
-			"C:\\Users\\2210337\\Desktop\\iPhone‚æ‚è\\IMG_5828.JPG"
+			"C:\\Users\\2210337\\Desktop\\iPhoneï¿½ï¿½ï¿½\\IMG_5828.JPG"
 			, 8
 			, { screen.x / 3,screen.y / 2 + 30.0f }
 			, SPRITE_PIVOT::CT
@@ -70,25 +70,43 @@ void SceneClear::Initialize()
 
 		//right
 		menu_->AddTexture(new Texture(
-			"C:\\Users\\2210337\\Desktop\\iPhone‚æ‚è\\IMG_5828.JPG"
+			"C:\\Users\\2210337\\Desktop\\iPhoneï¿½ï¿½ï¿½\\IMG_5828.JPG"
 			, 8
 			, { screen.x * 2 / 3,screen.y / 2 - 30.0f }
 			, SPRITE_PIVOT::CB
 			, { 0.1f,0.1f }
 		));
 		menu_->AddTexture(new Texture(
-			"C:\\Users\\2210337\\Desktop\\iPhone‚æ‚è\\IMG_5828.JPG"
+			"C:\\Users\\2210337\\Desktop\\iPhoneï¿½ï¿½ï¿½\\IMG_5828.JPG"
 			, 8
 			, { screen.x * 2 / 3,screen.y / 2 }
 			, SPRITE_PIVOT::CM
 			, { 0.1f,0.1f }
 		));
 	}
+	//	//right
+	//	menu_->AddTexture(new Texture(
+	//		"C:\\Users\\2210337\\Desktop\\iPhoneï¿½ï¿½ï¿½\\IMG_5828.JPG"
+	//		, { screen.x * 2 / 3,screen.y / 2 - 30.0f }
+	//		, SPRITE_PIVOT::CB
+	//		, { 0.1f,0.1f }
+	//	));
+	//	menu_->AddTexture(new Texture(
+	//		"C:\\Users\\2210337\\Desktop\\iPhoneï¿½ï¿½ï¿½\\IMG_5828.JPG"
+	//		, { screen.x * 2 / 3,screen.y / 2 }
+	//		, SPRITE_PIVOT::CM
+	//		, { 0.1f,0.1f }
+	//	));
+	//}
+
+	// ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Eï¿½Äï¿½
+	BGM = Audio::Instance().LoadAudioSource("Data/Audio/ClearBGM.wav");
+	BGM->Play(false);
 }
 
 void SceneClear::Finalize()
 {
-
+	BGM.reset();
 }
 
 void SceneClear::Update(float elapsedTime)

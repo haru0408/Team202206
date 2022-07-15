@@ -20,6 +20,7 @@ void Character::UpdateTransform(const DirectX::XMFLOAT3& AdjustScale,
                                                        position.z + AdjustPosition.z);
     // ３つの行列を組み合わせ、ワールド行列を作成
     DirectX::XMMATRIX W = S * R * T;
+
     //計算したワールド行列を取り出す
     DirectX::XMStoreFloat4x4(&transform, W);
 }
@@ -181,8 +182,7 @@ void Character::UpdateVelocity(float elapsedTime)
 void Character::UpdateVerticalVelocity(float elapsedFrame)
 {
     // 重力処理
-    if (FallStartFlg) velocity.y -= fallSpeed;
-    else              velocity.y += gravity * elapsedFrame;
+    velocity.y += gravity * elapsedFrame;
 }
 
 // 垂直移動更新処理
@@ -194,6 +194,11 @@ void Character::UpdateVerticalMove(float elapsedTime)
     // 移動処理
     position.y += velocity.y * elapsedTime;
 
+    if (position.y < 0.0f)
+    {
+        position.y = 0.0f;
+        velocity.y = 0.0f;
+    }
 }
 
 // 水平速力更新処理

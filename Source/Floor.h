@@ -26,9 +26,9 @@ public:
     // ˆÊ’uÝ’è
     void SetPosition(const DirectX::XMFLOAT3& position) { this->position = position; }
 
-    virtual void Destroy_timer(Floor* floor,int i) = 0;
+    virtual void Destroy_timer() {};
 
-    virtual DirectX::XMFLOAT3 SetImpulse() = 0;
+    virtual DirectX::XMFLOAT3 SetImpulse(int judge)=0;
 
     void SetFloorStage(int set) { this->Floor_Stage = set; };
 
@@ -37,6 +37,11 @@ public:
     void Destroy();
 
     int GetFloorNum() const { return floor_num; }
+
+    void SetFloor_Direction(int set) { floor_direction = set; };
+
+    int floor_direction = 0;
+
 protected:
     DirectX::XMFLOAT3     position = { 0, 0, 0 };
     DirectX::XMFLOAT3     angle = { 0, 0, 0 };

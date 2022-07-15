@@ -27,8 +27,8 @@ Player::Player()
     height = 1.0f;
 
     // 位置はステージの端
-    position.x = position.z = -17.0f;
-    position.y = 100;
+    position.x = position.z = 17.0f;
+    position.y = 2.0f;
 }
 
 Player::~Player()
@@ -47,9 +47,6 @@ void Player::Update(float elapsedTime)
 
     // 速力更新処理
     UpdateVelocity(elapsedTime);
-
-    // プレイヤーとエネミーとの衝突距離
-    CollisionPlayerVsEnemies();
 
     // プレイヤーと穴との衝突距離
     CollisionPlayerVsHoles();
@@ -126,6 +123,9 @@ void Player::DrawDebugGUI()
             angle.z = DirectX::XMConvertToRadians(a.z);
             // スケール
             ImGui::InputFloat3("Scale", &scale.x);
+
+            // 
+            ImGui::InputFloat3("Length", &length.x);
         }
 
     }
@@ -244,36 +244,6 @@ void Player::BallRoll(float elapsedTime)
     }
 }
 
-// プレイヤーとエネミーとの衝突距離
-void Player::CollisionPlayerVsEnemies()
-{
-    EnemyManager& enemyManager = EnemyManager::Instance();
-
-    // 全ての敵と総当たりで衝突処理(四角)
-    int enemyCount = enemyManager.GetEnemyCount();
-    for (int i = 0; i < enemyCount; ++i)
-    {
-        Enemy* enemy = enemyManager.GetEnemy(i);
-
-        // 衝突処理
-        DirectX::XMFLOAT3 outPosition;
-        if (Collision::IntersectBoxVsBox_Wall(
-            position,
-            length.x,
-            length.y,
-            length.z,
-            enemy->GetPosition(),
-            1.0f,
-            1.0f,
-            1.0f,
-            outPosition))
-        {
-            // 押し出し後の位置設定
-            SetPosition(outPosition);
-        }
-    }
-}
-
 // 大きさ変更入力処理
 void Player::InputScaleChange()
 {
@@ -291,6 +261,12 @@ void Player::InputScaleChange()
 
         ScaleNum = 0.0f;
         PositionNum = height * 0.5f;
+
+        if      (position.x > 19.5f) position.x  = 19.5f;
+        else if (position.x < -19.5f) position.x = -19.5f;
+
+        if      (position.z > 19.5f)  position.z = 19.5f;
+        else if (position.z < -19.5f) position.z = -19.5f;
     }
     // 大きいサイズ
     else if (ScaleFlg)
@@ -302,6 +278,12 @@ void Player::InputScaleChange()
 
         ScaleNum = 0.005f * 1.0f;
         PositionNum = height * 0.65f;
+
+        if       (position.x > 19.0f) position.x = 19.0f;
+        else if (position.x < -19.0f) position.x = -19.0f;
+
+        if       (position.z > 19.0f)  position.z = 19.0f;
+        else if (position.z < -19.0f) position.z = -19.0f;
     }
 }
 
@@ -364,8 +346,6 @@ void Player::CollisionPlayerVsHoles()
                 position.x += xSpeed;
                 position.z += zSpeed;
 
-                FallStartFlg = true;
-
                 if (Collision::IntersectCylinderVsCylinder(
                     position,
                     radius,
@@ -375,24 +355,16 @@ void Player::CollisionPlayerVsHoles()
                     hole->GetHeight(),
                     outPosition))
                 {
-                    FallStartFlg = false;
-                    FallFlg = true;
+                    fallFlg = true;
+                    holePosY = hole->GetPosition().y - 5.0f;
                 }
                 // プレイヤーの半径と穴の半径大きな差があれば外側の円柱に衝突した時点で落下
                 if (!ScaleFlg && hole->GetRadius() >= 4.0f)
                 {
-                    FallStartFlg = false;
-                    FallFlg = true;
+                    fallFlg = true;
+                    holePosY = hole->GetPosition().y - 5.0f;
                 }
             }
-            else
-            {
-                FallStartFlg = false;
-            }
-        }
-        else
-        {
-            FallStartFlg = false;
         }
     }
 }
@@ -486,32 +458,41 @@ void Player::CollisionPlayerVsFloor()
                 DirectX::XMFLOAT3 outPosition;
                 if (Collision::IntersectBoxVsBox_Ground(
                     position,
-                    1.0f,
-                    1.0f,
-                    1.0f,
+                    length.x,
+                    length.y,
+                    length.z,
                     floor->GetPosition(),
                     2.0f,
                     1.0f,
                     2.0f,
                     outPosition))
                 {
-                    if (!FallFlg)
+                    if (!fallFlg)
                     {
                         // 押し出し後の位置設定
                         SetPosition(outPosition);
                         velocity.y = 0.0f;
                     }
+                    else if (fallFlg)
+                    {
+                        if (holePosY > floor->GetPosition().y)
+                        {
+                            SetPosition(outPosition);
+                            velocity.y = 0.0f;
+                            fallFlg = false;
+                        }
+                    }
+
                     if (floor->GetFloorNum() == 1)
                     {
-                        impulse = { 5.0f, 5.0f, 5.0f };
-                        AddImpulse(impulse);
+                        velocity=floor->SetImpulse(floor->floor_direction);
                     }
                 }
                 if (Collision::IntersectBoxVsBox_Ground(
                     DirectX::XMFLOAT3(position.x, position.y - 0.01f, position.z),
-                    1.0f,
-                    1.0f,
-                    1.0f,
+                    length.x,
+                    length.y,
+                    length.z,
                     floor->GetPosition(),
                     3.0f,
                     1.0f,
@@ -519,7 +500,7 @@ void Player::CollisionPlayerVsFloor()
                     outPosition) &&
                     floor->GetFloorNum() == 0)
                 {
-                    floor->Destroy_timer(floor, i);
+                    floor->Destroy_timer();
                 }
 
             
@@ -534,8 +515,8 @@ void Player::OnLanding()
     
 void Player::Revelo()
 {
-    velocity.x *= -5;
-    velocity.z *= -5;
+    velocity.x *= -3.0f;
+    velocity.z *= -3.0f;
 }
 
 void Player::CollisionPlayerVsSpring()
@@ -544,8 +525,6 @@ void Player::CollisionPlayerVsSpring()
 
     int SpringCount = springManager.GetSpringCount();
 
-
-
     // 衝突処理
     DirectX::XMFLOAT3 outPosition;
     for (int i = 0; i < SpringCount; i++)
@@ -553,19 +532,13 @@ void Player::CollisionPlayerVsSpring()
         Spring* spring = springManager.GetSpring(i);
         if (Collision::IntersectBoxVsBox_Wall(
             position,
-            1.0f,
-            1.0f,
-            1.0f,
+            length.x,
+            length.y,
+            length.z,
             spring->GetPosition(),
-            1.0f,
-            1.0f,
-            1.0f,
-            outPosition))
-        {
-            // 押し出し後の位置設定
-            Revelo();
-
-        }
+            spring->GetLength().x,
+            spring->GetLength().y,
+            spring->GetLength().z,
+            outPosition)) Revelo();
     }
-
 }

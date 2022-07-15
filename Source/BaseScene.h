@@ -9,6 +9,8 @@
 #include <DirectXMath.h>
 #include <vector>
 
+#include "Audio/Audio.h"
+
 enum class SCENE_TYPE;
 class Scene
 {

@@ -31,6 +31,6 @@ void NormalFloor::Update(float elapsedTime)
 
 void NormalFloor::Render(ID3D11DeviceContext* dc, Shader* shader)
 {
-    shader->Draw(dc, model);
+
 }
 
