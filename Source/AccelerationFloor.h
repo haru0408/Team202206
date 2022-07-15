@@ -3,7 +3,7 @@
 class AccelerationFloor:public Floor 
 {
 public:
-	AccelerationFloor();
+	AccelerationFloor(int judge);
 	~AccelerationFloor()override;
 	
 	// çXêVèàóù
@@ -14,8 +14,9 @@ public:
 
 	void Destroy_timer(Floor* floor, int i) {};
 
-	DirectX::XMFLOAT3 SetImpulse()override;
+	DirectX::XMFLOAT3 SetImpulse(int judge) override;
 private:
 	Model* model = nullptr;
 
+	DirectX::XMFLOAT3 impulse;
 };

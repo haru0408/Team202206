@@ -503,8 +503,7 @@ void Player::CollisionPlayerVsFloor()
 
                     if (floor->GetFloorNum() == 1)
                     {
-                        impulse = { 5.0f, 5.0f, 5.0f };
-                        AddImpulse(floor->SetImpulse());
+                        velocity=floor->SetImpulse(floor->floor_direction);
                     }
                 }
                 if (Collision::IntersectBoxVsBox_Ground(
