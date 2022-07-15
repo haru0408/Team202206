@@ -283,7 +283,8 @@ void SceneGame::SetMap(int Floor[20][20], int x, int z, int y)
 {
 	//床の配置
 	FloorManager& floorManager = FloorManager::Instance();
-
+	//多分
+	//普通の床
 	if (Floor[x][z] == 0)
 	{
 		NormalFloor* Normalfloor = new NormalFloor();
@@ -291,7 +292,8 @@ void SceneGame::SetMap(int Floor[20][20], int x, int z, int y)
 		Normalfloor->SetFloorStage(y);
 		floorManager.Register(Normalfloor);
 	}
-
+	//多分
+	//消える床
 	if (Floor[x][z] == 1)
 	{
 		DisappearingFloor* Disapperaringfloor = new DisappearingFloor();
@@ -299,7 +301,8 @@ void SceneGame::SetMap(int Floor[20][20], int x, int z, int y)
 		Disapperaringfloor->SetFloorStage(y);
 		floorManager.Register(Disapperaringfloor);
 	}
-
+	//多分
+	//初期のカメラ位置からみて左に飛ぶ床
 	if (Floor[x][z] == 2)
 	{
 		AccelerationFloor* Accelerationfloor_Left = new AccelerationFloor(0);
@@ -307,7 +310,8 @@ void SceneGame::SetMap(int Floor[20][20], int x, int z, int y)
 		Accelerationfloor_Left->SetFloorStage(y);
 		floorManager.Register(Accelerationfloor_Left);
 	}
-
+	//多分
+	//初期のカメラ位置からみて手前に飛ぶ床
 	if (Floor[x][z] == 3)
 	{
 		AccelerationFloor* Accelerationfloor_Down = new AccelerationFloor(1);
@@ -315,7 +319,8 @@ void SceneGame::SetMap(int Floor[20][20], int x, int z, int y)
 		Accelerationfloor_Down->SetFloorStage(y);
 		floorManager.Register(Accelerationfloor_Down);
 	}
-
+	//多分
+	//初期のカメラ位置からみて右に飛ぶ床
 	if (Floor[x][z] == 4)
 	{
 		AccelerationFloor* Accelerationfloor_Right = new AccelerationFloor(2);
@@ -323,7 +328,8 @@ void SceneGame::SetMap(int Floor[20][20], int x, int z, int y)
 		Accelerationfloor_Right->SetFloorStage(y);
 		floorManager.Register(Accelerationfloor_Right);
 	}
-
+	//多分
+	//初期のカメラ位置からみて奥に飛ぶ床
 	if (Floor[x][z] == 5)
 	{
 		AccelerationFloor* Accelerationfloor_Up = new AccelerationFloor(3);
