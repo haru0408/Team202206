@@ -300,7 +300,7 @@ void SceneGame::Render()
 
 		//AreaManager::Instance().DrawDebugPrimitive();
 
-		//FloorManager::Instance().DrawDebugPrimitive();
+		FloorManager::Instance().DrawDebugPrimitive();
 
 		// 穴デバッグプリミティブ描画
 		//HoleManager::Instance().DrawDebugPrimitive();

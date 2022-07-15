@@ -28,7 +28,7 @@ Player::Player()
 
     // 位置はステージの端
     position.x = position.z = 17.0f;
-    position.y = 2.0f;
+    position.y = 100.0f;
 }
 
 Player::~Player()
@@ -515,8 +515,8 @@ void Player::OnLanding()
     
 void Player::Revelo()
 {
-    velocity.x *= -3.0f;
-    velocity.z *= -3.0f;
+    velocity.x *= -1.5f;
+    velocity.z *= -1.5f;
 }
 
 void Player::CollisionPlayerVsSpring()
