@@ -34,7 +34,7 @@ void AccelerationFloor::Render(ID3D11DeviceContext* dc, Shader* shader)
 
 DirectX::XMFLOAT3 AccelerationFloor::SetImpulse()
 {
-    DirectX::XMFLOAT3 impulse = {500,500,500};
+    DirectX::XMFLOAT3 impulse = {13,5,13};
 
 
     return impulse;

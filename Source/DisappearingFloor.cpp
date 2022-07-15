@@ -33,17 +33,13 @@ void DisappearingFloor::Render(ID3D11DeviceContext* dc, Shader* shader)
     shader->Draw(dc, model);
 }
 
-
-void DisappearingFloor::Destroy_timer(Floor* floor, int i)
+void DisappearingFloor::Destroy_timer()
 {
-    FloorManager& floorManager = FloorManager::Instance();
-    floor = floorManager.GetFloor(i);
-
     static float timer = 0;
     timer++;
     if (timer / 60 > 3)
     {
-        floor->Destroy();
+        Destroy();
         timer = 0;
     }
 }

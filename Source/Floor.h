@@ -26,7 +26,7 @@ public:
     // ˆÊ’uÝ’è
     void SetPosition(const DirectX::XMFLOAT3& position) { this->position = position; }
 
-    virtual void Destroy_timer(Floor* floor,int i) = 0;
+    virtual void Destroy_timer() {};
 
     virtual DirectX::XMFLOAT3 SetImpulse() = 0;
 
