@@ -3,11 +3,11 @@
 
 DisappearingFloor::DisappearingFloor()
 {
-    model = new Model("Data/Model/Cube/Cube2.mdl");
+    model = new Model("Data/Model/Cube/KieruYuka.mdl");
 
     // モデルが大きいのでスケーリング
-    scale.x = scale.z = 0.015f;
-    scale.y = 0.005;
+    scale.x = scale.z = 0.0032f;
+    scale.y = 0.02;
 
     // 幅、高さ設定
     height = 1.0f;
@@ -30,7 +30,7 @@ void DisappearingFloor::Update(float elapsedTime)
 
 void DisappearingFloor::Render(ID3D11DeviceContext* dc, Shader* shader)
 {
-
+    shader->Draw(dc, model);
 }
 
 void DisappearingFloor::Destroy_timer()

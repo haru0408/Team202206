@@ -7,7 +7,7 @@ AccelerationFloor::AccelerationFloor(int judge)
     // モデルが大きいのでスケーリング
     scale.x = 0.0035f;
     scale.z = 0.01f;
-    scale.y = 0.2;
+    scale.y = 0.21;
 
     switch (judge)
     {

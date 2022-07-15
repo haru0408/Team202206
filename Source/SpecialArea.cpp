@@ -90,14 +90,15 @@ void AreaManager::CollisionAreaVsCharacter(Character* obj,float elapsedFrame)
             ))
             {
                 auto v = obj->GetVelocity();
-                //v.z -= it->GetPower() * elapsedFrame;
                 v.x += it->GetPower().x * elapsedFrame;
                 v.z += it->GetPower().z * elapsedFrame;
                 obj->SetVelocity(v);
 
-                // ‰¹‚ÌÄ¶
-                BGM  = Audio::Instance().LoadAudioSource("Data/Audio/WindSE.wav");
-                BGM->Play(false);
+                {
+                    // ‰¹‚ÌÄ¶
+                    BGM = Audio::Instance().LoadAudioSource("Data/Audio/WindSE.wav");
+                    BGM->Play(false);
+                }
             }
         }
     }
