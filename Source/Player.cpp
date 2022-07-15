@@ -28,7 +28,7 @@ Player::Player()
 
     // 位置はステージの端
     position.x = position.z = 17.0f;
-    position.y = 105.0f;
+    position.y = 2.0f;
 }
 
 Player::~Player()
@@ -47,9 +47,6 @@ void Player::Update(float elapsedTime)
 
     // 速力更新処理
     UpdateVelocity(elapsedTime);
-
-    // プレイヤーとエネミーとの衝突距離
-    CollisionPlayerVsEnemies();
 
     // プレイヤーと穴との衝突距離
     CollisionPlayerVsHoles();
@@ -247,36 +244,6 @@ void Player::BallRoll(float elapsedTime)
     }
 }
 
-// プレイヤーとエネミーとの衝突距離
-void Player::CollisionPlayerVsEnemies()
-{
-    EnemyManager& enemyManager = EnemyManager::Instance();
-
-    // 全ての敵と総当たりで衝突処理(四角)
-    int enemyCount = enemyManager.GetEnemyCount();
-    for (int i = 0; i < enemyCount; ++i)
-    {
-        Enemy* enemy = enemyManager.GetEnemy(i);
-
-        // 衝突処理
-        DirectX::XMFLOAT3 outPosition;
-        if (Collision::IntersectBoxVsBox_Wall(
-            position,
-            length.x,
-            length.y,
-            length.z,
-            enemy->GetPosition(),
-            1.0f,
-            1.0f,
-            1.0f,
-            outPosition))
-        {
-            // 押し出し後の位置設定
-            SetPosition(outPosition);
-        }
-    }
-}
-
 // 大きさ変更入力処理
 void Player::InputScaleChange()
 {
@@ -287,13 +254,19 @@ void Player::InputScaleChange()
     // 小さいサイズ
     if (!ScaleFlg)
     {
-        //length = { 1.0f, 1.0f, 1.0f };
+        length = { 1.0f, 1.0f, 1.0f };
 
         radius = 0.5f;
         height = 1.0f;
 
         ScaleNum = 0.0f;
         PositionNum = height * 0.5f;
+
+        if      (position.x > 19.5f) position.x  = 19.5f;
+        else if (position.x < -19.5f) position.x = -19.5f;
+
+        if      (position.z > 19.5f)  position.z = 19.5f;
+        else if (position.z < -19.5f) position.z = -19.5f;
     }
     // 大きいサイズ
     else if (ScaleFlg)
@@ -305,6 +278,12 @@ void Player::InputScaleChange()
 
         ScaleNum = 0.005f * 1.0f;
         PositionNum = height * 0.65f;
+
+        if       (position.x > 19.0f) position.x = 19.0f;
+        else if (position.x < -19.0f) position.x = -19.0f;
+
+        if       (position.z > 19.0f)  position.z = 19.0f;
+        else if (position.z < -19.0f) position.z = -19.0f;
     }
 }
 

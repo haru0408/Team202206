@@ -80,6 +80,7 @@ void SceneGame::Initialize()
 		}
 	}
 
+
 	// 風エリアの初期化
 	AreaManager::Instance().Register(new AreaWindow(DirectX::XMFLOAT3(13.75f, 100.0f, 2.3f), 
 		DirectX::XMFLOAT3(11.0f, 2.0f, 3.0f), 
@@ -292,7 +293,7 @@ void SceneGame::Render()
 		// 弾デバッグプリミティブ描画
 		//CanonBallManager::Instance().DrawDebugPrimitive();
 
-		SpringManager::Instance().DrawDebugPrimitive();
+		//SpringManager::Instance().DrawDebugPrimitive();
 
 		// ラインレンダラ描画実行
 		graphics.GetLineRenderer()->Render(dc, rc.view, rc.projection);

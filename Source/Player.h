@@ -3,6 +3,7 @@
 #include "Graphics/Shader.h"
 #include "Graphics/Model.h"
 #include "Character.h"
+#include "Haruta/floor.h"
 
 // プレイヤー
 class Player : public Character
@@ -36,9 +37,6 @@ private:
 
     // ボール(モデル)回転処理
     void BallRoll(float elapsedTime);
-
-    // プレイヤーとエネミーとの衝突処理
-    void CollisionPlayerVsEnemies();
 
     // 大きさ変更入力処理
     void InputScaleChange();
