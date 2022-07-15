@@ -30,17 +30,40 @@ public:
 //------------------------//
 
 #include "Graphics/Sprite.h"
+#include <memory>
 enum class SPRITE_PIVOT {
     LT,CT,RT
     ,LM,CM,RM
     ,LB,CB,RB
 };
-class Texture :public Sprite
+class Sprite_batch :public Sprite
+{
+private:
+    const char* filename_ = nullptr;
+    std::vector<Vertex> vertices;
+    size_t max_vertexCnt = 0;
+public:
+    Sprite_batch(const char* filename, size_t max_sprites = 1);
+    //Sprite_batch(const char* filename) :Sprite(filename) {}
+    void begin(ID3D11DeviceContext* immediate_context);
+    void end(ID3D11DeviceContext* immediate_context);
+
+    void Render(ID3D11DeviceContext* dc,
+        float dx, float dy,
+        float dw, float dh,
+        float sx, float sy,
+        float sw, float sh,
+        float angle,
+        float r, float g, float b, float a);
+    const char* GetFilename()const { return filename_; }
+};
+class Texture
 {
 public:
     // constructer etc.
     Texture(
         const char* filename
+        , size_t maxCnt
         , const DirectX::XMFLOAT2& pos = {}
         , SPRITE_PIVOT pivot = SPRITE_PIVOT::LT
         , const DirectX::XMFLOAT2& scale = { 1,1 }
@@ -64,6 +87,7 @@ public:
     float GetAngle()const { return angle_; }
     const DirectX::XMFLOAT4& GetColor()const { return color_; }
     int GetZ()const { return zCode_; }
+    Sprite_batch* GetFile()const { return file_.get(); }
 
     //setter
     void SetScale(const DirectX::XMFLOAT2& s) { scale_ = s; }
@@ -72,6 +96,7 @@ public:
     void AddAngle(float a) { normalizeAngle(angle_ += a); }
 
 private:
+    std::shared_ptr<Sprite_batch> file_;
     DirectX::XMFLOAT2 position_{};
     SPRITE_PIVOT pivot_{};
     DirectX::XMFLOAT2 scale_{};
@@ -88,6 +113,76 @@ private:
         return angle;
     }
 };
+class TextInput
+{
+private:
+    struct TimerSets
+    {
+        TimerSets(
+            float* timer
+            , DirectX::XMFLOAT2 pos = { 0,0 }
+            , DirectX::XMFLOAT2 scale = { 1,1 }
+            , int decimalP = 2
+        )
+        {
+            addTime_ = timer, position_ = pos, scale_ = scale, decimalP_ = decimalP;
+        }
+        float* addTime_ = nullptr;
+        float timer_ = 0.0f;
+        DirectX::XMFLOAT2 position_{};
+        DirectX::XMFLOAT2 scale_{};
+        int decimalP_ = 2;
+    };
+    std::vector<std::shared_ptr<Texture>> text_{};
+    std::vector<TimerSets> timers_{};
+    std::vector<std::shared_ptr<Texture>> updates_{};
+    struct FontData
+    {
+        const char* filename;
+        DirectX::XMFLOAT2 fontSize;
+    };
+    FontData numFont = {
+        "C:\\Users\\2210337\\Desktop\\チーム制作\\(2年First)\\00▼【2・3年生／日本ゲーム大賞『感触』_6月マスタ／2022年度前期／ゲーム制作】_提出について\\2038_GR2SB中島凌_GR2GA中尾祐希 _GR2SB渡辺洋_GR2SA藤原愛衣\\1_ゲーム\\Data\\Fonts\\font1.png"
+        , { 32.0f,32.0f }
+    };
+public:
+    TextInput() {}
+    ~TextInput() {}
+
+    //template<typename T>
+    //void textout(T* text
+    //    , DirectX::XMFLOAT2 pos = {}
+    //    , DirectX::XMFLOAT2 scale = { 1,1 }
+    //    , SPRITE_PIVOT pivot = SPRITE_PIVOT::LT
+    //);
+    void numRender(int num, DirectX::XMFLOAT2 scale = { 1,1 }, DirectX::XMFLOAT2 pos = {});
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="decimalP">秒の小数点以下描画数</param>
+    void timeRender(float* time
+        , DirectX::XMFLOAT2 pos = {}
+        , DirectX::XMFLOAT2 scale = { 1,1 }
+        , int decimalP = 2
+    );
+    void timeRender(bool update, float time
+        , DirectX::XMFLOAT2 pos = {}
+        , DirectX::XMFLOAT2 scale = { 1,1 }
+        , int decimalP = 2
+    );
+    void timeRender(bool update, DirectX::XMFLOAT3 time
+        , DirectX::XMFLOAT2 pos = {}
+        , DirectX::XMFLOAT2 scale = { 1,1 }
+        , int decimalP = 2
+    );
+    void timeRender(bool update,int hour, int minutes, float seconds
+        , DirectX::XMFLOAT2 pos = {}
+        , DirectX::XMFLOAT2 scale = { 1,1 }
+        , int decimalP = 2
+    );
+    void Render();
+}; static TextInput TEXTOUT;
+
 
 class MenuBar
 {
@@ -117,6 +212,10 @@ public:
     void Update();
     void Render();
 
+    //getter
+    const std::vector<Texture*>* GetTexList() const { return &textures_; }
+    const std::vector<Texture*>* GetBarList() const { return &subBar_; }
+
     //setter
     void SetLogo(Texture* s) { logo_ = s; }
     void SetBG(Texture* s) { BG_ = s; }
@@ -142,5 +241,4 @@ private:
     bool islarge_ = false;  // 今は使ってない。バーのｴﾌｪｸﾄｫｫｵ用だけどやる気ナス
 
 };
-
 
