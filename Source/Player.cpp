@@ -515,8 +515,18 @@ void Player::OnLanding()
     
 void Player::Revelo()
 {
-    velocity.x *= -1.5f;
-    velocity.z *= -1.5f;
+    if (velocity.x + velocity.z < 10)
+    {
+        velocity.x *= -3.0f;
+        velocity.z *= -3.0f;
+    }
+    else
+    {
+        velocity.x *= -1.0f;
+        velocity.z *= -1.0f;
+    }
+
+
 }
 
 void Player::CollisionPlayerVsSpring()
@@ -539,6 +549,19 @@ void Player::CollisionPlayerVsSpring()
             spring->GetLength().x,
             spring->GetLength().y,
             spring->GetLength().z,
-            outPosition)) Revelo();
+            outPosition))
+        {
+            if (velocity.x + velocity.z < 10)
+            {
+                Revelo();
+            }
+            else
+            {
+                velocity.x = 0;
+                velocity.z = 0;
+                SetPosition(outPosition);
+            }
+        }
+          
     }
 }
