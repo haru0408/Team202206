@@ -47,6 +47,9 @@ private:
 	// ŒŠ‚Ì‰Šú‰»
 	void HoleInitialize();
 
+	// –C‘ä‚Ì‰Šú‰»
+	void CanonInitialize();
+
 private:
 	Stage* stage = nullptr;
 	Player* player = nullptr;

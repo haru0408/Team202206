@@ -89,19 +89,13 @@ void SceneGame::Initialize()
 	// 穴の初期化
 	HoleInitialize();
 
+	// 砲台の初期化
+	CanonInitialize();
+
 	SpringManager& springManager = SpringManager::Instance();
 	Spring* spring = new Spring;
 	spring->SetPosition(DirectX::XMFLOAT3(10.0f, 20.0f, -5.0f));
 	springManager.Register(spring);
-	/*
-	// 砲台の初期化
-	CanonManager& canonManager = CanonManager::Instance();
-	// Stage00
-	Canon* canon = new Canon();
-	canon->SetPosition(DirectX::XMFLOAT3(5.0f, 0.0f, -5.0f));
-	canon->SetRightDirection();
-	canonManager.Register(canon);
-	*/
 }
 
 // 終了化
@@ -235,9 +229,9 @@ void SceneGame::Render()
 		EnemyManager::Instance().Render(dc, shader);
 
 		// 砲台描画
-        //CanonManager::Instance().Render(dc, shader);
+        CanonManager::Instance().Render(dc, shader);
         // 弾描画
-        //CanonBallManager::Instance().Render(dc, shader);
+        CanonBallManager::Instance().Render(dc, shader);
 
 		SpringManager::Instance().Render(dc, shader);
 		shader->End(dc);
@@ -256,12 +250,12 @@ void SceneGame::Render()
 		//FloorManager::Instance().DrawDebugPrimitive();
 
 		// 穴デバッグプリミティブ描画
-		HoleManager::Instance().DrawDebugPrimitive();
+		//HoleManager::Instance().DrawDebugPrimitive();
 
 		// 砲台デバッグプリミティブ描画
 		CanonManager::Instance().DrawDebugPrimitive();
 		// 弾デバッグプリミティブ描画
-		CanonBallManager::Instance().DrawDebugPrimitive();
+		//CanonBallManager::Instance().DrawDebugPrimitive();
 
 		SpringManager::Instance().DrawDebugPrimitive();
 		// ラインレンダラ描画実行
@@ -574,4 +568,38 @@ void SceneGame::HoleInitialize()
 	hole->SetPosition(DirectX::XMFLOAT3(6.8f, 100.0f, 9.1f));
 	hole->SetRadius(2.75f);
 	holeManager.Register(hole);
+}
+
+void SceneGame::CanonInitialize()
+{
+	// インスタンス取得
+	CanonManager& canonManager = CanonManager::Instance();
+
+	// Stage03
+	Canon* canon = new Canon();
+	canon->SetPosition(DirectX::XMFLOAT3(8.5f, 60.25f, 1.0f));
+	canon->SetUpDirection();
+	canonManager.Register(canon);
+	canon = new Canon();
+	canon->SetPosition(DirectX::XMFLOAT3(0.0f, 60.25f, -8.0f));
+	canon->SetDownDirection();
+	canonManager.Register(canon);
+	canon = new Canon();
+	canon->SetPosition(DirectX::XMFLOAT3(-11.5f, 60.25f, 0.0f));
+	canon->SetRightDirection();
+	canonManager.Register(canon);
+	canon = new Canon();
+	canon->SetPosition(DirectX::XMFLOAT3(-3.25f, 60.25f, 15.5f));
+	canon->SetDownDirection();
+	canonManager.Register(canon);
+	canon = new Canon();
+	canon->SetPosition(DirectX::XMFLOAT3(-6.5f, 60.25f, 17.75f));
+	canon->SetDownDirection();
+	canonManager.Register(canon);
+
+	// Stage04
+	//canon = new Canon();
+	//canon->SetPosition(DirectX::XMFLOAT3(10.5f, 80.2f, 18.0f));
+	//canon->SetDownDirection();
+	//canonManager.Register(canon);
 }

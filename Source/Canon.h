@@ -8,11 +8,16 @@
 class Canon
 {
 public:
-     Canon() {}
-    ~Canon() {}
+    Canon();
+    ~Canon();
 
     // 更新処理
     void Update(float elapsedTime);
+
+    // 行列更新処理
+    void UpdateTransform(const DirectX::XMFLOAT3& AdjustScale,
+                         const DirectX::XMFLOAT3& AdjustAngle,
+                         const DirectX::XMFLOAT3& AdjustPosition);
 
     // 描画処理
     void Render(ID3D11DeviceContext* dc, Shader* shader);
@@ -50,8 +55,15 @@ public:
 private:
     Model* model = nullptr;
 
-    DirectX::XMFLOAT3 position = {};
-    DirectX::XMFLOAT3 length   = { 1.0f, 1.0f, 1.0f };
+    DirectX::XMFLOAT3   position  = { 0.0f, 0.0f, 0.0f };
+    DirectX::XMFLOAT3   angle     = { 0.0f, 0.0f, 0.0f };
+    DirectX::XMFLOAT3   scale     = { 0.0f, 0.0f, 0.0f };
+    DirectX::XMFLOAT4X4 transform = {
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 1 };
+    DirectX::XMFLOAT3 length   = { 2.0f, 2.0f, 2.0f };
 
     // 向き判定用変数
     // 1:上向き
@@ -62,4 +74,8 @@ private:
 
     // 発射間隔時間
     int LanchTimer = 60;
+
+    // 補完値
+    DirectX::XMFLOAT3 AdjustPosition = { 0.0f, 0.0f, 0.0f };
+    float DirectionAngle = 0.0f;
 };

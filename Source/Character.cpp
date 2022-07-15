@@ -20,6 +20,7 @@ void Character::UpdateTransform(const DirectX::XMFLOAT3& AdjustScale,
                                                        position.z + AdjustPosition.z);
     // ３つの行列を組み合わせ、ワールド行列を作成
     DirectX::XMMATRIX W = S * R * T;
+
     //計算したワールド行列を取り出す
     DirectX::XMStoreFloat4x4(&transform, W);
 }
