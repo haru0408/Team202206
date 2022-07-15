@@ -65,6 +65,8 @@ private:
 
 	Effect* warpEffect01 = nullptr;
 
+	std::unique_ptr<AudioSource> BGM;
+
 	int Timer = 0;
 
 	int Floor_0[20][20] =

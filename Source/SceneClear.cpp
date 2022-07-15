@@ -72,11 +72,15 @@ void SceneClear::Initialize()
 	//		, { 0.1f,0.1f }
 	//	));
 	//}
+
+	// ‰¹‚Ì‰Šú‰»EÄ¶
+	BGM = Audio::Instance().LoadAudioSource("Data/Audio/ClearBGM.wav");
+	BGM->Play(false);
 }
 
 void SceneClear::Finalize()
 {
-
+	BGM.reset();
 }
 
 void SceneClear::Update(float elapsedTime)

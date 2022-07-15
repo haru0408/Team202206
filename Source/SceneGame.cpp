@@ -105,11 +105,17 @@ void SceneGame::Initialize()
 
 	// バネの初期化
 	SpringInitialize();
+
+	// 音の初期化・再生
+	BGM = Audio::Instance().LoadAudioSource("Data/Audio/GameBGM.wav");
+	BGM->Play(true);
 }
 
 // 終了化
 void SceneGame::Finalize()
 {
+	BGM.reset();
+
 	// プレイヤー終了化
 	if (player != nullptr)
 	{

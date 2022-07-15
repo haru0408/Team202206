@@ -47,5 +47,7 @@ private:
 
 private:
     std::unique_ptr<MenuBar> menu_ = nullptr;
+
+    std::unique_ptr<AudioSource> BGM;
 };
 

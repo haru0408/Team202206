@@ -15,6 +15,8 @@
 #include <vector>
 #include "Graphics/Graphics.h"
 
+#include "Audio/Audio.h"
+
 class Character;
 class AreaWindow
 {
@@ -49,7 +51,7 @@ class AreaManager
 {
 private:
     // constructer etc.
-    AreaManager() {}
+    AreaManager() { }
     ~AreaManager() { Clear(); }
 public:
     /* instance getter */
@@ -82,4 +84,6 @@ public:
 private:
     std::vector<AreaWindow*> windows_{};
     std::vector<AreaWindow*> removes_w_{};
+
+    std::unique_ptr<AudioSource> BGM;
 };

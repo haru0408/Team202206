@@ -65,6 +65,7 @@ void AreaManager::Clear()
         }
     }
     windows_.clear();
+    if (BGM != nullptr) BGM.reset();
 }
 
 //
@@ -93,6 +94,10 @@ void AreaManager::CollisionAreaVsCharacter(Character* obj,float elapsedFrame)
                 v.x += it->GetPower().x * elapsedFrame;
                 v.z += it->GetPower().z * elapsedFrame;
                 obj->SetVelocity(v);
+
+                // ‰¹‚ÌÄ¶
+                BGM  = Audio::Instance().LoadAudioSource("Data/Audio/WindSE.wav");
+                BGM->Play(false);
             }
         }
     }
