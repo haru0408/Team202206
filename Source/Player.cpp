@@ -551,7 +551,7 @@ void Player::CollisionPlayerVsSpring()
             spring->GetLength().z,
             outPosition))
         {
-            if (velocity.x + velocity.z < 10)
+            if (velocity.x + velocity.z < 6)
             {
                 Revelo();
             }
