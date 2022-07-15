@@ -486,6 +486,7 @@ void Player::CollisionPlayerVsFloor()
                     if (floor->GetFloorNum() == 1)
                     {
                         velocity=floor->SetImpulse(floor->floor_direction);
+                        ScaleFlg = false;
                     }
                 }
                 if (Collision::IntersectBoxVsBox_Ground(
@@ -554,6 +555,7 @@ void Player::CollisionPlayerVsSpring()
             if (velocity.x + velocity.z < 6)
             {
                 Revelo();
+                ScaleFlg = false;
             }
             else
             {
