@@ -95,14 +95,15 @@ void SceneGame::Initialize()
 		DirectX::XMFLOAT3(0.0f, 0.0f, -0.4)));
 	wind3Effect = new Effect("Data/Effect/WindDownEffect_.efk");
 
-	warpEffect = new Effect("Data/Effect/warp.efk");
+	warpEffect01 = new Effect("Data/Effect/warp.efk");
 
 	// 穴の初期化
 	HoleInitialize();
 
 	// 砲台の初期化
-	//CanonInitialize();
+	CanonInitialize();
 
+	// バネの初期化
 	SpringInitialize();
 }
 
@@ -152,6 +153,8 @@ void SceneGame::Finalize()
 	delete wind1Effect;
 	delete wind2Effect;
 	delete wind3Effect;
+
+	delete warpEffect01;
 }
 
 // 更新処理
@@ -187,7 +190,15 @@ void SceneGame::Update(float elapsedTime)
 	wind1Effect->Play(DirectX::XMFLOAT3(16.75f, 101.0f, 2.3f));
 	wind2Effect->Play(DirectX::XMFLOAT3(-0.5f, 101.0f, 12.5f));
 	wind2Effect->Play(DirectX::XMFLOAT3(-9.0f, 100.0f, 16.5f));
-	if ((Timer % 120) == 0) warpEffect->Play(DirectX::XMFLOAT3(0.0f, 20.0f, 0.0f));
+	if ((Timer % 120) == 0)
+	{
+		warpEffect01->Play(DirectX::XMFLOAT3(17.0f, 0.0f, -17.0f));
+		warpEffect01->Play(DirectX::XMFLOAT3(-17.0f, 20.0f, -17.0f));
+		warpEffect01->Play(DirectX::XMFLOAT3(17.0f, 40.0f, 17.0f));
+		warpEffect01->Play(DirectX::XMFLOAT3(-17.0f, 60.0f, -17.0f));
+		warpEffect01->Play(DirectX::XMFLOAT3(17.0f, 80.0f, 17.0f));
+		warpEffect01->Play(DirectX::XMFLOAT3(-17.0f, 100.0f, -17.0f));
+	}
 
 	++Timer;
 
@@ -651,20 +662,20 @@ void SceneGame::CanonInitialize()
 	canon->SetPosition(DirectX::XMFLOAT3(0.0f, 60.25f, -8.0f));
 	canon->SetDownDirection();
 	canonManager.Register(canon);
-	canon = new Canon();
-	canon->SetPosition(DirectX::XMFLOAT3(-11.5f, 60.25f, 0.0f));
-	canon->SetRightDirection();
-	canonManager.Register(canon);
-	canon = new Canon();
-	canon->SetPosition(DirectX::XMFLOAT3(-3.25f, 60.25f, 15.5f));
-	canon->SetDownDirection();
-	canonManager.Register(canon);
-	canon = new Canon();
-	canon->SetPosition(DirectX::XMFLOAT3(-6.5f, 60.25f, 17.75f));
-	canon->SetDownDirection();
-	canonManager.Register(canon);
+	//canon = new Canon();
+	//canon->SetPosition(DirectX::XMFLOAT3(-11.5f, 60.25f, 0.0f));
+	//canon->SetRightDirection();
+	//canonManager.Register(canon);
+	//canon = new Canon();
+	//canon->SetPosition(DirectX::XMFLOAT3(-3.25f, 60.25f, 15.5f));
+	//canon->SetDownDirection();
+	//canonManager.Register(canon);
+	//canon = new Canon();
+	//canon->SetPosition(DirectX::XMFLOAT3(-6.5f, 60.25f, 17.75f));
+	//canon->SetDownDirection();
+	//canonManager.Register(canon);
 
-	// Stage04
+	//// Stage04
 	//canon = new Canon();
 	//canon->SetPosition(DirectX::XMFLOAT3(10.5f, 80.2f, 18.0f));
 	//canon->SetDownDirection();

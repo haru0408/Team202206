@@ -63,7 +63,7 @@ private:
 	Effect* wind2Effect = nullptr;
 	Effect* wind3Effect = nullptr;
 
-	Effect* warpEffect = nullptr;
+	Effect* warpEffect01 = nullptr;
 
 	int Timer = 0;
 

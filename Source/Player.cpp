@@ -515,8 +515,8 @@ void Player::OnLanding()
     
 void Player::Revelo()
 {
-    velocity.x *= -10;
-    velocity.z *= -10;
+    velocity.x *= -3.0f;
+    velocity.z *= -3.0f;
 }
 
 void Player::CollisionPlayerVsSpring()
