@@ -14,6 +14,13 @@ public:
 
 	struct Vertex
 	{
+		Vertex(
+			DirectX::XMFLOAT3	pos = {}
+			, DirectX::XMFLOAT4	c = {}
+			, DirectX::XMFLOAT2	tex = {}
+		) {
+			position = pos, color = c, texcoord = tex;
+		}
 		DirectX::XMFLOAT3	position;
 		DirectX::XMFLOAT4	color;
 		DirectX::XMFLOAT2	texcoord;
@@ -34,7 +41,7 @@ public:
 	// テクスチャ高さ取得
 	int GetTextureHeight() const { return textureHeight; }
 
-private:
+protected:
 	Microsoft::WRL::ComPtr<ID3D11VertexShader>			vertexShader;
 	Microsoft::WRL::ComPtr<ID3D11PixelShader>			pixelShader;
 	Microsoft::WRL::ComPtr<ID3D11InputLayout>			inputLayout;

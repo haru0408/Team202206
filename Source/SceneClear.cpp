@@ -14,10 +14,11 @@ inline void come(){
 void SceneClear::Initialize()
 {
 	const DirectX::XMFLOAT2 screen = { Graphics::Instance().GetScreenWidth(),Graphics::Instance().GetScreenHeight() };
-	menu_ = std::make_unique<MenuBar>(DirectX::XMFLOAT2(2, 1),false,false,false);
+	menu_ = std::make_unique<MenuBar>(DirectX::XMFLOAT2(2, 1), false, false, false);
 
 	menu_->SetLogo(new Texture(
 		".\\Data\\Sprite\\LoadingIcon.png"
+		, 1
 		, { screen.x / 2,20.0f }
 		, SPRITE_PIVOT::CT
 	));
@@ -25,55 +26,80 @@ void SceneClear::Initialize()
 	{
 		menu_->AddSubBer(new Texture(
 			".\\Data\\Sprite\\Title.png"
+			, 8
 			, { screen.x / 3,screen.y * 4 / 5 }
 			, SPRITE_PIVOT::CM
 			, { 0.25f,0.25f }
 		), que);
 		menu_->AddSubBer(new Texture(
 			".\\Data\\Sprite\\Title.png"
+			, 8
 			, { screen.x * 2 / 3,screen.y * 4 / 5 }
 			, SPRITE_PIVOT::CM
 			, { 0.25f,0.25f }
 		), come);
 	}
 	/* tex */
-	//{
-	//	//left
-	//	menu_->AddTexture(new Texture(
-	//		"C:\\Users\\2210337\\Desktop\\iPhone‚æ‚è\\IMG_5828.JPG"
-	//		, { screen.x / 3,screen.y / 2-30.0f }
-	//		, SPRITE_PIVOT::CB
-	//		,{0.1f,0.1f}
-	//	));
-	//	menu_->AddTexture(new Texture(
-	//		"C:\\Users\\2210337\\Desktop\\iPhone‚æ‚è\\IMG_5828.JPG"
-	//		, { screen.x / 3,screen.y / 2 }
-	//		, SPRITE_PIVOT::CM
-	//		, { 0.1f,0.1f }
-	//	));
-	//	menu_->AddTexture(new Texture(
-	//		"C:\\Users\\2210337\\Desktop\\iPhone‚æ‚è\\IMG_5828.JPG"
-	//		, { screen.x / 3,screen.y / 2 + 30.0f }
-	//		, SPRITE_PIVOT::CT
-	//		, { 0.1f,0.1f }
-	//	));
+	{
+		//left
+		menu_->AddTexture(new Texture(
+			"C:\\Users\\2210337\\Desktop\\iPhoneï¿½ï¿½ï¿½\\IMG_5828.JPG"
+			, 8
+			, { screen.x / 3,screen.y / 2 - 30.0f }
+			, SPRITE_PIVOT::CB
+			, { 0.1f,0.1f }
+		));
+		TEXTOUT.timeRender(false, 836327.38f
+			, menu_->GetTexList()->back()->GetPosition()
+		);
 
+		menu_->AddTexture(new Texture(
+			"C:\\Users\\2210337\\Desktop\\iPhoneï¿½ï¿½ï¿½\\IMG_5828.JPG"
+			, 8
+			, { screen.x / 3,screen.y / 2 }
+			, SPRITE_PIVOT::CM
+			, { 0.1f,0.1f }
+		));
+		menu_->AddTexture(new Texture(
+			"C:\\Users\\2210337\\Desktop\\iPhoneï¿½ï¿½ï¿½\\IMG_5828.JPG"
+			, 8
+			, { screen.x / 3,screen.y / 2 + 30.0f }
+			, SPRITE_PIVOT::CT
+			, { 0.1f,0.1f }
+		));
+
+		//right
+		menu_->AddTexture(new Texture(
+			"C:\\Users\\2210337\\Desktop\\iPhoneï¿½ï¿½ï¿½\\IMG_5828.JPG"
+			, 8
+			, { screen.x * 2 / 3,screen.y / 2 - 30.0f }
+			, SPRITE_PIVOT::CB
+			, { 0.1f,0.1f }
+		));
+		menu_->AddTexture(new Texture(
+			"C:\\Users\\2210337\\Desktop\\iPhoneï¿½ï¿½ï¿½\\IMG_5828.JPG"
+			, 8
+			, { screen.x * 2 / 3,screen.y / 2 }
+			, SPRITE_PIVOT::CM
+			, { 0.1f,0.1f }
+		));
+	}
 	//	//right
 	//	menu_->AddTexture(new Texture(
-	//		"C:\\Users\\2210337\\Desktop\\iPhone‚æ‚è\\IMG_5828.JPG"
+	//		"C:\\Users\\2210337\\Desktop\\iPhoneï¿½ï¿½ï¿½\\IMG_5828.JPG"
 	//		, { screen.x * 2 / 3,screen.y / 2 - 30.0f }
 	//		, SPRITE_PIVOT::CB
 	//		, { 0.1f,0.1f }
 	//	));
 	//	menu_->AddTexture(new Texture(
-	//		"C:\\Users\\2210337\\Desktop\\iPhone‚æ‚è\\IMG_5828.JPG"
+	//		"C:\\Users\\2210337\\Desktop\\iPhoneï¿½ï¿½ï¿½\\IMG_5828.JPG"
 	//		, { screen.x * 2 / 3,screen.y / 2 }
 	//		, SPRITE_PIVOT::CM
 	//		, { 0.1f,0.1f }
 	//	));
 	//}
 
-	// ‰¹‚Ì‰Šú‰»EÄ¶
+	// ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Eï¿½Äï¿½
 	BGM = Audio::Instance().LoadAudioSource("Data/Audio/ClearBGM.wav");
 	BGM->Play(false);
 }
@@ -87,8 +113,13 @@ void SceneClear::Update(float elapsedTime)
 {
 	switch (state_)
 	{
+	case 0:
+		TEXTOUT.timeRender(&elapsedTime, menu_->GetTexList()->at(1)->GetPosition());
+		++state_;
+
 	default:
 		menu_->Update();
+		
 		break;
 	}
 }
@@ -96,6 +127,7 @@ void SceneClear::Update(float elapsedTime)
 void SceneClear::Render()
 {
 	menu_->Render();
+	TEXTOUT.Render();
 }
 
 const SCENE_TYPE SceneClear::getType()

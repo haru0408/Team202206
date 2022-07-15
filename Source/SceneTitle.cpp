@@ -20,26 +20,26 @@ void SceneTitle::Initialize()
     menu_ = std::make_unique<MenuBar>(DirectX::XMFLOAT2(1,2));
 
     //«‰¼İ
-    menu_->SetBG(new Texture(".\\Data\\Sprite\\Title.png"));
+    menu_->SetBG(new Texture(".\\Data\\Sprite\\Title.png",1));
     menu_->SetLogo(new Texture(
-        ".\\Data\\Sprite\\LoadingIcon.png"
+        ".\\Data\\Sprite\\LoadingIcon.png",1
         , { screen.x / 2,screen.y / 4 }
         , SPRITE_PIVOT::CM
     ));
     menu_->AddSubBer(new Texture(
-        ".\\Data\\Sprite\\Title.png"
+        ".\\Data\\Sprite\\Title.png",2
         , { screen.x / 2,screen.y * 3 / 5 }
         , SPRITE_PIVOT::CM
         , { 0.5f,0.5f }
     ), apa);
     menu_->AddSubBer(new Texture(
-        ".\\Data\\Sprite\\Title.png"
+        ".\\Data\\Sprite\\Title.png",2
         , { screen.x / 2,screen.y * 4 / 5 }
         , SPRITE_PIVOT::CM
         , { 0.5f,0.5f }
     ), apue);
     menu_->AddTexture(new Texture(
-        "C:\\Users\\2210337\\Desktop\\iPhone‚æ‚è\\IMG_5828.JPG"
+        "C:\\Users\\2210337\\Desktop\\iPhone‚æ‚è\\IMG_5828.JPG",1
     ));
 
     // ‰¹‚Ì‰Šú‰»EÄ¶
