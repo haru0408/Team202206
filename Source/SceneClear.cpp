@@ -4,6 +4,7 @@
 #include "Input/Input.h"
 #include "Graphics/Graphics.h"
 
+
 inline void que(){
 	SceneManager::Instance().changeScene(SCENE_TYPE::TITLE);
 }
@@ -17,7 +18,7 @@ void SceneClear::Initialize()
 	menu_ = std::make_unique<MenuBar>(DirectX::XMFLOAT2(2, 1), false, false, false);
 
 	menu_->SetLogo(new Texture(
-		".\\Data\\Sprite\\LoadingIcon.png"
+		logoFile
 		, 1
 		, { screen.x / 2,20.0f }
 		, SPRITE_PIVOT::CT
@@ -25,14 +26,14 @@ void SceneClear::Initialize()
 	/* bar */
 	{
 		menu_->AddSubBer(new Texture(
-			".\\Data\\Sprite\\Title.png"
+			barFile
 			, 8
 			, { screen.x / 3,screen.y * 4 / 5 }
 			, SPRITE_PIVOT::CM
 			, { 0.25f,0.25f }
 		), que);
 		menu_->AddSubBer(new Texture(
-			".\\Data\\Sprite\\Title.png"
+			barFile
 			, 8
 			, { screen.x * 2 / 3,screen.y * 4 / 5 }
 			, SPRITE_PIVOT::CM
@@ -43,7 +44,7 @@ void SceneClear::Initialize()
 	{
 		//left
 		menu_->AddTexture(new Texture(
-			"C:\\Users\\2210337\\Desktop\\iPhone���\\IMG_5828.JPG"
+			tezFile0
 			, 8
 			, { screen.x / 3,screen.y / 2 - 30.0f }
 			, SPRITE_PIVOT::CB
@@ -54,14 +55,14 @@ void SceneClear::Initialize()
 		);
 
 		menu_->AddTexture(new Texture(
-			"C:\\Users\\2210337\\Desktop\\iPhone���\\IMG_5828.JPG"
+			tezFile0
 			, 8
 			, { screen.x / 3,screen.y / 2 }
 			, SPRITE_PIVOT::CM
 			, { 0.1f,0.1f }
 		));
 		menu_->AddTexture(new Texture(
-			"C:\\Users\\2210337\\Desktop\\iPhone���\\IMG_5828.JPG"
+			tezFile0
 			, 8
 			, { screen.x / 3,screen.y / 2 + 30.0f }
 			, SPRITE_PIVOT::CT
@@ -70,34 +71,20 @@ void SceneClear::Initialize()
 
 		//right
 		menu_->AddTexture(new Texture(
-			"C:\\Users\\2210337\\Desktop\\iPhone���\\IMG_5828.JPG"
+			tezFile0
 			, 8
 			, { screen.x * 2 / 3,screen.y / 2 - 30.0f }
 			, SPRITE_PIVOT::CB
 			, { 0.1f,0.1f }
 		));
 		menu_->AddTexture(new Texture(
-			"C:\\Users\\2210337\\Desktop\\iPhone���\\IMG_5828.JPG"
+			tezFile0
 			, 8
 			, { screen.x * 2 / 3,screen.y / 2 }
 			, SPRITE_PIVOT::CM
 			, { 0.1f,0.1f }
 		));
 	}
-	//	//right
-	//	menu_->AddTexture(new Texture(
-	//		"C:\\Users\\2210337\\Desktop\\iPhone���\\IMG_5828.JPG"
-	//		, { screen.x * 2 / 3,screen.y / 2 - 30.0f }
-	//		, SPRITE_PIVOT::CB
-	//		, { 0.1f,0.1f }
-	//	));
-	//	menu_->AddTexture(new Texture(
-	//		"C:\\Users\\2210337\\Desktop\\iPhone���\\IMG_5828.JPG"
-	//		, { screen.x * 2 / 3,screen.y / 2 }
-	//		, SPRITE_PIVOT::CM
-	//		, { 0.1f,0.1f }
-	//	));
-	//}
 
 	// ���̏������E�Đ�
 	BGM = Audio::Instance().LoadAudioSource("Data/Audio/ClearBGM.wav");

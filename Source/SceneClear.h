@@ -32,4 +32,8 @@ private:
     std::unique_ptr<MenuBar> menu_ = nullptr;
 
     std::unique_ptr<AudioSource> BGM;
+
+    const char* logoFile = ".\\Data\\Sprite\\LoadingIcon.png";
+    const char* barFile = ".\\Data\\Sprite\\Title.png";
+    const char* tezFile0 = "C:\\Users\\2210337\\Desktop\\iPhone‚æ‚è\\IMG_5828.JPG";
 };
