@@ -101,7 +101,7 @@ void SceneGame::Initialize()
 	HoleInitialize();
 
 	// 砲台の初期化
-	CanonInitialize();
+	//CanonInitialize();
 
 	// バネの初期化
 	SpringInitialize();
@@ -141,9 +141,9 @@ void SceneGame::Finalize()
 	HoleManager::Instance().Clear();
 
 	// 砲台終了化
-	CanonManager::Instance().Clear();
+	//CanonManager::Instance().Clear();
 	// 弾終了化
-	CanonBallManager::Instance().Clear();
+	//CanonBallManager::Instance().Clear();
 
 	//バネ終了化
 	SpringManager::Instance().Clear();
@@ -176,9 +176,9 @@ void SceneGame::Update(float elapsedTime)
 	FloorManager::Instance().Update(elapsedTime);
 
 	// 砲台更新処理
-	CanonManager::Instance().Update(elapsedTime);
+	//CanonManager::Instance().Update(elapsedTime);
 	// 弾更新処理
-	CanonBallManager::Instance().Update(elapsedTime);
+	//CanonBallManager::Instance().Update(elapsedTime);
 
 	//バネの更新処理
 	SpringManager::Instance().Update(elapsedTime);
@@ -293,7 +293,7 @@ void SceneGame::Render()
 	// 3Dデバッグ描画
 	{
 		// プレーヤーデバッグプリミティブ描画
-		player->DrawDebugPrimitive();
+		//player->DrawDebugPrimitive();
 
 		// エネミーデバッグプリミティブ描画
 		EnemyManager::Instance().DrawDebugPrimitive();
@@ -656,36 +656,6 @@ void SceneGame::HoleInitialize()
 
 void SceneGame::CanonInitialize()
 {
-	// インスタンス取得
-	CanonManager& canonManager = CanonManager::Instance();
-
-	// Stage03
-	Canon* canon = new Canon();
-	canon->SetPosition(DirectX::XMFLOAT3(8.5f, 60.25f, 1.0f));
-	canon->SetUpDirection();
-	canonManager.Register(canon);
-	canon = new Canon();
-	canon->SetPosition(DirectX::XMFLOAT3(0.0f, 60.25f, -8.0f));
-	canon->SetDownDirection();
-	canonManager.Register(canon);
-	//canon = new Canon();
-	//canon->SetPosition(DirectX::XMFLOAT3(-11.5f, 60.25f, 0.0f));
-	//canon->SetRightDirection();
-	//canonManager.Register(canon);
-	//canon = new Canon();
-	//canon->SetPosition(DirectX::XMFLOAT3(-3.25f, 60.25f, 15.5f));
-	//canon->SetDownDirection();
-	//canonManager.Register(canon);
-	//canon = new Canon();
-	//canon->SetPosition(DirectX::XMFLOAT3(-6.5f, 60.25f, 17.75f));
-	//canon->SetDownDirection();
-	//canonManager.Register(canon);
-
-	//// Stage04
-	//canon = new Canon();
-	//canon->SetPosition(DirectX::XMFLOAT3(10.5f, 80.2f, 18.0f));
-	//canon->SetDownDirection();
-	//canonManager.Register(canon);
 }
 
 void SceneGame::SpringInitialize()
