@@ -28,7 +28,7 @@ Player::Player()
 
     // 位置はステージの端
     position.x = position.z = 17.0f;
-    position.y = 22.0f;
+    position.y = 105.0f;
 }
 
 Player::~Player()
@@ -506,8 +506,7 @@ void Player::CollisionPlayerVsFloor()
 
                     if (floor->GetFloorNum() == 1)
                     {
-                        impulse = { 5.0f, 5.0f, 5.0f };
-                        AddImpulse(floor->SetImpulse());
+                        velocity=floor->SetImpulse(floor->floor_direction);
                     }
                 }
                 if (Collision::IntersectBoxVsBox_Ground(

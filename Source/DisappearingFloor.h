@@ -14,7 +14,7 @@ public:
 
 	void Destroy_timer() override;
 
-	DirectX::XMFLOAT3 SetImpulse()override { return null; };
+	DirectX::XMFLOAT3 SetImpulse(int judge)override { return null; };
 
 private:
 	Model* model = nullptr;

@@ -5,7 +5,7 @@
 class Spring
 {
 public:
-	Spring();
+	Spring(DirectX::XMFLOAT3 Length);
 	~Spring();
 
 	DirectX::XMFLOAT3 Revers_Velo();
@@ -16,7 +16,10 @@ public:
     // 描画処理
     void Render(ID3D11DeviceContext* dc, Shader* shader);
 
-    void UpdateTransform();
+    // 行列更新処理
+    void UpdateTransform(const DirectX::XMFLOAT3& AdjustScale,
+        const DirectX::XMFLOAT3& AdjustAngle,
+        const DirectX::XMFLOAT3& AdjustPosition);
 
     //デバッグ
     void DrawDebugPrimitive();
@@ -33,7 +36,8 @@ public:
     void SetLength(const DirectX::XMFLOAT3& length) { this->length = length; }
 
 private:
-protected:
+    Model* model = nullptr;
+
     DirectX::XMFLOAT3     position = { 0, 0, 0 };
     DirectX::XMFLOAT3     angle = { 0, 0, 0 };
     DirectX::XMFLOAT3     scale = { 1, 1, 1 };

@@ -8,8 +8,8 @@ Stage::Stage()
     model[1] = new Model("Data/Model/Stage/Floor_1.mdl");
     model[2] = new Model("Data/Model/Stage/Floor_2.mdl");
     model[3] = new Model("Data/Model/Stage/Floor_3.mdl");
-    model[4] = new Model("Data/Model/Stage/Floor_4.mdl");
-    model[5] = new Model("Data/Model/Stage/Floor_5.mdl");
+    model[4] = new Model("Data/Model/Stage/Floor_4_.mdl");
+    model[5] = new Model("Data/Model/Stage/Floor_5_.mdl");
 
     for (int i = 0; i < 6; i++)
     {

@@ -1,4 +1,4 @@
-#include "SceneGame.h"
+ï»¿#include "SceneGame.h"
 #include "SceneManager.h"
 
 #include "Graphics/Graphics.h"
@@ -22,16 +22,16 @@
 
 #include "EffectManager.h"
 
-// ‰Šú‰»
+// åˆæœŸåŒ–
 void SceneGame::Initialize()
 {
-	// ƒXƒe[ƒW‰Šú‰»
+	// ã‚¹ãƒ†ãƒ¼ã‚¸åˆæœŸåŒ–
 	stage = new Stage();
 
-	// ƒvƒŒƒCƒ„[‰Šú‰»
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼åˆæœŸåŒ–
 	player = new Player();
 
-	// ƒJƒƒ‰‰Šúİ’è
+	// ã‚«ãƒ¡ãƒ©åˆæœŸè¨­å®š
 	Graphics& graphics = Graphics::Instance();
 	Camera& camera = Camera::Instance();
 	camera.SetLookAt(
@@ -45,10 +45,10 @@ void SceneGame::Initialize()
 		0.1f,
 		1000.0f
 	);
-	// ƒJƒƒ‰ƒRƒ“ƒgƒ[ƒ‰[‰Šú‰»
+	// ã‚«ãƒ¡ãƒ©ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼åˆæœŸåŒ–
 	cameraController = new CameraController;
 
-	//°‚Ì‰Šú‰»
+	//åºŠã®åˆæœŸåŒ–
 	for (int x = 0; x < 20; x++)
 	{
 		for (int z = 0; z < 20; z++)
@@ -80,7 +80,7 @@ void SceneGame::Initialize()
 		}
 	}
 
-	// •—ƒGƒŠƒA‚Ì‰Šú‰»
+	// é¢¨ã‚¨ãƒªã‚¢ã®åˆæœŸåŒ–
 	AreaManager::Instance().Register(new AreaWindow(DirectX::XMFLOAT3(13.75f, 100.0f, 2.3f), 
 		DirectX::XMFLOAT3(11.0f, 2.0f, 3.0f), 
 		DirectX::XMFLOAT3(-0.4f, 0.0f, 0.0f)));
@@ -96,94 +96,93 @@ void SceneGame::Initialize()
 
 	warpEffect = new Effect("Data/Effect/warp.efk");
 
-	// ŒŠ‚Ì‰Šú‰»
+	// ç©´ã®åˆæœŸåŒ–
 	HoleInitialize();
 
-	// –C‘ä‚Ì‰Šú‰»
+	// ç ²å°ã®åˆæœŸåŒ–
 	//CanonInitialize();
 
-	// ƒoƒl‚Ì‰Šú‰»
 	SpringInitialize();
 }
 
-// I—¹‰»
+// çµ‚äº†åŒ–
 void SceneGame::Finalize()
 {
-	// ƒvƒŒƒCƒ„[I—¹‰»
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼çµ‚äº†åŒ–
 	if (player != nullptr)
 	{
 		delete player;
 		player = nullptr;
 	}
 
-	// ƒXƒe[ƒWI—¹‰»
+	// ã‚¹ãƒ†ãƒ¼ã‚¸çµ‚äº†åŒ–
 	if (stage != nullptr)
 	{
 		delete stage;
 		stage = nullptr;
 	}
 
-	// ƒGƒlƒ~[I—¹‰»
+	// ã‚¨ãƒãƒŸãƒ¼çµ‚äº†åŒ–
 	EnemyManager::Instance().Clear();
 
 	FloorManager::Instance().Clear();
 
 	AreaManager::Instance().Clear();
 
-	// ŒŠI—¹‰»
+	// ç©´çµ‚äº†åŒ–
 	HoleManager::Instance().Clear();
 
-	// –C‘äI—¹‰»
+	// ç ²å°çµ‚äº†åŒ–
 	CanonManager::Instance().Clear();
-	// ’eI—¹‰»
+	// å¼¾çµ‚äº†åŒ–
 	CanonBallManager::Instance().Clear();
 
-	//ƒoƒlI—¹‰»
+	//ãƒãƒçµ‚äº†åŒ–
 	SpringManager::Instance().Clear();
 
-	// ƒJƒƒ‰ƒRƒ“ƒgƒ[ƒ‰[I—¹‰»
+	// ã‚«ãƒ¡ãƒ©ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼çµ‚äº†åŒ–
 	if (cameraController != nullptr)
 	{
 		delete cameraController;
 		cameraController = nullptr;
 	}
 
-	// ƒGƒtƒFƒNƒgI—¹‰»
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆçµ‚äº†åŒ–
 	delete wind1Effect;
 	delete wind2Effect;
 	delete wind3Effect;
 }
 
-// XVˆ—
+// æ›´æ–°å‡¦ç†
 void SceneGame::Update(float elapsedTime)
 {
-	// ƒXƒe[ƒWXVˆ—
+	// ã‚¹ãƒ†ãƒ¼ã‚¸æ›´æ–°å‡¦ç†
 	stage->Update(elapsedTime);
-	// ƒvƒŒƒCƒ„[XVˆ—
+	// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼æ›´æ–°å‡¦ç†
 	player->Update(elapsedTime);
-	// ƒGƒlƒ~[XVˆ—
+	// ã‚¨ãƒãƒŸãƒ¼æ›´æ–°å‡¦ç†
 	EnemyManager::Instance().Update(elapsedTime);
 
 	FloorManager::Instance().Update(elapsedTime);
 
-	// –C‘äXVˆ—
+	// ç ²å°æ›´æ–°å‡¦ç†
 	CanonManager::Instance().Update(elapsedTime);
-	// ’eXVˆ—
+	// å¼¾æ›´æ–°å‡¦ç†
 	CanonBallManager::Instance().Update(elapsedTime);
 
-	//ƒoƒl‚ÌXVˆ—
+	//ãƒãƒã®æ›´æ–°å‡¦ç†
 	SpringManager::Instance().Update(elapsedTime);
 
-	// ƒGƒtƒFƒNƒgXVˆ—
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆæ›´æ–°å‡¦ç†
 	EffectManager::Instance().Update(elapsedTime);
 
-	// ƒJƒƒ‰ƒRƒ“ƒgƒ[ƒ‰[XVˆ—
+	// ã‚«ãƒ¡ãƒ©ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼æ›´æ–°å‡¦ç†
 	DirectX::XMFLOAT3 target = player->GetPosition();
 	target.y += 0.5f;
 	cameraController->SetTarget(target);
 	cameraController->Update(elapsedTime);
 
-	// ƒGƒtƒFƒNƒgÄ¶
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆå†ç”Ÿ
 	wind1Effect->Play(DirectX::XMFLOAT3(16.75f, 101.0f, 2.3f));
 	wind2Effect->Play(DirectX::XMFLOAT3(-0.5f, 101.0f, 12.5f));
 	wind2Effect->Play(DirectX::XMFLOAT3(-9.0f, 100.0f, 16.5f));
@@ -197,7 +196,7 @@ void SceneGame::Update(float elapsedTime)
 	//	SceneManager::Instance().changeScene(SCENE_TYPE::TITLE);
 }
 
-// •`‰æˆ—
+// æç”»å‡¦ç†
 void SceneGame::Render()
 {
 	Graphics& graphics = Graphics::Instance();
@@ -205,27 +204,27 @@ void SceneGame::Render()
 	ID3D11RenderTargetView* rtv = graphics.GetRenderTargetView();
 	ID3D11DepthStencilView* dsv = graphics.GetDepthStencilView();
 
-	// ‰æ–ÊƒNƒŠƒA•ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒgİ’è
-	FLOAT color[] = { 0.0f, 0.0f, 0.5f, 1.0f };	// RGBA(0.0`1.0)
+	// ç”»é¢ã‚¯ãƒªã‚¢ï¼†ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆè¨­å®š
+	FLOAT color[] = { 0.0f, 0.0f, 0.5f, 1.0f };	// RGBA(0.0ï½1.0)
 	dc->ClearRenderTargetView(rtv, color);
 	dc->ClearDepthStencilView(dsv, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 	dc->OMSetRenderTargets(1, &rtv, dsv);
 
-	// •`‰æˆ—
+	// æç”»å‡¦ç†
 	RenderContext rc;
-	rc.lightDirection = { 0.0f, -1.0f, 0.0f, 0.0f };	// ƒ‰ƒCƒg•ûŒüi‰º•ûŒüj
+	rc.lightDirection = { 0.0f, -1.0f, 0.0f, 0.0f };	// ãƒ©ã‚¤ãƒˆæ–¹å‘ï¼ˆä¸‹æ–¹å‘ï¼‰
 
-	// ƒJƒƒ‰ƒpƒ‰ƒ[ƒ^İ’è
+	// ã‚«ãƒ¡ãƒ©ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿è¨­å®š
 	Camera& camera = Camera::Instance();
 	rc.view = camera.GetView();
 	rc.projection = camera.GetProjection();
 
 #if 0
-	// ƒrƒ…[s—ñ
+	// ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—
 	{
-		DirectX::XMFLOAT3 eye = { 0, 10, -10 };	// ƒJƒƒ‰‚Ì‹“_iˆÊ’uj
-		DirectX::XMFLOAT3 focus = { 0, 0, 0 };	// ƒJƒƒ‰‚Ì’‹“_iƒ^[ƒQƒbƒgj
-		DirectX::XMFLOAT3 up = { 0, 1, 0 };		// ƒJƒƒ‰‚Ìã•ûŒü
+		DirectX::XMFLOAT3 eye = { 0, 10, -10 };	// ã‚«ãƒ¡ãƒ©ã®è¦–ç‚¹ï¼ˆä½ç½®ï¼‰
+		DirectX::XMFLOAT3 focus = { 0, 0, 0 };	// ã‚«ãƒ¡ãƒ©ã®æ³¨è¦–ç‚¹ï¼ˆã‚¿ãƒ¼ã‚²ãƒƒãƒˆï¼‰
+		DirectX::XMFLOAT3 up = { 0, 1, 0 };		// ã‚«ãƒ¡ãƒ©ã®ä¸Šæ–¹å‘
 
 		DirectX::XMVECTOR Eye = DirectX::XMLoadFloat3(&eye);
 		DirectX::XMVECTOR Focus = DirectX::XMLoadFloat3(&focus);
@@ -233,85 +232,88 @@ void SceneGame::Render()
 		DirectX::XMMATRIX View = DirectX::XMMatrixLookAtLH(Eye, Focus, Up);
 		DirectX::XMStoreFloat4x4(&rc.view, View);
 	}
-	// ƒvƒƒWƒFƒNƒVƒ‡ƒ“s—ñ
+	// ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³è¡Œåˆ—
 	{
-		float fovY = DirectX::XMConvertToRadians(45);	// ‹–ìŠp
-		float aspectRatio = graphics.GetScreenWidth() / graphics.GetScreenHeight();	// ‰æ–Êc‰¡”ä—¦
-		float nearZ = 0.1f;	// ƒJƒƒ‰‚ª‰f‚µo‚·‚ÌÅ‹ß‹——£
-		float farZ = 1000.0f;	// ƒJƒƒ‰‚ª‰f‚µo‚·‚ÌÅ‰“‹——£
+		float fovY = DirectX::XMConvertToRadians(45);	// è¦–é‡è§’
+		float aspectRatio = graphics.GetScreenWidth() / graphics.GetScreenHeight();	// ç”»é¢ç¸¦æ¨ªæ¯”ç‡
+		float nearZ = 0.1f;	// ã‚«ãƒ¡ãƒ©ãŒæ˜ ã—å‡ºã™ã®æœ€è¿‘è·é›¢
+		float farZ = 1000.0f;	// ã‚«ãƒ¡ãƒ©ãŒæ˜ ã—å‡ºã™ã®æœ€é è·é›¢
 		DirectX::XMMATRIX Projection = DirectX::XMMatrixPerspectiveFovLH(fovY, aspectRatio, nearZ, farZ);
 		DirectX::XMStoreFloat4x4(&rc.projection, Projection);
 	}
 #endif
-	// 3Dƒ‚ƒfƒ‹•`‰æ
+	// 3Dãƒ¢ãƒ‡ãƒ«æç”»
 	{
 		Shader* shader = graphics.GetShader();
 		shader->Begin(dc, rc);
 
-		// ƒXƒe[ƒW•`‰æ
+		// ã‚¹ãƒ†ãƒ¼ã‚¸æç”»
 		stage->Render(dc, shader);
 
-		// ƒvƒŒƒCƒ„[•`‰æ
+		// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼æç”»
 		player->Render(dc, shader);
 
-		// ƒvƒŒƒCƒ„[•`‰æ
+		// ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼æç”»
 		EnemyManager::Instance().Render(dc, shader);
 
-		// –C‘ä•`‰æ
-        CanonManager::Instance().Render(dc, shader);
-        // ’e•`‰æ
-        CanonBallManager::Instance().Render(dc, shader);
+		FloorManager::Instance().Render(dc, shader);
+
+		// ç ²å°æç”»
+        //CanonManager::Instance().Render(dc, shader);
+        // å¼¾æç”»
+        //CanonBallManager::Instance().Render(dc, shader);
 
 		SpringManager::Instance().Render(dc, shader);
+
 		shader->End(dc);
 	}
-	// 3DƒGƒtƒFƒNƒg•`‰æ
+	// 3Dã‚¨ãƒ•ã‚§ã‚¯ãƒˆæç”»
 	{
 		EffectManager::Instance().Render(rc.view, rc.projection);
 	}
 
-	// 3DƒfƒoƒbƒO•`‰æ
+	// 3Dãƒ‡ãƒãƒƒã‚°æç”»
 	{
-		// ƒvƒŒ[ƒ„[ƒfƒoƒbƒOƒvƒŠƒ~ƒeƒBƒu•`‰æ
+		// ãƒ—ãƒ¬ãƒ¼ãƒ¤ãƒ¼ãƒ‡ãƒãƒƒã‚°ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–æç”»
 		player->DrawDebugPrimitive();
 
-		// ƒGƒlƒ~[ƒfƒoƒbƒOƒvƒŠƒ~ƒeƒBƒu•`‰æ
+		// ã‚¨ãƒãƒŸãƒ¼ãƒ‡ãƒãƒƒã‚°ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–æç”»
 		EnemyManager::Instance().DrawDebugPrimitive();
 
 		//AreaManager::Instance().DrawDebugPrimitive();
 
 		//FloorManager::Instance().DrawDebugPrimitive();
 
-		// ŒŠƒfƒoƒbƒOƒvƒŠƒ~ƒeƒBƒu•`‰æ
+		// ç©´ãƒ‡ãƒãƒƒã‚°ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–æç”»
 		//HoleManager::Instance().DrawDebugPrimitive();
 
-		// –C‘äƒfƒoƒbƒOƒvƒŠƒ~ƒeƒBƒu•`‰æ
-		CanonManager::Instance().DrawDebugPrimitive();
-		// ’eƒfƒoƒbƒOƒvƒŠƒ~ƒeƒBƒu•`‰æ
+		// ç ²å°ãƒ‡ãƒãƒƒã‚°ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–æç”»
+		//CanonManager::Instance().DrawDebugPrimitive();
+		// å¼¾ãƒ‡ãƒãƒƒã‚°ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–æç”»
 		//CanonBallManager::Instance().DrawDebugPrimitive();
 
 		SpringManager::Instance().DrawDebugPrimitive();
 
-		// ƒ‰ƒCƒ“ƒŒƒ“ƒ_ƒ‰•`‰æÀs
+		// ãƒ©ã‚¤ãƒ³ãƒ¬ãƒ³ãƒ€ãƒ©æç”»å®Ÿè¡Œ
 		graphics.GetLineRenderer()->Render(dc, rc.view, rc.projection);
 
-		// ƒfƒoƒbƒOƒŒƒ“ƒ_ƒ‰•`‰æÀs
+		// ãƒ‡ãƒãƒƒã‚°ãƒ¬ãƒ³ãƒ€ãƒ©æç”»å®Ÿè¡Œ
 		graphics.GetDebugRenderer()->Render(dc, rc.view, rc.projection);
 	}
 
-	// 2DƒXƒvƒ‰ƒCƒg•`‰æ
+	// 2Dã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»
 	{
 
 	}
 
-	// 2DƒfƒoƒbƒOGUI•`‰æ
+	// 2Dãƒ‡ãƒãƒƒã‚°GUIæç”»
 	{
-		//@ƒvƒŒƒCƒ„[ƒfƒoƒbƒO•`‰æ
+		//ã€€ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒ‡ãƒãƒƒã‚°æç”»
 		player->DrawDebugGUI();
-		//@ƒJƒƒ‰ƒRƒ“ƒgƒ[ƒ‰[ƒfƒoƒbƒO•`‰æ
+		//ã€€ã‚«ãƒ¡ãƒ©ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ãƒ‡ãƒãƒƒã‚°æç”»
 		cameraController->DrawDebugGUI();
 
-		//@ImGui•`‰æ
+		//ã€€ImGuiæç”»
 		HoleManager::Instance().DrawDebugGUI();
 
 		CanonManager::Instance().DrawDebugGUI();
@@ -320,7 +322,7 @@ void SceneGame::Render()
 
 void SceneGame::SetMap(int Floor[20][20], int x, int z, int y)
 {
-	//°‚Ì”z’u
+	//åºŠã®é…ç½®
 	FloorManager& floorManager = FloorManager::Instance();
 
 	if (Floor[x][z] == 0)
@@ -333,28 +335,52 @@ void SceneGame::SetMap(int Floor[20][20], int x, int z, int y)
 
 	if (Floor[x][z] == 1)
 	{
-		AccelerationFloor* Accelerationfloor = new AccelerationFloor();
-		Accelerationfloor->SetPosition(DirectX::XMFLOAT3(-19.0f + (x * 2.0f), -0.6f + (y * 19.95), -19.0f + (z * 2.0f)));
-		Accelerationfloor->SetFloorStage(y);
-		floorManager.Register(Accelerationfloor);
-	}
-
-	if (Floor[x][z] == 2)
-	{
 		DisappearingFloor* Disapperaringfloor = new DisappearingFloor();
 		Disapperaringfloor->SetPosition(DirectX::XMFLOAT3(-19.0f + (x * 2.0f), -0.6f + (y * 19.95), -19.0f + (z * 2.0f)));
 		Disapperaringfloor->SetFloorStage(y);
 		floorManager.Register(Disapperaringfloor);
 	}
 
+	if (Floor[x][z] == 2)
+	{
+		AccelerationFloor* Accelerationfloor_Left = new AccelerationFloor(0);
+		Accelerationfloor_Left->SetPosition(DirectX::XMFLOAT3(-19.0f + (x * 2.0f), -0.6f + (y * 19.95), -19.0f + (z * 2.0f)));
+		Accelerationfloor_Left->SetFloorStage(y);
+		floorManager.Register(Accelerationfloor_Left);
+	}
+
+	if (Floor[x][z] == 3)
+	{
+		AccelerationFloor* Accelerationfloor_Down = new AccelerationFloor(1);
+		Accelerationfloor_Down->SetPosition(DirectX::XMFLOAT3(-19.0f + (x * 2.0f), -0.6f + (y * 19.95), -19.0f + (z * 2.0f)));
+		Accelerationfloor_Down->SetFloorStage(y);
+		floorManager.Register(Accelerationfloor_Down);
+	}
+
+	if (Floor[x][z] == 4)
+	{
+		AccelerationFloor* Accelerationfloor_Right = new AccelerationFloor(2);
+		Accelerationfloor_Right->SetPosition(DirectX::XMFLOAT3(-19.0f + (x * 2.0f), -0.6f + (y * 19.95), -19.0f + (z * 2.0f)));
+		Accelerationfloor_Right->SetFloorStage(y);
+		floorManager.Register(Accelerationfloor_Right);
+	}
+
+	if (Floor[x][z] == 5)
+	{
+		AccelerationFloor* Accelerationfloor_Up = new AccelerationFloor(3);
+		Accelerationfloor_Up->SetPosition(DirectX::XMFLOAT3(-19.0f + (x * 2.0f), -0.6f + (y * 19.95), -19.0f + (z * 2.0f)));
+		Accelerationfloor_Up->SetFloorStage(y);
+		floorManager.Register(Accelerationfloor_Up);
+	}
+
 }
 /* get type */
 const SCENE_TYPE SceneGame::getType() { return SCENE_TYPE::GAME; }
 
-// ŒŠ‚Ì‰Šú‰»
+// ç©´ã®åˆæœŸåŒ–
 void SceneGame::HoleInitialize()
 {
-	// ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
 	HoleManager& holeManager = HoleManager::Instance();
 
 	// Stage01
@@ -606,7 +632,7 @@ void SceneGame::HoleInitialize()
 
 void SceneGame::CanonInitialize()
 {
-	// ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
 	CanonManager& canonManager = CanonManager::Instance();
 
 	// Stage03
@@ -640,12 +666,178 @@ void SceneGame::CanonInitialize()
 
 void SceneGame::SpringInitialize()
 {
-	// ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾
+	// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
 	SpringManager& springManager = SpringManager::Instance();
 
 	// Stage01
-	Spring* spring = new Spring;
+	Spring* spring = new Spring(DirectX::XMFLOAT3(3.0f, 1.0f, 3.0f));
 	spring->SetPosition(DirectX::XMFLOAT3(18.5f, 20.35f, 9.5f));
-	spring->SetLength(DirectX::XMFLOAT3(3.0f, 1.0f, 3.0f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(3.0f, 1.0f, 3.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(2.1f, 20.35f, 17.5f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(3.75f, 20.35f, 9.4f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(3.0f, 1.0f, 3.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(9.15f, 20.35f, -6.25f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(3.0f, 1.0f, 3.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(9.15f, 20.35f, -16.75f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(-8.15f, 20.35f, 11.5f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(-9.65f, 20.35f, -12.65f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(3.0f, 1.0f, 3.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(-15.6f, 20.35f, 4.5f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(3.0f, 1.0f, 3.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(-18.5f, 20.35f, -4.25f));
+	springManager.Register(spring);
+
+	// Stage02
+	spring = new Spring(DirectX::XMFLOAT3(3.0f, 1.0f, 3.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(18.5f, 40.3f, 8.92f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(3.0f, 1.0f, 3.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(9.3f, 40.3f, 17.75f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(3.0f, 1.0f, 3.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(-9.75f, 40.3f, 17.75f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(3.0f, 1.0f, 3.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(-18.5f, 40.3f, -5.8f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(3.0f, 1.0f, 3.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(-8.8f, 40.3f, -18.5f));
+	springManager.Register(spring);
+
+	// Stage03
+	spring = new Spring(DirectX::XMFLOAT3(3.0f, 1.0f, 3.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(1.5f, 60.25f, 17.5f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(3.0f, 1.0f, 3.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(11.75f, 60.25f, -16.85f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(3.0f, 1.0f, 3.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(-7.45f, 60.25f, -18.5f));
+	springManager.Register(spring);
+
+	// Stage04
+	spring = new Spring(DirectX::XMFLOAT3(3.0f, 1.0f, 3.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(1.5f, 80.2f, 17.5f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(3.0f, 1.0f, 3.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(18.5f, 80.2f, -9.0f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(3.0f, 1.0f, 3.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(-18.5f, 80.2f, 3.75f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(2.0f, 1.0f, 1.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(-7.8f, 80.2f, -19.5f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(2.0f, 1.0f, 1.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(9.35f, 80.2f, 13.0f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(1.0f + 0.5f, 80.2f, -13.0f - 1.0f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(2.0f, 1.0f, 1.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(1.0f, 80.2f, -13.0f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(15.0f + 0.5f, 80.2f, 15.0f - 1.0f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(2.0f, 1.0f, 1.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(15.0f, 80.2f, 15.0f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(-4.5f, 80.2f, -12.75f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(-11.5f, 80.2f, 15.0f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(-12.5f, 80.2f, 18.0f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(-4.6f, 80.2f, 18.0f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(-3.6f, 80.2f, 15.0f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(-2.6f, 80.2f, 13.5f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(1.35f, 80.2f, 8.0f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(1.35f, 80.2f, 10.5f));
+	springManager.Register(spring);
+
+	// Stage05
+	spring = new Spring(DirectX::XMFLOAT3(3.0f, 1.0f, 3.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(18.5f, 100.15f, 11.3f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(3.0f, 1.0f, 3.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(2.35f, 100.15f, 16.0f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(3.0f, 1.0f, 3.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(-6.0f, 100.15f, 16.0f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(2.0f, 1.0f, 1.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(-6.0f + 2.5f, 100.15f, 16.0f + 1.0f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(3.0f, 1.0f, 3.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(-18.5f, 100.15f, 5.0f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(3.0f, 1.0f, 3.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(-10.5f, 100.15f, -11.1f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(3.0f, 1.0f, 3.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(1.95f, 100.15f, -16.0f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(14.65f, 100.15f, 14.85f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(12.85f, 100.15f, 10.7f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(11.85f, 100.15f, 7.7f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(14.9f, 100.15f, -10.95f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(15.65f, 100.15f, -14.5f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(10.65f, 100.15f, -14.0f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(10.0f, 100.15f, -11.4f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(0.0f, 100.15f, -10.25f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(-6.5f, 100.15f, -8.13f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(-18.4f, 100.15f, 11.35f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(-13.9f, 100.15f, 17.5f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(-8.6f, 100.15f, 10.0f));
+	springManager.Register(spring);
+	spring = new Spring(DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f));
+	spring->SetPosition(DirectX::XMFLOAT3(2.9f, 100.15f, -8.75f));
 	springManager.Register(spring);
 }

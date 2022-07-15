@@ -30,12 +30,11 @@ void DisappearingFloor::Update(float elapsedTime)
 
 void DisappearingFloor::Render(ID3D11DeviceContext* dc, Shader* shader)
 {
-    shader->Draw(dc, model);
+
 }
 
 void DisappearingFloor::Destroy_timer()
 {
-    static float timer = 0;
     timer++;
     if (timer / 60 > 3)
     {
