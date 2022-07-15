@@ -13,6 +13,7 @@
 #include "HoleManager.h"
 #include "CanonManager.h"
 #include "CanonBallManager.h"
+#include "SpringManager.h"
 
 #include "NormalFloor.h"
 #include "DisappearingFloor.h"
@@ -118,6 +119,10 @@ void SceneGame::Initialize()
 	hole->SetRadius(2.0f);
 	holeManager.Register(hole);
 
+	SpringManager& springManager = SpringManager::Instance();
+	Spring* spring = new Spring;
+	spring->SetPosition(DirectX::XMFLOAT3(10.0f, 20.0f, -5.0f));
+	springManager.Register(spring);
 	/*
 	// 砲台の初期化
 	CanonManager& canonManager = CanonManager::Instance();
@@ -160,7 +165,8 @@ void SceneGame::Finalize()
 	CanonManager::Instance().Clear();
 	// 弾終了化
 	CanonBallManager::Instance().Clear();
-
+	//バネ終了化
+	SpringManager::Instance().Clear();
 	// カメラコントローラー終了化
 	if (cameraController != nullptr)
 	{
@@ -184,7 +190,8 @@ void SceneGame::Update(float elapsedTime)
 	CanonManager::Instance().Update(elapsedTime);
 	// 弾更新処理
 	CanonBallManager::Instance().Update(elapsedTime);
-
+	//バネの更新処理
+	SpringManager::Instance().Update(elapsedTime);
 	// カメラコントローラー更新処理
 	DirectX::XMFLOAT3 target = player->GetPosition();
 	target.y += 0.5f;
@@ -262,6 +269,7 @@ void SceneGame::Render()
         // 弾描画
         //CanonBallManager::Instance().Render(dc, shader);
 
+		SpringManager::Instance().Render(dc, shader);
 		shader->End(dc);
 	}
 
@@ -285,6 +293,7 @@ void SceneGame::Render()
 		// 弾デバッグプリミティブ描画
 		CanonBallManager::Instance().DrawDebugPrimitive();
 
+		SpringManager::Instance().DrawDebugPrimitive();
 		// ラインレンダラ描画実行
 		graphics.GetLineRenderer()->Render(dc, rc.view, rc.projection);
 

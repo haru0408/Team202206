@@ -504,7 +504,7 @@ void Player::CollisionPlayerVsFloor()
                     if (floor->GetFloorNum() == 1)
                     {
                         impulse = { 5.0f, 5.0f, 5.0f };
-                        AddImpulse(impulse);
+                        AddImpulse(floor->SetImpulse());
                     }
                 }
                 if (Collision::IntersectBoxVsBox_Ground(
@@ -519,7 +519,7 @@ void Player::CollisionPlayerVsFloor()
                     outPosition) &&
                     floor->GetFloorNum() == 0)
                 {
-                    floor->Destroy_timer(floor, i);
+                    floor->Destroy_timer();
                 }
 
             
@@ -534,8 +534,8 @@ void Player::OnLanding()
     
 void Player::Revelo()
 {
-    velocity.x *= -5;
-    velocity.z *= -5;
+    velocity.x *= -10;
+    velocity.z *= -10;
 }
 
 void Player::CollisionPlayerVsSpring()
@@ -560,12 +560,7 @@ void Player::CollisionPlayerVsSpring()
             1.0f,
             1.0f,
             1.0f,
-            outPosition))
-        {
-            // âüÇµèoÇµå„ÇÃà íuê›íË
-            Revelo();
+            outPosition))Revelo();
 
-        }
     }
-
 }
