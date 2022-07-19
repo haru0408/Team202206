@@ -55,9 +55,9 @@ void Warp::warp_hit(XMFLOAT3 player_pos)
     }
 }
 
-FLOAT Warp::warp_move(XMFLOAT3 player_pos, float speed, float height)
+FLOAT Warp::warp_move(XMFLOAT3 player_pos, float velocity, float speed, float height)
 {
-    player_pos.y += speed;
+    velocity += speed;
 
     if (player_pos.y > height)
     {
@@ -65,6 +65,6 @@ FLOAT Warp::warp_move(XMFLOAT3 player_pos, float speed, float height)
         hit = false;
     }
 
-    return player_pos.y;
+    return velocity;
 }
 

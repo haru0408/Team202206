@@ -29,7 +29,7 @@ Player::Player()
 
     // 位置はステージの端
     position.x = position.z = 17.0f;
-    position.y = 100.0f;
+    position.y = 0.0f;
 }
 
 Player::~Player()
@@ -96,8 +96,8 @@ void Player::InputMove(float elapsedTime)
     // ワープ
     if (warp_p->hit)
     {
-        position.y = warp_p->warp_move(position, 0.1f, 20.0f);
-        velocity.y = 0;
+        if(velocity.y<=0.0f) position_old = position.y;
+        velocity.y = warp_p->warp_move(position, velocity.y, 1.0f, (position_old+10.0f));
     }
 
     // 旋回処理
@@ -301,7 +301,6 @@ void Player::InputScaleChange()
         if       (position.z > 19.0f)  position.z = 19.0f;
         else if (position.z < -19.0f) position.z = -19.0f;
 
-        velocity.y += 1;
     }
 }
 

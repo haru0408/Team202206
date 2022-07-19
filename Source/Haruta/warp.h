@@ -17,7 +17,7 @@ public:
 
     void warp(XMFLOAT3 warp_pos);
     void warp_hit(XMFLOAT3 player_pos);
-    FLOAT warp_move(XMFLOAT3 player_pos, float speed, float height);
+    FLOAT warp_move(XMFLOAT3 player_pos,float velocity, float speed, float height);
 
     bool hit = false;
     XMFLOAT3 warp_pos[6];

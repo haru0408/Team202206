@@ -82,4 +82,6 @@ private:
     float fallSpeed = 0.025f;
     float holePosY  = 0.0f;
     bool fallFlg    = false;
+
+    float position_old = 0.0f;
 };
