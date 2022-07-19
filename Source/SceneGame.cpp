@@ -84,15 +84,15 @@ void SceneGame::Initialize()
 	// 風エリアの初期化
 	AreaManager::Instance().Register(new AreaWindow(DirectX::XMFLOAT3(13.75f, 100.0f, 2.3f), 
 		DirectX::XMFLOAT3(11.0f, 2.0f, 3.0f), 
-		DirectX::XMFLOAT3(-0.4f, 0.0f, 0.0f)));
+		DirectX::XMFLOAT3(-0.3f, 0.0f, 0.0f)));
 	wind1Effect = new Effect("Data/Effect/WindLeftEffect.efk");
 	AreaManager::Instance().Register(new AreaWindow(DirectX::XMFLOAT3(-0.5f, 100.0f, 10.0f),
 		DirectX::XMFLOAT3(3.0f, 2.0f, 5.0f),
-		DirectX::XMFLOAT3(0.0f, 0.0f, -0.4f)));
+		DirectX::XMFLOAT3(0.0f, 0.0f, -0.3f)));
 	wind2Effect = new Effect("Data/Effect/WindDownEffect.efk");
 	AreaManager::Instance().Register(new AreaWindow(DirectX::XMFLOAT3(-9.0f, 100.0f, 16.5f),
 		DirectX::XMFLOAT3(3.0f, 2.0f, 4.5f),
-		DirectX::XMFLOAT3(0.0f, 0.0f, -0.4)));
+		DirectX::XMFLOAT3(0.0f, 0.0f, -0.3)));
 	wind3Effect = new Effect("Data/Effect/WindDownEffect_.efk");
 
 	warpEffect01 = new Effect("Data/Effect/warp.efk");
