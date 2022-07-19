@@ -1,5 +1,15 @@
 #include "warp.h"
 
+Warp::Warp()
+{
+    warp_pos[0] = { 17, 0.5f, -17 };
+    warp_pos[1] = { -17,20.5f,-17 };
+    warp_pos[2] = { 17, 40.5f,17 };
+    warp_pos[3] = { -17,60.5f,-17 };
+    warp_pos[4] = { 17, 80.5f, 17 };
+    warp_pos[5] = { -17,100.5f,-17 };
+}
+
 void Destroy_timer(Enemy* enemy, int i)
 {
     EnemyManager& enemyManager = EnemyManager::Instance();
@@ -48,9 +58,11 @@ void Warp::warp_hit(XMFLOAT3 player_pos)
 FLOAT Warp::warp_move(XMFLOAT3 player_pos, float speed, float height)
 {
     player_pos.y += speed;
+
     if (player_pos.y > height)
     {
         player_pos.y = height;
+        hit = false;
     }
 
     return player_pos.y;

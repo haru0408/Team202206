@@ -17,6 +17,7 @@
 Player::Player()
 {
     model = new Model("Data/Model/Player/Player.mdl");
+    warp_p = new Warp();
 
     // モデルが大きいのでスケーリング
     scale.x = scale.y = scale.z = 0.005f;
@@ -73,6 +74,14 @@ void Player::Update(float elapsedTime)
 
     //モデル行列更新
     model->UpdateTransform(transform);
+
+
+    // ワープ配置と当たり判定(ごり押しですいません)
+    for (int i = 0; i < 6; i++)
+    {
+        warp_p->warp(warp_p->warp_pos[i]); //0
+        warp_p->warp_hit(position);
+    }
 }
 
 // 移動入力処理
@@ -83,6 +92,13 @@ void Player::InputMove(float elapsedTime)
 
     // 移動処理
     Move(moveVec.x, moveVec.z, moveSpeed);
+
+    // ワープ
+    if (warp_p->hit)
+    {
+        position.y = warp_p->warp_move(position, 0.1f, 20.0f);
+        velocity.y = 0;
+    }
 
     // 旋回処理
     Turn(elapsedTime, moveVec.x, moveVec.z, turnSpeed);

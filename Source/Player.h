@@ -65,6 +65,8 @@ private:
     int jumpLimit = 2;
 
     Model* model = nullptr;
+    Warp* warp_p = nullptr;
+
     float  moveSpeed = 5.0f;
     float  turnSpeed = DirectX::XMConvertToRadians(720);
     float  jumpSpeed = 20.0f;

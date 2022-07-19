@@ -12,7 +12,7 @@ void Destroy_timer(Enemy* enemy, int i);
 class Warp
 {
 public:
-    Warp() {};
+    Warp();
     ~Warp() {};
 
     void warp(XMFLOAT3 warp_pos);
@@ -20,6 +20,8 @@ public:
     FLOAT warp_move(XMFLOAT3 player_pos, float speed, float height);
 
     bool hit = false;
+    XMFLOAT3 warp_pos[6];
+
 private:
     XMFLOAT3 pos = {};
     XMFLOAT3 size = {};
