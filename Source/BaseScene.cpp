@@ -289,6 +289,66 @@ void TextInput::timeRender(bool update,int hour, int minutes, float seconds
     if (60 <= minutes) { minutes -= 60, ++hour; }
     if (24 <= hour) { hour -= 24; }
 
+    std::vector<char>pue;
+    {
+        pue.emplace_back('0' + static_cast<char>(hour / 10));
+        pue.emplace_back('0' + static_cast<char>(hour % 10));
+        pue.emplace_back(':');
+        pue.emplace_back('0' + static_cast<char>(minutes / 10));
+        pue.emplace_back('0' + static_cast<char>(minutes % 10));
+        pue.emplace_back(':');
+        pue.emplace_back('0' + static_cast<char>(static_cast<int>(seconds) / 10.0f));
+        pue.emplace_back('0' + static_cast<char>(static_cast<int>(seconds) % 10));
+        seconds -= static_cast<int>(seconds) / 10 * 10;
+        seconds -= static_cast<int>(seconds) % 10;
+        if (0 < decimalP) pue.emplace_back('.');
+        while (0 < decimalP)
+        {
+            seconds *= 10.0f;
+            pue.emplace_back('0' + static_cast<char>(static_cast<int>(seconds) % 10));
+            seconds -= static_cast<int>(seconds) % 10;
+            --decimalP;
+        }
+    }
+
+    DirectX::XMFLOAT2 fontIndex = { 
+         numFont.sprSize.x / numFont.fontSize.x
+        ,numFont.sprSize.y / numFont.fontSize.y
+    };
+    if (update)
+    {
+        for (auto& it:pue)
+        {
+            updates_.emplace_back(std::make_unique<Texture>(
+                numFont.filename, 64
+                , pos
+                , SPRITE_PIVOT::LT
+                , scale
+                , 0
+                , DirectX::XMFLOAT2(numFont.fontSize.x * (it % static_cast<int>(fontIndex.x)), numFont.fontSize.y * static_cast<int>(it / fontIndex.x))
+                , numFont.fontSize
+                ));
+            pos.x += numFont.fontSize.x;
+        }
+    }
+    else
+    {
+        for (auto& it : pue)
+        {
+            text_.emplace_back(std::make_unique<Texture>(
+                numFont.filename, 64
+                , pos
+                , SPRITE_PIVOT::LT
+                , scale
+                , 0
+                , DirectX::XMFLOAT2(numFont.fontSize.x * (it % static_cast<int>(fontIndex.x)), numFont.fontSize.y * static_cast<int>(it / fontIndex.x))
+                , numFont.fontSize
+                ));
+            pos.x += numFont.fontSize.x;
+        }
+    }
+    return;
+
     if(update)
     {
         if (hour < 10)

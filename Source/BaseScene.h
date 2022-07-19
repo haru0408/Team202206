@@ -143,10 +143,12 @@ private:
     {
         const char* filename;
         DirectX::XMFLOAT2 fontSize;
+        DirectX::XMFLOAT2 sprSize;
     };
     FontData numFont = {
         "C:\\Users\\2210337\\Desktop\\チーム制作\\(2年First)\\00▼【2・3年生／日本ゲーム大賞『感触』_6月マスタ／2022年度前期／ゲーム制作】_提出について\\2038_GR2SB中島凌_GR2GA中尾祐希 _GR2SB渡辺洋_GR2SA藤原愛衣\\1_ゲーム\\Data\\Fonts\\font1.png"
         , { 32.0f,32.0f }
+        , { 32.0f*16.0f,32.0f*16.0f }
     };
 public:
     TextInput() {}
