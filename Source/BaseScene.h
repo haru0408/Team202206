@@ -138,7 +138,7 @@ private:
     };
     std::vector<std::shared_ptr<Texture>> text_{};
     std::vector<TimerSets> timers_{};
-    std::vector<std::shared_ptr<Texture>> updates_{};
+    std::vector<std::unique_ptr<Texture>> updates_{};
     struct FontData
     {
         const char* filename;

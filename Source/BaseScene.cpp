@@ -39,6 +39,8 @@ void Sprite_batch::begin(ID3D11DeviceContext* immediate_context)
     immediate_context->VSSetShader(vertexShader.Get(), nullptr, 0);
     immediate_context->PSSetShader(pixelShader.Get(), nullptr, 0);
     immediate_context->PSSetShaderResources(0, 1, shaderResourceView.GetAddressOf());
+    immediate_context->PSSetSamplers(0, 1, samplerState.GetAddressOf());
+    immediate_context->RSSetState(rasterizerState.Get());
 }
 void Sprite_batch::end(ID3D11DeviceContext* immediate_context)
 {
@@ -230,6 +232,7 @@ void Texture::Render(const DirectX::XMFLOAT2& p)
 //---------------------------------//
 
 
+
 //template<typename T>
 //void textout(T* text
 //    , DirectX::XMFLOAT2 pos = {}
@@ -290,7 +293,7 @@ void TextInput::timeRender(bool update,int hour, int minutes, float seconds
     {
         if (hour < 10)
         {
-            updates_.emplace_back(std::make_shared<Texture>(
+            updates_.emplace_back(std::make_unique<Texture>(
                 numFont.filename, 64
                 , pos
                 , SPRITE_PIVOT::LT
@@ -303,7 +306,7 @@ void TextInput::timeRender(bool update,int hour, int minutes, float seconds
 
             if (hour == 0)
             {
-                updates_.emplace_back(std::make_shared<Texture>(
+                updates_.emplace_back(std::make_unique<Texture>(
                     numFont.filename, 64
                     , pos
                     , SPRITE_PIVOT::LT
@@ -318,7 +321,7 @@ void TextInput::timeRender(bool update,int hour, int minutes, float seconds
         else {
             for (pos.x += numFont.fontSize.x; hour != 0; hour /= 10)
             {
-                updates_.emplace_back(std::make_shared<Texture>(
+                updates_.emplace_back(std::make_unique<Texture>(
                     numFont.filename, 64
                     , pos
                     , SPRITE_PIVOT::LT
@@ -331,7 +334,7 @@ void TextInput::timeRender(bool update,int hour, int minutes, float seconds
             }pos.x += numFont.fontSize.x * 3;
         }
         {
-            updates_.emplace_back(std::make_shared<Texture>(
+            updates_.emplace_back(std::make_unique<Texture>(
                 numFont.filename, 64
                 , pos
                 , SPRITE_PIVOT::LT
@@ -340,7 +343,7 @@ void TextInput::timeRender(bool update,int hour, int minutes, float seconds
                 , DirectX::XMFLOAT2(numFont.fontSize.x * 14, numFont.fontSize.y * 2)
                 , numFont.fontSize
                 ));
-            updates_.emplace_back(std::make_shared<Texture>(
+            updates_.emplace_back(std::make_unique<Texture>(
                 numFont.filename, 64
                 , DirectX::XMFLOAT2(pos.x, pos.y - numFont.fontSize.y / 3)
                 , SPRITE_PIVOT::LT
@@ -353,7 +356,7 @@ void TextInput::timeRender(bool update,int hour, int minutes, float seconds
         }
         if (minutes < 10)
         {
-            updates_.emplace_back(std::make_shared<Texture>(
+            updates_.emplace_back(std::make_unique<Texture>(
                 numFont.filename, 64
                 , pos
                 , SPRITE_PIVOT::LT
@@ -366,7 +369,7 @@ void TextInput::timeRender(bool update,int hour, int minutes, float seconds
 
             if (minutes == 0)
             {
-                updates_.emplace_back(std::make_shared<Texture>(
+                updates_.emplace_back(std::make_unique<Texture>(
                     numFont.filename, 64
                     , pos
                     , SPRITE_PIVOT::LT
@@ -381,7 +384,7 @@ void TextInput::timeRender(bool update,int hour, int minutes, float seconds
         else {
             for (pos.x += numFont.fontSize.x; minutes != 0; minutes /= 10)
             {
-                updates_.emplace_back(std::make_shared<Texture>(
+                updates_.emplace_back(std::make_unique<Texture>(
                     numFont.filename, 64
                     , pos
                     , SPRITE_PIVOT::LT
@@ -394,7 +397,7 @@ void TextInput::timeRender(bool update,int hour, int minutes, float seconds
             }pos.x += numFont.fontSize.x * 3;
         }
         {
-            updates_.emplace_back(std::make_shared<Texture>(
+            updates_.emplace_back(std::make_unique<Texture>(
                 numFont.filename, 64
                 , pos
                 , SPRITE_PIVOT::LT
@@ -403,7 +406,7 @@ void TextInput::timeRender(bool update,int hour, int minutes, float seconds
                 , DirectX::XMFLOAT2(numFont.fontSize.x * 14, numFont.fontSize.y * 2)
                 , numFont.fontSize
                 ));
-            updates_.emplace_back(std::make_shared<Texture>(
+            updates_.emplace_back(std::make_unique<Texture>(
                 numFont.filename, 64
                 , DirectX::XMFLOAT2(pos.x, pos.y - numFont.fontSize.y / 3)
                 , SPRITE_PIVOT::LT
@@ -416,7 +419,7 @@ void TextInput::timeRender(bool update,int hour, int minutes, float seconds
         }
         if (seconds < 10.0f)
         {
-            updates_.emplace_back(std::make_shared<Texture>(
+            updates_.emplace_back(std::make_unique<Texture>(
                 numFont.filename, 64
                 , pos
                 , SPRITE_PIVOT::LT
@@ -429,7 +432,7 @@ void TextInput::timeRender(bool update,int hour, int minutes, float seconds
 
             if (seconds < 1.0f)
             {
-                updates_.emplace_back(std::make_shared<Texture>(
+                updates_.emplace_back(std::make_unique<Texture>(
                     numFont.filename, 64
                     , pos
                     , SPRITE_PIVOT::LT
@@ -445,7 +448,7 @@ void TextInput::timeRender(bool update,int hour, int minutes, float seconds
             pos.x += numFont.fontSize.x;
             for (int s = static_cast<int>(seconds); s != 0; s /= 10, seconds /= 10.0f)
             {
-                updates_.emplace_back(std::make_shared<Texture>(
+                updates_.emplace_back(std::make_unique<Texture>(
                     numFont.filename, 64
                     , pos
                     , SPRITE_PIVOT::LT
@@ -462,7 +465,7 @@ void TextInput::timeRender(bool update,int hour, int minutes, float seconds
             {
                 float nextPos = numFont.fontSize.x / 3;
                 pos.x -= nextPos;
-                updates_.emplace_back(std::make_shared<Texture>(
+                updates_.emplace_back(std::make_unique<Texture>(
                     numFont.filename, 64
                     , pos
                     , SPRITE_PIVOT::LT
@@ -476,7 +479,7 @@ void TextInput::timeRender(bool update,int hour, int minutes, float seconds
             pos.x += numFont.fontSize.x;
             for (int i = 0; i < decimalP; ++i, seconds /= 10.0f)
             {
-                updates_.emplace_back(std::make_shared<Texture>(
+                updates_.emplace_back(std::make_unique<Texture>(
                     numFont.filename, 64
                     , pos
                     , SPRITE_PIVOT::LT

@@ -3,7 +3,6 @@
 
 #include "Input/Input.h"
 
-
 /* main method */
 
 void SceneTitle::Initialize()
@@ -34,8 +33,9 @@ void SceneTitle::Initialize()
         , { 0.5f,0.5f }
     ), []() {
     //ウィンドウを閉じる処理をかく
-        PostQuitMessage(WM_DESTROY);
-});
+        //PostQuitMessage(PM_REMOVE);
+        exit(0);
+        });
     menu_->AddTexture(new Texture(
         texFile0,1
     ));
