@@ -51,7 +51,7 @@ private:
     std::unique_ptr<AudioSource> BGM;
     const char* titleFile = ".\\Data\\Sprite\\Title.png";
     const char* logoFile = ".\\Data\\Sprite\\LoadingIcon.png";
-    const char* barFile = "";
+    const char* barFile = "C:\\Users\\2210337\\Desktop\\iPhone‚æ‚è\\IMG_5828.JPG";
     const char* texFile0 = "C:\\Users\\2210337\\Desktop\\iPhone‚æ‚è\\IMG_5828.JPG";
 };
 

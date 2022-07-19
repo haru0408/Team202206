@@ -288,48 +288,257 @@ void TextInput::timeRender(bool update,int hour, int minutes, float seconds
 
     if(update)
     {
+        if (hour < 10)
+        {
+            updates_.emplace_back(std::make_shared<Texture>(
+                numFont.filename, 64
+                , pos
+                , SPRITE_PIVOT::LT
+                , scale
+                , 0
+                , DirectX::XMFLOAT2(numFont.fontSize.x * ('0' % 16), numFont.fontSize.y * static_cast<int>('0') / 16)
+                , numFont.fontSize
+                ));
+            pos.x += numFont.fontSize.x;
+
+            if (hour == 0)
+            {
+                updates_.emplace_back(std::make_shared<Texture>(
+                    numFont.filename, 64
+                    , pos
+                    , SPRITE_PIVOT::LT
+                    , scale
+                    , 0
+                    , DirectX::XMFLOAT2(numFont.fontSize.x * ('0'), numFont.fontSize.y * static_cast<int>('0') / 16)
+                    , numFont.fontSize
+                    ));
+                pos.x += numFont.fontSize.x;
+            }
+        }
+        else {
+            for (pos.x += numFont.fontSize.x; hour != 0; hour /= 10)
+            {
+                updates_.emplace_back(std::make_shared<Texture>(
+                    numFont.filename, 64
+                    , pos
+                    , SPRITE_PIVOT::LT
+                    , scale
+                    , 0
+                    , DirectX::XMFLOAT2(numFont.fontSize.x * (('0' + hour % 10) % 16), numFont.fontSize.y * static_cast<int>('0') / 16)
+                    , numFont.fontSize
+                    ));
+                pos.x -= numFont.fontSize.x;
+            }pos.x += numFont.fontSize.x * 3;
+        }
+        {
+            updates_.emplace_back(std::make_shared<Texture>(
+                numFont.filename, 64
+                , pos
+                , SPRITE_PIVOT::LT
+                , scale
+                , 0
+                , DirectX::XMFLOAT2(numFont.fontSize.x * 14, numFont.fontSize.y * 2)
+                , numFont.fontSize
+                ));
+            updates_.emplace_back(std::make_shared<Texture>(
+                numFont.filename, 64
+                , DirectX::XMFLOAT2(pos.x, pos.y - numFont.fontSize.y / 3)
+                , SPRITE_PIVOT::LT
+                , scale
+                , 0
+                , DirectX::XMFLOAT2(numFont.fontSize.x * 14, numFont.fontSize.y * 2)
+                , numFont.fontSize
+                ));
+            pos.x += numFont.fontSize.x;
+        }
+        if (minutes < 10)
+        {
+            updates_.emplace_back(std::make_shared<Texture>(
+                numFont.filename, 64
+                , pos
+                , SPRITE_PIVOT::LT
+                , scale
+                , 0
+                , DirectX::XMFLOAT2(numFont.fontSize.x * ('0' % 16), numFont.fontSize.y * static_cast<int>('0') / 16)
+                , numFont.fontSize
+                ));
+            pos.x += numFont.fontSize.x;
+
+            if (minutes == 0)
+            {
+                updates_.emplace_back(std::make_shared<Texture>(
+                    numFont.filename, 64
+                    , pos
+                    , SPRITE_PIVOT::LT
+                    , scale
+                    , 0
+                    , DirectX::XMFLOAT2(numFont.fontSize.x * ('0' % 16), numFont.fontSize.y * static_cast<int>('0') / 16)
+                    , numFont.fontSize
+                    ));
+                pos.x += numFont.fontSize.x;
+            }
+        }
+        else {
+            for (pos.x += numFont.fontSize.x; minutes != 0; minutes /= 10)
+            {
+                updates_.emplace_back(std::make_shared<Texture>(
+                    numFont.filename, 64
+                    , pos
+                    , SPRITE_PIVOT::LT
+                    , scale
+                    , 0
+                    , DirectX::XMFLOAT2(numFont.fontSize.x * (('0' + minutes % 10) % 16), numFont.fontSize.y * static_cast<int>('0') / 16)
+                    , numFont.fontSize
+                    ));
+                pos.x -= numFont.fontSize.x;
+            }pos.x += numFont.fontSize.x * 3;
+        }
+        {
+            updates_.emplace_back(std::make_shared<Texture>(
+                numFont.filename, 64
+                , pos
+                , SPRITE_PIVOT::LT
+                , scale
+                , 0
+                , DirectX::XMFLOAT2(numFont.fontSize.x * 14, numFont.fontSize.y * 2)
+                , numFont.fontSize
+                ));
+            updates_.emplace_back(std::make_shared<Texture>(
+                numFont.filename, 64
+                , DirectX::XMFLOAT2(pos.x, pos.y - numFont.fontSize.y / 3)
+                , SPRITE_PIVOT::LT
+                , scale
+                , 0
+                , DirectX::XMFLOAT2(numFont.fontSize.x * 14, numFont.fontSize.y * 2)
+                , numFont.fontSize
+                ));
+            pos.x += numFont.fontSize.x;
+        }
+        if (seconds < 10.0f)
+        {
+            updates_.emplace_back(std::make_shared<Texture>(
+                numFont.filename, 64
+                , pos
+                , SPRITE_PIVOT::LT
+                , scale
+                , 0
+                , DirectX::XMFLOAT2(numFont.fontSize.x * ('0' % 16), numFont.fontSize.y * static_cast<int>('0') / 16)
+                , numFont.fontSize
+                ));
+            pos.x += numFont.fontSize.x;
+
+            if (seconds < 1.0f)
+            {
+                updates_.emplace_back(std::make_shared<Texture>(
+                    numFont.filename, 64
+                    , pos
+                    , SPRITE_PIVOT::LT
+                    , scale
+                    , 0
+                    , DirectX::XMFLOAT2(numFont.fontSize.x * (('0'+static_cast<int>(seconds)%10 )% 16), numFont.fontSize.y * static_cast<int>('0') / 16)
+                    , numFont.fontSize
+                    ));
+                pos.x += numFont.fontSize.x;
+            }
+        }
+        else {
+            pos.x += numFont.fontSize.x;
+            for (int s = static_cast<int>(seconds); s != 0; s /= 10, seconds /= 10.0f)
+            {
+                updates_.emplace_back(std::make_shared<Texture>(
+                    numFont.filename, 64
+                    , pos
+                    , SPRITE_PIVOT::LT
+                    , scale
+                    , 0
+                    , DirectX::XMFLOAT2(numFont.fontSize.x * (('0' + static_cast<int>(s) % 10) % 16), numFont.fontSize.y * static_cast<int>('0') / 16)
+                    , numFont.fontSize
+                    ));
+                pos.x -= numFont.fontSize.x;
+            }pos.x += numFont.fontSize.x * 3;
+        }
+        if (0 < decimalP)
+        {
+            {
+                float nextPos = numFont.fontSize.x / 3;
+                pos.x -= nextPos;
+                updates_.emplace_back(std::make_shared<Texture>(
+                    numFont.filename, 64
+                    , pos
+                    , SPRITE_PIVOT::LT
+                    , scale
+                    , 0
+                    , DirectX::XMFLOAT2(numFont.fontSize.x * 14, numFont.fontSize.y * 2)
+                    , numFont.fontSize
+                    ));
+                pos.x += nextPos;
+            }
+            pos.x += numFont.fontSize.x;
+            for (int i = 0; i < decimalP; ++i, seconds /= 10.0f)
+            {
+                updates_.emplace_back(std::make_shared<Texture>(
+                    numFont.filename, 64
+                    , pos
+                    , SPRITE_PIVOT::LT
+                    , scale
+                    , 0
+                    , DirectX::XMFLOAT2(numFont.fontSize.x * (('0' + static_cast<int>(seconds) % 10) % 16), numFont.fontSize.y * static_cast<int>('0') / 16)
+                    , numFont.fontSize
+                    ));
+                if (i == 0)
+                    pos.x -= numFont.fontSize.x;
+                else if (i == 1)
+                    pos.x += numFont.fontSize.x * 2;
+                else pos.x += numFont.fontSize.x;
+            }
+        }
+    }
+    else
+    {
     if (hour < 10)
     {
-        updates_.emplace_back(std::make_shared<Texture>(
+        text_.emplace_back(std::make_shared<Texture>(
                         numFont.filename,64
             , pos
             , SPRITE_PIVOT::LT
             , scale
             , 0
-            , DirectX::XMFLOAT2(numFont.fontSize.x * ('0' % 10), numFont.fontSize.y * static_cast<int>('0') / 16)
+            , DirectX::XMFLOAT2(numFont.fontSize.x * ('0'%16), numFont.fontSize.y * static_cast<int>('0') / 16)
             , numFont.fontSize
             ));
         pos.x += numFont.fontSize.x;
 
         if (hour == 0)
         {
-            updates_.emplace_back(std::make_shared<Texture>(
+            text_.emplace_back(std::make_shared<Texture>(
                             numFont.filename,64
                 , pos
                 , SPRITE_PIVOT::LT
                 , scale
                 , 0
-                , DirectX::XMFLOAT2(numFont.fontSize.x * ('0' % 10), numFont.fontSize.y * static_cast<int>('0') / 16)
+                , DirectX::XMFLOAT2(numFont.fontSize.x * ('0'), numFont.fontSize.y * static_cast<int>('0') / 16)
                 , numFont.fontSize
                 ));
             pos.x += numFont.fontSize.x;
         }
     }
-    for (; hour != 0; hour /= 10)
-    {
-        updates_.emplace_back(std::make_shared<Texture>(
-                        numFont.filename,64
-            , pos
-            , SPRITE_PIVOT::LT
-            , scale
-            , 0
-            , DirectX::XMFLOAT2(numFont.fontSize.x * ('0' + hour % 10), numFont.fontSize.y * static_cast<int>('0') / 16)
-            , numFont.fontSize
-            ));
-        pos.x += numFont.fontSize.x;
+    else {
+        for (pos.x += numFont.fontSize.x; hour != 0; hour /= 10)
+        {
+            text_.emplace_back(std::make_shared<Texture>(
+                numFont.filename, 64
+                , pos
+                , SPRITE_PIVOT::LT
+                , scale
+                , 0
+                , DirectX::XMFLOAT2(numFont.fontSize.x * (('0' + hour % 10) % 16), numFont.fontSize.y * static_cast<int>('0') / 16)
+                , numFont.fontSize
+                ));
+            pos.x -= numFont.fontSize.x;
+        }pos.x += numFont.fontSize.x * 3;
     }
     {
-        updates_.emplace_back(std::make_shared<Texture>(
+        text_.emplace_back(std::make_shared<Texture>(
                         numFont.filename,64
             , pos
             , SPRITE_PIVOT::LT
@@ -338,7 +547,7 @@ void TextInput::timeRender(bool update,int hour, int minutes, float seconds
             , DirectX::XMFLOAT2(numFont.fontSize.x * 14, numFont.fontSize.y * 2)
             , numFont.fontSize
         ));
-        updates_.emplace_back(std::make_shared<Texture>(
+        text_.emplace_back(std::make_shared<Texture>(
                         numFont.filename,64
             , DirectX::XMFLOAT2(pos.x, pos.y - numFont.fontSize.y / 3)
             , SPRITE_PIVOT::LT
@@ -351,205 +560,13 @@ void TextInput::timeRender(bool update,int hour, int minutes, float seconds
     }
     if (minutes < 10)
     {
-        updates_.emplace_back(std::make_shared<Texture>(
-                        numFont.filename,64
-            , pos
-            , SPRITE_PIVOT::LT
-            , scale
-            , 0
-            , DirectX::XMFLOAT2(numFont.fontSize.x * ('0' % 10), numFont.fontSize.y * static_cast<int>('0') / 16)
-            , numFont.fontSize
-            ));
-        pos.x += numFont.fontSize.x;
-
-        if (minutes == 0)
-        {
-            updates_.emplace_back(std::make_shared<Texture>(
-                            numFont.filename,64
-                , pos
-                , SPRITE_PIVOT::LT
-                , scale
-                , 0
-                , DirectX::XMFLOAT2(numFont.fontSize.x * ('0' % 10), numFont.fontSize.y * static_cast<int>('0') / 16)
-                , numFont.fontSize
-                ));
-            pos.x += numFont.fontSize.x;
-        }
-    }
-    for (; minutes != 0; minutes /= 10)
-    {
-        updates_.emplace_back(std::make_shared<Texture>(
-                        numFont.filename,64
-            , pos
-            , SPRITE_PIVOT::LT
-            , scale
-            , 0
-            , DirectX::XMFLOAT2(numFont.fontSize.x * ('0' + minutes % 10), numFont.fontSize.y * static_cast<int>('0') / 16)
-            , numFont.fontSize
-            ));
-        pos.x += numFont.fontSize.x;
-    }
-    {
-        updates_.emplace_back(std::make_shared<Texture>(
-                        numFont.filename,64
-            , pos
-            , SPRITE_PIVOT::LT
-            , scale
-            , 0
-            , DirectX::XMFLOAT2(numFont.fontSize.x * 14, numFont.fontSize.y * 2)
-            , numFont.fontSize
-        ));
-        updates_.emplace_back(std::make_shared<Texture>(
-                        numFont.filename,64
-            , DirectX::XMFLOAT2(pos.x, pos.y - numFont.fontSize.y / 3)
-            , SPRITE_PIVOT::LT
-            , scale
-            , 0
-            , DirectX::XMFLOAT2(numFont.fontSize.x * 14, numFont.fontSize.y * 2)
-            , numFont.fontSize
-        ));
-        pos.x += numFont.fontSize.x;
-    }
-    if (seconds < 10.0f)
-    {
-        updates_.emplace_back(std::make_shared<Texture>(
-                        numFont.filename,64
-            , pos
-            , SPRITE_PIVOT::LT
-            , scale
-            , 0
-            , DirectX::XMFLOAT2(numFont.fontSize.x * ('0' % 10), numFont.fontSize.y * static_cast<int>('0') / 16)
-            , numFont.fontSize
-            ));
-        pos.x += numFont.fontSize.x;
-
-        if (seconds < 1.0f)
-        {
-            updates_.emplace_back(std::make_shared<Texture>(
-                            numFont.filename,64
-                , pos
-                , SPRITE_PIVOT::LT
-                , scale
-                , 0
-                , DirectX::XMFLOAT2(numFont.fontSize.x * ('0' % 10), numFont.fontSize.y * static_cast<int>('0') / 16)
-                , numFont.fontSize
-                ));
-            pos.x += numFont.fontSize.x;
-        }
-    }
-    for (int s = static_cast<int>(seconds); s != 0; s /= 10, seconds /= 10.0f)
-    {
-        updates_.emplace_back(std::make_shared<Texture>(
-                        numFont.filename,64
-            , pos
-            , SPRITE_PIVOT::LT
-            , scale
-            , 0
-            , DirectX::XMFLOAT2(numFont.fontSize.x * ('0' + static_cast<int>(s) % 10), numFont.fontSize.y * static_cast<int>('0') / 16)
-            , numFont.fontSize
-            ));
-        pos.x += numFont.fontSize.x;
-    }
-    {
-        float nextPos = numFont.fontSize.x / 3;
-        pos.x -= nextPos;
-        updates_.emplace_back(std::make_shared<Texture>(
-                        numFont.filename,64
-            , pos
-            , SPRITE_PIVOT::LT
-            , scale
-            , 0
-            , DirectX::XMFLOAT2(numFont.fontSize.x * 14, numFont.fontSize.y * 2)
-            , numFont.fontSize
-        ));
-        pos.x += nextPos;
-    }
-    for (int i = 0; i < decimalP; ++i, seconds /= 10.0f)
-    {
-        updates_.emplace_back(std::make_shared<Texture>(
-                        numFont.filename,64
-            , pos
-            , SPRITE_PIVOT::LT
-            , scale
-            , 0
-            , DirectX::XMFLOAT2(numFont.fontSize.x * ('0' + static_cast<int>(seconds) % 10), numFont.fontSize.y * static_cast<int>('0') / 16)
-            , numFont.fontSize
-            ));
-        pos.x += numFont.fontSize.x;
-    }
-    }
-    else 
-    {
-    if (hour < 10)
-    {
         text_.emplace_back(std::make_shared<Texture>(
                         numFont.filename,64
             , pos
             , SPRITE_PIVOT::LT
             , scale
             , 0
-            , DirectX::XMFLOAT2(numFont.fontSize.x * ('0' % 10), numFont.fontSize.y * static_cast<int>('0') / 16)
-            , numFont.fontSize
-            ));
-        pos.x += numFont.fontSize.x;
-
-        if (hour == 0)
-        {
-            text_.emplace_back(std::make_shared<Texture>(
-                            numFont.filename,64
-                , pos
-                , SPRITE_PIVOT::LT
-                , scale
-                , 0
-                , DirectX::XMFLOAT2(numFont.fontSize.x * ('0' % 10), numFont.fontSize.y * static_cast<int>('0') / 16)
-                , numFont.fontSize
-                ));
-            pos.x += numFont.fontSize.x;
-        }
-    }
-    for (; hour != 0; hour /= 10)
-    {
-        text_.emplace_back(std::make_shared<Texture>(
-                        numFont.filename,64
-            , pos
-            , SPRITE_PIVOT::LT
-            , scale
-            , 0
-            , DirectX::XMFLOAT2(numFont.fontSize.x * ('0' + hour % 10), numFont.fontSize.y * static_cast<int>('0') / 16)
-            , numFont.fontSize
-            ));
-        pos.x += numFont.fontSize.x;
-    }
-    {
-        text_.emplace_back(std::make_shared<Texture>(
-                        numFont.filename,64
-            , pos
-            , SPRITE_PIVOT::LT
-            , scale
-            , 0
-            , DirectX::XMFLOAT2(numFont.fontSize.x * 14, numFont.fontSize.y * 2)
-            , numFont.fontSize
-        ));
-        text_.emplace_back(std::make_shared<Texture>(
-                        numFont.filename,64
-            , DirectX::XMFLOAT2(pos.x, pos.y - numFont.fontSize.y / 3)
-            , SPRITE_PIVOT::LT
-            , scale
-            , 0
-            , DirectX::XMFLOAT2(numFont.fontSize.x * 14, numFont.fontSize.y * 2)
-            , numFont.fontSize
-        ));
-        pos.x += numFont.fontSize.x;
-    }
-    if (minutes < 10)
-    {
-        text_.emplace_back(std::make_shared<Texture>(
-                        numFont.filename,64
-            , pos
-            , SPRITE_PIVOT::LT
-            , scale
-            , 0
-            , DirectX::XMFLOAT2(numFont.fontSize.x * ('0' % 10), numFont.fontSize.y * static_cast<int>('0') / 16)
+            , DirectX::XMFLOAT2(numFont.fontSize.x * ('0' % 16), numFont.fontSize.y * static_cast<int>('0') / 16)
             , numFont.fontSize
             ));
         pos.x += numFont.fontSize.x;
@@ -562,24 +579,26 @@ void TextInput::timeRender(bool update,int hour, int minutes, float seconds
                 , SPRITE_PIVOT::LT
                 , scale
                 , 0
-                , DirectX::XMFLOAT2(numFont.fontSize.x * ('0' % 10), numFont.fontSize.y * static_cast<int>('0') / 16)
+                , DirectX::XMFLOAT2(numFont.fontSize.x * ('0' % 16), numFont.fontSize.y * static_cast<int>('0') / 16)
                 , numFont.fontSize
                 ));
             pos.x += numFont.fontSize.x;
         }
     }
-    for (; minutes != 0; minutes /= 10)
-    {
-        text_.emplace_back(std::make_shared<Texture>(
-                        numFont.filename,64
-            , pos
-            , SPRITE_PIVOT::LT
-            , scale
-            , 0
-            , DirectX::XMFLOAT2(numFont.fontSize.x * ('0' + minutes % 10), numFont.fontSize.y * static_cast<int>('0') / 16)
-            , numFont.fontSize
-            ));
-        pos.x += numFont.fontSize.x;
+    else {
+        for (pos.x += numFont.fontSize.x; minutes != 0; minutes /= 10)
+        {
+            text_.emplace_back(std::make_shared<Texture>(
+                numFont.filename, 64
+                , pos
+                , SPRITE_PIVOT::LT
+                , scale
+                , 0
+                , DirectX::XMFLOAT2(numFont.fontSize.x * (('0' + minutes % 10) % 16), numFont.fontSize.y * static_cast<int>('0') / 16)
+                , numFont.fontSize
+                ));
+            pos.x -= numFont.fontSize.x;
+        }pos.x += numFont.fontSize.x * 3;
     }
     {
         text_.emplace_back(std::make_shared<Texture>(
@@ -603,60 +622,6 @@ void TextInput::timeRender(bool update,int hour, int minutes, float seconds
         pos.x += numFont.fontSize.x;
     }
     if (seconds < 10.0f)
-    {
-        text_.emplace_back(std::make_shared<Texture>(
-                        numFont.filename,64
-            , pos
-            , SPRITE_PIVOT::LT
-            , scale
-            , 0
-            , DirectX::XMFLOAT2(numFont.fontSize.x * ('0' % 10), numFont.fontSize.y * static_cast<int>('0') / 16)
-            , numFont.fontSize
-            ));
-        pos.x += numFont.fontSize.x;
-
-        if (seconds < 1.0f)
-        {
-            text_.emplace_back(std::make_shared<Texture>(
-                            numFont.filename,64
-                , pos
-                , SPRITE_PIVOT::LT
-                , scale
-                , 0
-                , DirectX::XMFLOAT2(numFont.fontSize.x * ('0' % 10), numFont.fontSize.y * static_cast<int>('0') / 16)
-                , numFont.fontSize
-                ));
-            pos.x += numFont.fontSize.x;
-        }
-    }
-    for (int s = static_cast<int>(seconds); s != 0; s /= 10, seconds /= 10.0f)
-    {
-        text_.emplace_back(std::make_shared<Texture>(
-                        numFont.filename,64
-            , pos
-            , SPRITE_PIVOT::LT
-            , scale
-            , 0
-            , DirectX::XMFLOAT2(numFont.fontSize.x * ('0' + static_cast<int>(s) % 10), numFont.fontSize.y * static_cast<int>('0') / 16)
-            , numFont.fontSize
-            ));
-        pos.x += numFont.fontSize.x;
-    }
-    {
-        float nextPos = numFont.fontSize.x / 3;
-        pos.x -= nextPos;
-        text_.emplace_back(std::make_shared<Texture>(
-                        numFont.filename,64
-            , pos
-            , SPRITE_PIVOT::LT
-            , scale
-            , 0
-            , DirectX::XMFLOAT2(numFont.fontSize.x * 14, numFont.fontSize.y * 2)
-            , numFont.fontSize
-        ));
-        pos.x += nextPos;
-    }
-    for (int i = 0; i < decimalP; ++i, seconds /= 10.0f)
     {
         text_.emplace_back(std::make_shared<Texture>(
             numFont.filename, 64
@@ -664,10 +629,75 @@ void TextInput::timeRender(bool update,int hour, int minutes, float seconds
             , SPRITE_PIVOT::LT
             , scale
             , 0
-            , DirectX::XMFLOAT2(numFont.fontSize.x * ('0' + static_cast<int>(seconds) % 10), numFont.fontSize.y * static_cast<int>('0') / 16)
+            , DirectX::XMFLOAT2(numFont.fontSize.x * ('0' % 16), numFont.fontSize.y * static_cast<int>('0') / 16)
             , numFont.fontSize
             ));
         pos.x += numFont.fontSize.x;
+
+        if (seconds < 1.0f)
+        {
+            text_.emplace_back(std::make_shared<Texture>(
+                numFont.filename, 64
+                , pos
+                , SPRITE_PIVOT::LT
+                , scale
+                , 0
+                , DirectX::XMFLOAT2(numFont.fontSize.x * ('0' % 16), numFont.fontSize.y * static_cast<int>('0') / 16)
+                , numFont.fontSize
+                ));
+            pos.x += numFont.fontSize.x;
+        }
+    }
+    else {
+        pos.x += numFont.fontSize.x;
+        for (int s = static_cast<int>(seconds); s != 0; s /= 10, seconds /= 10.0f)
+        {
+            text_.emplace_back(std::make_shared<Texture>(
+                numFont.filename, 64
+                , pos
+                , SPRITE_PIVOT::LT
+                , scale
+                , 0
+                , DirectX::XMFLOAT2(numFont.fontSize.x * (('0' + static_cast<int>(s) % 10) % 16), numFont.fontSize.y * static_cast<int>('0') / 16)
+                , numFont.fontSize
+                ));
+            pos.x -= numFont.fontSize.x;
+        }pos.x += numFont.fontSize.x * 3;
+    }
+    if (0 < decimalP)
+    {
+        {
+            float nextPos = numFont.fontSize.x / 3;
+            pos.x -= nextPos;
+            text_.emplace_back(std::make_shared<Texture>(
+                numFont.filename, 64
+                , pos
+                , SPRITE_PIVOT::LT
+                , scale
+                , 0
+                , DirectX::XMFLOAT2(numFont.fontSize.x * 14, numFont.fontSize.y * 2)
+                , numFont.fontSize
+                ));
+            pos.x += nextPos;
+        }
+        pos.x += numFont.fontSize.x;
+        for (int i = 0; i < decimalP; ++i, seconds /= 10.0f)
+        {
+            text_.emplace_back(std::make_shared<Texture>(
+                numFont.filename, 64
+                , pos
+                , SPRITE_PIVOT::LT
+                , scale
+                , 0
+                , DirectX::XMFLOAT2(numFont.fontSize.x * (('0' + static_cast<int>(seconds) % 10) % 16), numFont.fontSize.y * static_cast<int>('0') / 16)
+                , numFont.fontSize
+                ));
+            if (i == 0)
+                pos.x -= numFont.fontSize.x;
+            else if (i == 1)
+                pos.x += numFont.fontSize.x * 2;
+            else pos.x += numFont.fontSize.x;
+        }
     }
     }
 }
@@ -682,7 +712,7 @@ void TextInput::Render()
 
     for (auto& it : timers_)
     {
-        it.timer_ += *it.addTime_;
+        //it.timer_ += *it.addTime_;
         timeRender(true, (*it.addTime_), it.position_, it.scale_, it.decimalP_);
     }
     updates_.begin()->get()->GetFile()->begin(Graphics::Instance().GetDeviceContext());
@@ -803,7 +833,7 @@ void MenuBar::Update() {
         //change
         if (Input::Instance().GetGamePad().GetButtonDown()
             & GamePad::BTN_START)
-            func_.at(index_);
+            func_[index_]();
     }
 
     // bar update

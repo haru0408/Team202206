@@ -6,6 +6,7 @@
 * -Attention    - Nothing -
 */
 
+#include <functional>
 #include <DirectXMath.h>
 #include <vector>
 
@@ -223,7 +224,7 @@ public:
     void SetBG(Texture* s) { BG_ = s; }
     void SetPosition(const DirectX::XMFLOAT2& p) { position_ = p; }
     //
-    void AddSubBer(Texture* s, void* func) { subBar_.emplace_back(s); func_.emplace_back(func); }
+    void AddSubBer(Texture* s, std::function<void()> func = []() {}) { subBar_.emplace_back(s); func_.emplace_back(func); }
     void AddTexture(Texture* s) { textures_.emplace_back(s); }
 private:
     DirectX::XMFLOAT2 position_ = {};
@@ -232,7 +233,7 @@ private:
     Texture* BG_ = nullptr;
     std::vector<Texture*> textures_{};
     std::vector<Texture*> subBar_{};
-    std::vector<void*> func_{}; //Bar–ˆ‚Ìˆ—Ši”[ŒÉ
+    std::vector<std::function<void()>> func_{}; //Bar–ˆ‚Ìˆ—Ši”[ŒÉ
 
     bool loop_ = false;     // ŒÀŠE‚ğ’´‚¦‚é‘€ì‚ğ‚µ‚½‚Æ‚«‚É”½‘Î‚ÌŒÀŠE’l‚É‚¢‚­‚©
     int index_ = 0;         // ‘I‘ğ’†‚Ìƒo[”Ô†

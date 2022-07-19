@@ -6,13 +6,6 @@
 
 /* main method */
 
-inline void apa() {
-    SceneManager::Instance().changeScene(SCENE_TYPE::GAME);
-}
-inline void apue() {
-    //ウィンドウを閉じる処理をかく
-}
-
 void SceneTitle::Initialize()
 {
     const DirectX::XMFLOAT2 screen = { Graphics::Instance().GetScreenWidth(),Graphics::Instance().GetScreenHeight() };
@@ -31,13 +24,18 @@ void SceneTitle::Initialize()
         , { screen.x / 2,screen.y * 3 / 5 }
         , SPRITE_PIVOT::CM
         , { 0.5f,0.5f }
-    ), apa);
+    ), []() {
+    SceneManager::Instance().changeScene(SCENE_TYPE::GAME);
+});
     menu_->AddSubBer(new Texture(
         barFile,2
         , { screen.x / 2,screen.y * 4 / 5 }
         , SPRITE_PIVOT::CM
         , { 0.5f,0.5f }
-    ), apue);
+    ), []() {
+    //ウィンドウを閉じる処理をかく
+        PostQuitMessage(WM_DESTROY);
+});
     menu_->AddTexture(new Texture(
         texFile0,1
     ));

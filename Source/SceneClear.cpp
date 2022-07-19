@@ -5,12 +5,6 @@
 #include "Graphics/Graphics.h"
 
 
-inline void que(){
-	SceneManager::Instance().changeScene(SCENE_TYPE::TITLE);
-}
-inline void come(){
-	SceneManager::Instance().changeScene(SCENE_TYPE::GAME);
-}
 
 void SceneClear::Initialize()
 {
@@ -31,14 +25,18 @@ void SceneClear::Initialize()
 			, { screen.x / 3,screen.y * 4 / 5 }
 			, SPRITE_PIVOT::CM
 			, { 0.25f,0.25f }
-		), que);
+		), []() {
+	SceneManager::Instance().changeScene(SCENE_TYPE::TITLE);
+});
 		menu_->AddSubBer(new Texture(
 			barFile
 			, 8
 			, { screen.x * 2 / 3,screen.y * 4 / 5 }
 			, SPRITE_PIVOT::CM
 			, { 0.25f,0.25f }
-		), come);
+		), []() {
+			SceneManager::Instance().changeScene(SCENE_TYPE::GAME);
+			});
 	}
 	/* tex */
 	{
@@ -101,7 +99,7 @@ void SceneClear::Update(float elapsedTime)
 	switch (state_)
 	{
 	case 0:
-		TEXTOUT.timeRender(&elapsedTime, menu_->GetTexList()->at(1)->GetPosition());
+		TEXTOUT.timeRender(&timer_, menu_->GetTexList()->at(1)->GetPosition());
 		++state_;
 
 	default:
@@ -109,6 +107,7 @@ void SceneClear::Update(float elapsedTime)
 		
 		break;
 	}
+	timer_ += elapsedTime;
 }
 
 void SceneClear::Render()

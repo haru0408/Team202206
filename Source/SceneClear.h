@@ -28,7 +28,7 @@ private:
 
 private:
     int state_ = 0;
-    float* timer_ = 0;
+    float timer_ = 0;
     std::unique_ptr<MenuBar> menu_ = nullptr;
 
     std::unique_ptr<AudioSource> BGM;
