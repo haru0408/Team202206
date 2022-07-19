@@ -284,6 +284,8 @@ void Player::InputScaleChange()
 
         if       (position.z > 19.0f)  position.z = 19.0f;
         else if (position.z < -19.0f) position.z = -19.0f;
+
+        velocity.y += 1;
     }
 }
 
@@ -454,56 +456,57 @@ void Player::CollisionPlayerVsFloor()
     {
         Floor* floor = floorManager.GetFloor(i);
 
-
-                DirectX::XMFLOAT3 outPosition;
-                if (Collision::IntersectBoxVsBox_Ground(
-                    position,
-                    length.x,
-                    length.y,
-                    length.z,
-                    floor->GetPosition(),
-                    2.0f,
-                    1.0f,
-                    2.0f,
-                    outPosition))
+        if (velocity.y <= 0.0f)
+        {
+            DirectX::XMFLOAT3 outPosition;
+            if (Collision::IntersectBoxVsBox_Ground(
+                position,
+                length.x,
+                length.y,
+                length.z,
+                floor->GetPosition(),
+                2.0f,
+                1.0f,
+                2.0f,
+                outPosition))
+            {
+                if (!fallFlg)
                 {
-                    if (!fallFlg)
+                    // 押し出し後の位置設定
+                    SetPosition(outPosition);
+                    velocity.y = 0.0f;
+                }
+                else if (fallFlg)
+                {
+                    if (holePosY > floor->GetPosition().y)
                     {
-                        // 押し出し後の位置設定
                         SetPosition(outPosition);
                         velocity.y = 0.0f;
-                    }
-                    else if (fallFlg)
-                    {
-                        if (holePosY > floor->GetPosition().y)
-                        {
-                            SetPosition(outPosition);
-                            velocity.y = 0.0f;
-                            fallFlg = false;
-                        }
-                    }
-
-                    if (floor->GetFloorNum() == 1)
-                    {
-                        velocity=floor->SetImpulse(floor->floor_direction);
-                        ScaleFlg = false;
+                        fallFlg = false;
                     }
                 }
-                if (Collision::IntersectBoxVsBox_Ground(
-                    DirectX::XMFLOAT3(position.x, position.y - 0.01f, position.z),
-                    length.x,
-                    length.y,
-                    length.z,
-                    floor->GetPosition(),
-                    3.0f,
-                    1.0f,
-                    3.0f,
-                    outPosition) &&
-                    floor->GetFloorNum() == 0)
+
+                if (floor->GetFloorNum() == 1)
                 {
-                    floor->Destroy_timer();
+                    velocity = floor->SetImpulse(floor->floor_direction);
+                    ScaleFlg = false;
                 }
-
+            }
+            if (Collision::IntersectBoxVsBox_Ground(
+                DirectX::XMFLOAT3(position.x, position.y - 0.01f, position.z),
+                length.x,
+                length.y,
+                length.z,
+                floor->GetPosition(),
+                3.0f,
+                1.0f,
+                3.0f,
+                outPosition) &&
+                floor->GetFloorNum() == 0)
+            {
+                floor->Destroy_timer();
+            }
+        }
             
         
     }
