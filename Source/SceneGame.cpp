@@ -100,9 +100,6 @@ void SceneGame::Initialize()
 	// 穴の初期化
 	HoleInitialize();
 
-	// 砲台の初期化
-	//CanonInitialize();
-
 	// バネの初期化
 	SpringInitialize();
 
@@ -652,10 +649,6 @@ void SceneGame::HoleInitialize()
 	hole->SetPosition(DirectX::XMFLOAT3(6.8f, 100.0f, 9.1f));
 	hole->SetRadius(2.75f);
 	holeManager.Register(hole);
-}
-
-void SceneGame::CanonInitialize()
-{
 }
 
 void SceneGame::SpringInitialize()
