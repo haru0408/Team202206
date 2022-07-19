@@ -145,7 +145,7 @@
     <ClInclude Include="Source\Graphics\RenderContext.h" />
     <ClInclude Include="Source\Graphics\Shader.h" />
     <ClInclude Include="Source\Graphics\Sprite.h" />
-    <ClInclude Include="Source\Haruta\floor.h" />
+    <ClInclude Include="Source\Haruta\warp.h" />
     <ClInclude Include="Source\HighResolutionTimer.h" />
     <ClInclude Include="Source\Hole.h" />
     <ClInclude Include="Source\HoleManager.h" />
@@ -203,7 +203,7 @@
     <ClCompile Include="Source\Graphics\Model.cpp" />
     <ClCompile Include="Source\Graphics\ModelResource.cpp" />
     <ClCompile Include="Source\Graphics\Sprite.cpp" />
-    <ClCompile Include="Source\Haruta\floor.cpp" />
+    <ClCompile Include="Source\Haruta\warp.cpp" />
     <ClCompile Include="Source\Hole.cpp" />
     <ClCompile Include="Source\HoleManager.cpp" />
     <ClCompile Include="Source\Input\GamePad.cpp" />

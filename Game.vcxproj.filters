@@ -121,9 +121,6 @@
     <ClCompile Include="Source\SpecialArea.cpp">
       <Filter>Source\Object\Floor</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Haruta\floor.cpp">
-      <Filter>Source\Object\Floor</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Character.cpp">
       <Filter>Source\Object\Character</Filter>
     </ClCompile>
@@ -186,6 +183,9 @@
     </ClCompile>
     <ClCompile Include="Source\SpringManager.cpp">
       <Filter>Source\Object\Spring</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Haruta\warp.cpp">
+      <Filter>Source\Object\Floor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -293,9 +293,6 @@
     <ClInclude Include="Source\SpecialArea.h">
       <Filter>Source\Object\Floor</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Haruta\floor.h">
-      <Filter>Source\Object\Floor</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Character.h">
       <Filter>Source\Object\Character</Filter>
     </ClInclude>
@@ -355,6 +352,9 @@
     </ClInclude>
     <ClInclude Include="Source\SpringManager.h">
       <Filter>Source\Object\Spring</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Haruta\warp.h">
+      <Filter>Source\Object\Floor</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
