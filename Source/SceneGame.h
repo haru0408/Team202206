@@ -48,9 +48,6 @@ private:
 	// 穴の初期化
 	void HoleInitialize();
 
-	// 砲台の初期化
-	void CanonInitialize();
-
 	// バネの初期化
 	void SpringInitialize();
 
